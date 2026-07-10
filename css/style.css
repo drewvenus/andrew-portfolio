@@ -10,8 +10,8 @@
   --ink-soft: #585F58;
   --rule: #C9C2AE;
   --rule-soft: #DDD8C8;
-  --accent: #B5472B;
-  --accent-soft: #E7D9C9;
+  --accent: #6B3FA0;
+  --accent-soft: #E6DCF2;
   --positive: #3F6B4F;
   --positive-soft: #DCE6DE;
   --card: #FBFAF5;
@@ -32,8 +32,8 @@
     --ink-soft: #A6A99C;
     --rule: #3A3F3B;
     --rule-soft: #2A2F2B;
-    --accent: #D46A46;
-    --accent-soft: #3A241C;
+    --accent: #B08AE0;
+    --accent-soft: #2E2140;
     --positive: #6FA37F;
     --positive-soft: #22322A;
     --card: #191E1F;
@@ -46,8 +46,8 @@
   --ink-soft: #A6A99C;
   --rule: #3A3F3B;
   --rule-soft: #2A2F2B;
-  --accent: #D46A46;
-  --accent-soft: #3A241C;
+  --accent: #B08AE0;
+  --accent-soft: #2E2140;
   --positive: #6FA37F;
   --positive-soft: #22322A;
   --card: #191E1F;
@@ -59,8 +59,8 @@
   --ink-soft: #585F58;
   --rule: #C9C2AE;
   --rule-soft: #DDD8C8;
-  --accent: #B5472B;
-  --accent-soft: #E7D9C9;
+  --accent: #6B3FA0;
+  --accent-soft: #E6DCF2;
   --positive: #3F6B4F;
   --positive-soft: #DCE6DE;
   --card: #FBFAF5;
@@ -338,6 +338,13 @@ a.card:active { transform: translateY(-3px) scale(0.99); }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
+}
+.card .stat-title {
+  font-family: var(--sans);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.3;
 }
 .card h3 { margin-top: 4px; }
 .card p { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 0; }
