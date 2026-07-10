@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Recording Made Easy Site Audit | Andrew Alicea</title>
+<meta name="description" content="A full site and social audit of homerecordingmadeeasy.com, technical SEO, conversion leaks, and a 3-month prioritized roadmap.">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .audit-page { max-width: var(--max-narrow); margin: 0 auto; padding: 56px 24px 96px; }
+  .meta {
+    display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12.5px;
+    color:var(--ink-soft); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    padding:14px 0; margin:0 0 30px;
+  }
+  .meta span b{ color:var(--ink); font-weight:600; }
+  h2 { margin-top: 46px; margin-bottom: 16px; }
+  h2:first-of-type { margin-top: 20px; }
+  .finding-list { list-style: none; margin: 0 0 14px; padding: 0; }
+  .finding-list li {
+    padding: 10px 0 10px 22px; border-bottom: 1px dotted var(--rule);
+    font-size: 15px; position: relative;
+  }
+  .finding-list li::before {
+    content: ", "; position: absolute; left: 0; color: var(--accent);
+  }
+  .page-block { margin-bottom: 30px; padding-bottom: 6px; }
+  .page-block h3 { font-size: 1.02rem; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0 24px; }
+  thead th {
+    text-align: left; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft); padding: 8px 10px; border-bottom: 1px solid var(--rule);
+  }
+  tbody td { padding: 9px 10px; border-bottom: 1px solid var(--rule-soft); }
+  td.num { font-family: var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+  .priority-list { margin: 0; padding-left: 22px; }
+  .priority-list li { margin-bottom: 10px; font-size: 15px; }
+  .focus-block {
+    background: var(--accent-soft); border: 1px solid var(--rule); border-left: 4px solid var(--accent);
+    border-radius: 4px; padding: 22px 24px; margin: 24px 0;
+  }
+  .focus-block .kicker { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">Andrew Alicea</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work">Case Studies</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="audit-page">
+  <a class="back-link" href="../index.html#work">← Back to case studies</a>
+
+  <p class="eyebrow">Site Audit · Work Sample</p>
+  <h1>Home Recording Made Easy, Site &amp; Social Audit</h1>
+
+  <div class="meta">
+    <span>Site <b>homerecordingmadeeasy.com</b></span>
+    <span>Scope <b>9 pages + 4 social profiles</b></span>
+    <span>Prepared <b>Jul 2026</b></span>
+  </div>
+
+  <div class="disclaimer">
+    This audit was prepared as part of a discovery-call pitch to a prospective client. It is shown here as a work sample demonstrating process and technical SEO skill, not as a completed client engagement.
+  </div>
+
+  <p>A page-by-page review of URL structure, copy, and design, paired with a full technical SEO pass covering titles, meta descriptions, schema, tracking, freshness, internal linking, trust pages, and accessibility. Findings were pulled directly from live page source, not inferred.</p>
+
+  <h2>Findings by Page</h2>
+
+  <div class="page-block">
+    <h3>01, Home Page</h3>
+    <ul class="finding-list">
+      <li>Offer redirects don't land on the offer, discount and free-course CTAs both route to generic listing pages instead of a cart with the discount applied.</li>
+      <li>Nav renders transparent on some pages and opaque on others, reads as unfinished.</li>
+      <li>Ships two H1 tags where it should have one.</li>
+    </ul>
+  </div>
+
+  <div class="page-block">
+    <h3>02, Training Course &amp; 03, Blog</h3>
+    <ul class="finding-list">
+      <li>Four course tiers use identical card styling with minimal visual differentiation.</li>
+      <li>Blog is the strongest content library on the site (~12 posts × 6 pages) but has the weakest alt-text coverage sitewide, 15 of 16 images missing.</li>
+      <li>No in-body links from posts into course pages, a missed conversion path from readers to buyers.</li>
+    </ul>
+  </div>
+
+  <div class="page-block">
+    <h3>04, Coaching (Highest-Impact Fix)</h3>
+    <ul class="finding-list">
+      <li>Header label, URL, and page title all mismatch, the single highest-impact, lowest-effort fix in the audit for both indexing and ranking.</li>
+      <li>Pricing transparent for two lead offers, hidden behind a contact form for the rest.</li>
+      <li>Contact form has zero accessible labels across its 8 fields.</li>
+    </ul>
+  </div>
+
+  <div class="page-block">
+    <h3>05, Podcast, 06, Contact, 07, FAQ</h3>
+    <ul class="finding-list">
+      <li>Podcast episode list tops out at December 2022 by default, 3+ years stale on first view.</li>
+      <li>No dedicated, indexable Contact page exists, the "About" page doubles as the only way to reach the owner.</li>
+      <li>FAQ page promises answers, delivers two stub headers with no actual content, both stale since May 2024.</li>
+    </ul>
+  </div>
+
+  <h2>Technical SEO</h2>
+  <ul class="finding-list">
+    <li>5 of 8 pages have no meta description at all, Google is writing its own snippets.</li>
+    <li>Zero JSON-LD schema anywhere on the site, no Organization, Course, FAQPage, or Review markup. A clean-slate opportunity for rich search results.</li>
+    <li>GA4, Google Tag Manager, and Meta Pixel are all correctly installed sitewide, the tracking foundation is solid, every fix from here is measurable.</li>
+    <li>No Privacy Policy, Terms, or Cookie Policy link found anywhere, for a site processing payments, a real exposure, not just an SEO gap.</li>
+    <li>3 of 4 contact forms sitewide have missing or incomplete field labels, a screen-reader accessibility gap.</li>
+    <li>75–94% of images are missing alt text on most pages.</li>
+  </ul>
+
+  <h2>Social Reach at a Glance</h2>
+  <table>
+    <thead><tr><th>Platform</th><th class="num">Followers</th><th class="num">Posts / Videos</th></tr></thead>
+    <tbody>
+      <tr><td>YouTube</td><td class="num">81.2K</td><td class="num">1.3K</td></tr>
+      <tr><td>Instagram</td><td class="num">974</td><td class="num">1,021</td></tr>
+      <tr><td>TikTok</td><td class="num">529</td><td class="num">335</td></tr>
+      <tr><td>Facebook</td><td class="num">Unknown</td><td class="num">N/A</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.9rem; color:var(--ink-soft);">YouTube carries the reach by a wide margin, Instagram and TikTok are an order of magnitude smaller, and the YouTube channel bio's second link is a typo'd, dead domain that's been live in front of the entire subscriber base.</p>
+
+  <h2>Priority Recommendations</h2>
+  <ol class="priority-list">
+    <li>Fix the Coaching URL/title/header mismatch, highest ranking impact, lowest effort.</li>
+    <li>Add a Privacy Policy / Terms page and link it sitewide.</li>
+    <li>Add labels to all four contact forms.</li>
+    <li>Make discount offers redirect to the actual discounted checkout.</li>
+    <li>Populate real FAQ content and add FAQPage schema.</li>
+    <li>Add meta descriptions to the 5 pages missing them.</li>
+  </ol>
+
+  <div class="focus-block">
+    <span class="kicker">Recommended 3-Month Focus</span>
+    <p style="margin-bottom:0;"><strong>Fix the conversion leaks first.</strong> SEO gains take months to surface in search, a 3-month window would end just as results appeared. Social growth is slow and algorithm-dependent. Conversion fixes are already-diagnosed bugs, not new work to invent, and they're measurable within the same 3 months. This is the fastest-payback fix, and it compounds every other channel's traffic instead of competing with it.</p>
+  </div>
+
+  <h2>Practical AI Workflow: Content Repurposing</h2>
+  <p>Part of the proposal included a concrete AI-assisted workflow to turn one podcast/YouTube recording into a blog post, social clips, and FAQ content in a single pass, transcribe the episode, draft a blog post + short-form captions + FAQ entries from the transcript, run a 15–20 minute human review pass, then publish. It closes three audit findings at once (missing meta descriptions, empty FAQ, thin social presence) using content already being produced, with no new hires or dev work required.</p>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Andrew Alicea · Digital Marketing Specialist</span>
+    <span><a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a> · (786) 258-7123</span>
+  </div>
+</footer>
+
+</body>
+</html>

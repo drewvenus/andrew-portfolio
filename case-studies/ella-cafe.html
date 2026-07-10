@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ella Cafe: Performance Ledger | Andrew Alicea</title>
+<meta name="description" content="How Ella Cafe grew weekly revenue 25% across a 3-location rollout, technical SEO, brand rebuild, and a new B2B catering pipeline.">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .ledger-page { max-width: var(--max-narrow); margin: 0 auto; padding: 56px 24px 96px; }
+  .meta {
+    display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12.5px;
+    color:var(--ink-soft); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    padding:14px 0; margin:0 0 40px;
+  }
+  .meta span b{ color:var(--ink); font-weight:600; }
+  .stamp-row{ display:flex; align-items:center; gap:28px; margin:0 0 48px; flex-wrap:wrap; }
+  .stamp{
+    border:2px solid var(--accent); color:var(--accent); border-radius:3px;
+    padding:14px 22px; transform:rotate(-1.6deg); display:inline-block;
+    font-family:var(--serif); text-align:center; background:var(--accent-soft);
+  }
+  .stamp .num{ font-size:40px; font-weight:700; line-height:1; font-variant-numeric:tabular-nums; }
+  .stamp .cap{ font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; margin-top:4px; }
+  .stamp-note{ font-size:14.5px; color:var(--ink-soft); max-width:34ch; }
+  .photo-row { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 44px; }
+  .photo-row img { border-radius: 6px; border: 1px solid var(--rule); aspect-ratio: 4/3; object-fit: cover; }
+  .ledger h3{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-soft); margin:30px 0 4px; padding-top:22px; border-top:1px dashed var(--rule);
+  }
+  .ledger h3:first-child{ border-top:none; padding-top:0; margin-top:20px; }
+  .ledger .subnote{ font-size:13px; color:var(--ink-soft); margin:0 0 10px; max-width:60ch; }
+  .row{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:9px 0; border-bottom:1px dotted var(--rule); font-size:15px;
+  }
+  .row .label{ color:var(--ink-soft); max-width:38ch; }
+  .row .value{ font-family:var(--mono); font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .row .value.pos{ color:var(--positive); }
+  .chart{ margin:26px 0 8px; }
+  .chart .cap{ font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); letter-spacing:.06em; margin-bottom:10px; }
+  .bar-line{ display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+  .bar-line .tag2{ font-family:var(--mono); font-size:12px; width:64px; flex:none; color:var(--ink-soft); }
+  .bar-track{ flex:1; background:var(--card); border-radius:5px; height:22px; position:relative; overflow:hidden; border:1px solid var(--rule); }
+  .bar-fill{ height:100%; border-radius:4px; display:flex; align-items:center; }
+  .bar-fill.before{ background:var(--rule); }
+  .bar-fill.after{ background:var(--positive); }
+  .bar-fill .amt{ font-family:var(--mono); font-size:12px; font-weight:700; color:var(--card); padding-left:10px; font-variant-numeric:tabular-nums; }
+  .quote{
+    margin:40px 0 0; padding:28px 30px 24px; background:var(--card); border:1px solid var(--rule);
+    border-left:3px solid var(--accent); border-radius:2px; position:relative;
+  }
+  .quote .mark{ font-family:var(--serif); font-size:52px; line-height:0; color:var(--accent); opacity:.55; position:absolute; top:26px; left:16px; }
+  .quote p{ font-family:var(--serif); font-style:italic; font-size:18px; line-height:1.5; margin:0 0 14px 26px; max-width:58ch; }
+  .quote cite{ font-family:var(--mono); font-style:normal; font-size:12px; letter-spacing:.04em; color:var(--ink-soft); margin-left:26px; display:block; }
+  .quote cite b{ color:var(--ink); }
+  @media (max-width:600px){ .photo-row { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">Andrew Alicea</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work">Case Studies</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="ledger-page">
+  <a class="back-link" href="../index.html#work">← Back to case studies</a>
+
+  <p class="eyebrow">Performance Ledger · Case Study</p>
+  <h1>How Ella Cafe Grew Weekly Revenue 25% Across a 3-Location Rollout</h1>
+
+  <div class="meta">
+    <span>Client <b>Ella Cafe</b> (Plantation · Davie · Coral Springs)</span>
+    <span>Role <b>Contract Digital Marketing Specialist</b></span>
+    <span>Engagement <b>Oct 2025 – Apr 2026</b></span>
+  </div>
+
+  <div class="stamp-row">
+    <div class="stamp">
+      <div class="num">+25%</div>
+      <div class="cap">Weekly Revenue</div>
+    </div>
+    <p class="stamp-note">Location-wide across all three sites, alongside a new B2B catering pipeline that converted into recurring revenue.</p>
+  </div>
+
+  <div class="photo-row">
+    <img src="../assets/img/ella-storefront.jpg" alt="Ella Cafe storefront">
+    <img src="../assets/img/ella-matcha.jpg" alt="Beverage at Ella Cafe">
+    <img src="../assets/img/ella-pastry.jpg" alt="Pastry case at Ella Cafe">
+  </div>
+
+  <h2>Problem</h2>
+  <p>Ella Cafe was losing organic search traffic to unresolved technical issues: broken links, missing internal links, and incorrect redirects were actively suppressing visibility. The site and menu also predated a push to unify branding across the brand's three locations, and the business had no lead generation motion beyond walk-in retail, leaving catering, a higher-margin, recurring-revenue opportunity, untapped.</p>
+
+  <h2>Solution</h2>
+  <p>Ran a full technical SEO and UX audit in SEMrush, identifying and resolving every broken link, missing internal link, and misconfigured redirect. Redesigned the website landing page and full menu to align with one unified brand identity across all three locations, supporting consolidation and improving digital-to-in-store conversion readiness. In parallel, launched a B2B lead generation campaign for catering across Meta Ads, LinkedIn Ads, Google Ads, and direct outreach, appeared on-camera to direct and produce branded Instagram Reels, and built a 90-day multi-channel roadmap, content calendar, community management SOP, and a Google Business Profile posting cadence of 2x/week per location, coordinated directly with franchise ownership and on-site staff.</p>
+
+  <div class="ledger">
+    <h3>Technical SEO &amp; UX</h3>
+    <div class="row"><span class="label">Bounce rate</span><span class="value pos">−30%</span></div>
+    <div class="row"><span class="label">404 errors</span><span class="value pos">All eliminated</span></div>
+    <div class="row"><span class="label">Broken / missing internal links, bad redirects</span><span class="value">Fully resolved</span></div>
+
+    <h3>Brand &amp; Site Rebuild</h3>
+    <div class="row"><span class="label">Scope</span><span class="value">Landing page + full menu</span></div>
+    <div class="row"><span class="label">Purpose</span><span class="value">3-location brand unification</span></div>
+
+    <h3>Content: On-Camera Reels</h3>
+    <p class="subnote">Directed, produced, and appeared on-camera as the face of the brand.</p>
+    <div class="row"><span class="label">Reel 1 views (vs. ~1,000 brand baseline)</span><span class="value pos">2,523 (2.5×)</span></div>
+    <div class="row"><span class="label">Reel 2 views (vs. ~1,000 brand baseline)</span><span class="value pos">2,892 (2.9×)</span></div>
+
+    <h3>B2B Catering Pipeline</h3>
+    <div class="row"><span class="label">Channels</span><span class="value">Meta, LinkedIn, Google, direct outreach</span></div>
+    <div class="row"><span class="label">Catering clients booked</span><span class="value pos">Multiple, recurring</span></div>
+    <div class="row"><span class="label">Net new followers</span><span class="value">1,000+</span></div>
+    <div class="row"><span class="label">Google Business posting cadence</span><span class="value">2×/week per location</span></div>
+
+    <h3>Revenue Impact</h3>
+    <div class="chart">
+      <div class="cap">Location-wide average weekly revenue</div>
+      <div class="bar-line">
+        <span class="tag2">Before</span>
+        <div class="bar-track"><div class="bar-fill before" style="width:80%"><span class="amt">$8,000</span></div></div>
+      </div>
+      <div class="bar-line">
+        <span class="tag2">After</span>
+        <div class="bar-track"><div class="bar-fill after" style="width:100%"><span class="amt">$10,000 (+25%)</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <div class="mark">&ldquo;</div>
+    <p>Andrew fixed technical issues that had been holding our site back for a while, and built out a catering pipeline that's now real, recurring revenue for us, not just a one-time bump.</p>
+    <cite><b>Nadine</b>, Manager, Ella Cafe</cite>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Andrew Alicea · Digital Marketing Specialist</span>
+    <span><a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a> · (786) 258-7123</span>
+  </div>
+</footer>
+
+</body>
+</html>

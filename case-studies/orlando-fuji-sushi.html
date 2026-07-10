@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orlando Fuji Sushi: Performance Ledger | Andrew Alicea</title>
+<meta name="description" content="How a single $70 influencer reel returned 4.73× for Orlando Fuji Sushi, a custom GA4 + GTM attribution pipeline built from scratch.">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .ledger-page { max-width: var(--max-narrow); margin: 0 auto; padding: 56px 24px 96px; }
+  .meta {
+    display:flex; flex-wrap:wrap; gap:6px 22px; font-family:var(--mono); font-size:12.5px;
+    color:var(--ink-soft); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    padding:14px 0; margin:0 0 40px;
+  }
+  .meta span b{ color:var(--ink); font-weight:600; }
+  .stamp-row{ display:flex; align-items:center; gap:28px; margin:0 0 48px; flex-wrap:wrap; }
+  .stamp{
+    border:2px solid var(--accent); color:var(--accent); border-radius:3px;
+    padding:14px 22px; transform:rotate(-1.6deg); display:inline-block;
+    font-family:var(--serif); text-align:center; background:var(--accent-soft);
+  }
+  .stamp .num{ font-size:40px; font-weight:700; line-height:1; font-variant-numeric:tabular-nums; }
+  .stamp .cap{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; margin-top:4px; max-width:18ch; }
+  .stamp-note{ font-size:14.5px; color:var(--ink-soft); max-width:34ch; }
+  .ledger h3{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-soft); margin:30px 0 4px; padding-top:22px; border-top:1px dashed var(--rule);
+  }
+  .ledger h3:first-child{ border-top:none; padding-top:0; margin-top:20px; }
+  .ledger .subnote{ font-size:13px; color:var(--ink-soft); margin:0 0 10px; max-width:60ch; }
+  .row{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:9px 0; border-bottom:1px dotted var(--rule); font-size:15px;
+  }
+  .row .label{ color:var(--ink-soft); max-width:38ch; }
+  .row .value{ font-family:var(--mono); font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .row .value.pos{ color:var(--positive); }
+  .chart{ margin:26px 0 8px; }
+  .chart .cap{ font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); letter-spacing:.06em; margin-bottom:10px; }
+  .bar-line{ display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+  .bar-line .tag2{ font-family:var(--mono); font-size:12px; width:64px; flex:none; color:var(--ink-soft); }
+  .bar-track{ flex:1; background:var(--card); border-radius:5px; height:22px; position:relative; overflow:hidden; border:1px solid var(--rule); }
+  .bar-fill{ height:100%; border-radius:4px; display:flex; align-items:center; }
+  .bar-fill.before{ background:var(--rule); }
+  .bar-fill.after{ background:var(--positive); }
+  .bar-fill .amt{ font-family:var(--mono); font-size:12px; font-weight:700; color:var(--card); padding-left:10px; font-variant-numeric:tabular-nums; }
+  .source-note{
+    font-size:12.5px; color:var(--ink-soft); background:var(--card); border:1px solid var(--rule);
+    border-radius:5px; padding:12px 16px; margin-top:36px;
+  }
+  .source-note b{ color:var(--ink); }
+  .quote{
+    margin:40px 0 0; padding:28px 30px 24px; background:var(--card); border:1px solid var(--rule);
+    border-left:3px solid var(--accent); border-radius:2px; position:relative;
+  }
+  .quote .mark{ font-family:var(--serif); font-size:52px; line-height:0; color:var(--accent); opacity:.55; position:absolute; top:26px; left:16px; }
+  .quote p{ font-family:var(--serif); font-style:italic; font-size:18px; line-height:1.5; margin:0 0 14px 26px; max-width:58ch; }
+  .quote cite{ font-family:var(--mono); font-style:normal; font-size:12px; letter-spacing:.04em; color:var(--ink-soft); margin-left:26px; display:block; }
+  .quote cite b{ color:var(--ink); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">Andrew Alicea</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work">Case Studies</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="ledger-page">
+  <a class="back-link" href="../index.html#work">← Back to case studies</a>
+
+  <p class="eyebrow">Performance Ledger · Case Study</p>
+  <h1>How a Single $70 Influencer Reel Returned 4.73× for Orlando Fuji Sushi</h1>
+
+  <div class="meta">
+    <span>Client <b>Orlando Fuji Sushi</b></span>
+    <span>Role <b>In-House Digital Marketing Specialist</b></span>
+    <span>Engagement <b>Aug 2022 – Jun 2026</b></span>
+  </div>
+
+  <div class="stamp-row">
+    <div class="stamp">
+      <div class="num">4.73×</div>
+      <div class="cap">ROAS: Influencer Partnership</div>
+    </div>
+    <p class="stamp-note">$4.67 cost-per-new-customer on a single $70 gifted-meal collaboration, one of three paid channels run in parallel. Full breakdown below.</p>
+  </div>
+
+  <h2>Problem</h2>
+  <p>Fuji Sushi had no attribution system in place: ad spend wasn't tied to actual conversions. A high-ticket menu item, the Sushi Boat, was underperforming at just $480/month, and customer acquisition relied heavily on foot traffic from its location rather than a measurable, repeatable channel. The restaurant needed to prove what was working across every channel it tried, not just run more ads.</p>
+
+  <h2>Solution</h2>
+  <p>Built a custom GA4 and Google Tag Manager attribution pipeline from scratch to track every dollar of spend down to the conversion. Ran three parallel acquisition channels, Google Ads, a paid Instagram follower campaign, and a gifted-meal influencer partnership, each measured independently rather than blended into one vague number. In parallel, repositioned the underperforming Sushi Boat through new copy, signage redesign, and short-form video, and layered in SMS and email retention systems so new customers had a path back to becoming repeat customers.</p>
+
+  <div class="ledger">
+    <h3>Google Ads: Search, Display &amp; Maps</h3>
+    <div class="row"><span class="label">Tracked conversions from $1,631 spend</span><span class="value">233</span></div>
+    <div class="row"><span class="label">Search: CTR / CPC</span><span class="value">4% / $2.96</span></div>
+    <div class="row"><span class="label">Display &amp; Maps: CPC</span><span class="value">$0.61</span></div>
+    <div class="row"><span class="label">Conversion rate / cost-per-conversion</span><span class="value">6% / $7.00</span></div>
+    <div class="row"><span class="label">Return on ad spend</span><span class="value pos">2.25×</span></div>
+
+    <h3>Instagram Follower Campaign (Meta Ads Manager)</h3>
+    <div class="row"><span class="label">Budget</span><span class="value">$232.55</span></div>
+    <div class="row"><span class="label">Accounts reached / profile visits</span><span class="value">31,904 / 945</span></div>
+    <div class="row"><span class="label">New followers</span><span class="value">282</span></div>
+    <div class="row"><span class="label">Cost per follower (vs. $1–$3 industry benchmark)</span><span class="value pos">$0.82</span></div>
+
+    <h3>Influencer Partnership</h3>
+    <p class="subnote">Single-reel gifted-meal collaboration, $70 cost (menu value), not a paid media buy.</p>
+    <div class="row"><span class="label">Views / accounts reached</span><span class="value">28,000 / 17,476</span></div>
+    <div class="row"><span class="label">Likes / comments / shares / saves</span><span class="value">454 / 15 / 248 / 139</span></div>
+    <div class="row"><span class="label">Estimated revenue generated (at $22.07 avg. ticket)</span><span class="value">$331.05</span></div>
+    <div class="row"><span class="label">Cost per new customer</span><span class="value pos">$4.67</span></div>
+    <div class="row"><span class="label">Return on spend</span><span class="value pos">4.73×</span></div>
+
+    <h3>Revenue Impact</h3>
+    <div class="chart">
+      <div class="cap">Sushi Boat monthly revenue, verified via POS sales reports</div>
+      <div class="bar-line">
+        <span class="tag2">Before</span>
+        <div class="bar-track"><div class="bar-fill before" style="width:53%"><span class="amt">$480</span></div></div>
+      </div>
+      <div class="bar-line">
+        <span class="tag2">After</span>
+        <div class="bar-track"><div class="bar-fill after" style="width:100%"><span class="amt">$900 (+87.5%)</span></div></div>
+      </div>
+    </div>
+
+    <h3>Retention</h3>
+    <div class="row"><span class="label">Customer check-ins</span><span class="value">5,252</span></div>
+    <div class="row"><span class="label">Loyal customers (4+ visits)</span><span class="value">383</span></div>
+    <div class="row"><span class="label">SMS opt-in retention</span><span class="value pos">98%</span></div>
+    <div class="row"><span class="label">Email list: size / open rate</span><span class="value">4,000+ / 30%</span></div>
+  </div>
+
+  <p class="source-note"><b>Note on these numbers:</b> Google Ads, the Instagram follower campaign, and the influencer partnership are three separate channels with three separate ROAS figures, shown individually here on purpose rather than blended, since collapsing them into one number would overstate any single channel's performance.</p>
+
+  <div class="quote">
+    <div class="mark">&ldquo;</div>
+    <p>Andrew rebuilt how we track and grow revenue from our ads. He took the Sushi Boat from an afterthought to one of our best-performing items, and for the first time we actually knew what our ad spend was doing.</p>
+    <cite><b>Kiwi</b>, Manager, Orlando Fuji Sushi</cite>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Andrew Alicea · Digital Marketing Specialist</span>
+    <span><a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a> · (786) 258-7123</span>
+  </div>
+</footer>
+
+</body>
+</html>

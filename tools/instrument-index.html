@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Instrument Index | Andrew Alicea</title>
+<meta name="description" content="A searchable field guide to 75 marketing KPIs across 10 channels, each with a definition, worked example, and guidance on when to track it.">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+:root{
+  --bg:var(--paper); --surface:var(--paper-raised); --surface-2:var(--card); --ink2:var(--ink); --ink-muted:var(--ink-soft); --rule2:var(--rule);
+  --cat-foundation:#4A5B8C; --cat-sem:#B0792E; --cat-meta:#A2483E; --cat-ga4:#1E7A70;
+  --cat-gtm:#55708A; --cat-social:#A8447C; --cat-seo:#5C7A2E; --cat-gbp:#7A4570;
+  --cat-email:#2E7A52; --cat-sms:#6B4A9C;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --cat-foundation:#7C8FC7; --cat-sem:#E0A857; --cat-meta:#D97F73; --cat-ga4:#4FC2B5;
+    --cat-gtm:#8FA6C2; --cat-social:#DC7CB0; --cat-seo:#96BE5E; --cat-gbp:#B57DAB;
+    --cat-email:#5FC08C; --cat-sms:#A889D6;
+  }
+}
+.tool-body{font-family:Optima,Candara,'Noto Sans','Segoe UI',sans-serif;}
+.font-mono{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-variant-numeric:tabular-nums;}
+.wrap-tool{max-width:1120px;margin:0 auto;padding:0 24px 96px;}
+.masthead2{padding:48px 24px 28px;border-bottom:1px solid var(--rule2);margin-bottom:28px;}
+.masthead-inner2{max-width:1120px;margin:0 auto;}
+.dek{font-size:1.0625rem;color:var(--ink-muted);max-width:62ch;margin:0 0 20px;}
+.stat-row{display:flex;gap:28px;flex-wrap:wrap;margin-top:22px;}
+.stat2{display:flex;flex-direction:column;gap:2px;}
+.stat2 b{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:1.5rem;font-variant-numeric:tabular-nums;}
+.stat2 span{font-size:0.75rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.08em;}
+.controls{position:sticky;top:65px;z-index:5;background:var(--bg);padding:16px 24px 18px;border-bottom:1px solid var(--rule2);margin-bottom:32px;}
+.controls-inner{max-width:1120px;margin:0 auto;}
+.search-row{display:flex;gap:12px;align-items:center;margin-bottom:14px;}
+.search-row input[type="search"]{flex:1;background:var(--surface);border:1px solid var(--rule2);color:var(--ink2);border-radius:7px;padding:10px 14px;font-size:0.9375rem;font-family:inherit;}
+.search-row input[type="search"]:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.count-badge{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:0.8125rem;color:var(--ink-muted);white-space:nowrap;}
+.chip-groups{display:flex;flex-direction:column;gap:10px;}
+.chip-group{display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.chip-group-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-muted);width:88px;flex:0 0 auto;}
+.chip{border:1px solid var(--rule2);background:var(--surface);color:var(--ink2);border-radius:100px;padding:5px 12px;font-size:0.78rem;cursor:pointer;transition:background .12s,color .12s,border-color .12s;user-select:none;}
+.chip:hover{border-color:var(--ink-muted);}
+.chip.active{background:var(--cat-c,var(--accent));border-color:var(--cat-c,var(--accent));color:#fff;}
+.chip.tagchip.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.clear-btn{font-size:0.78rem;color:var(--accent);background:none;border:none;cursor:pointer;padding:5px 4px;text-decoration:underline;text-underline-offset:2px;}
+.section2{margin-bottom:44px;}
+.section-head2{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--sec-c);}
+.section-head2 .dot{width:11px;height:11px;border-radius:50%;background:var(--sec-c);flex:0 0 auto;}
+.section-head2 h2{font-family:var(--serif);font-size:1.375rem;font-weight:600;margin:0;}
+.section-head2 .sec-count{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:0.78rem;color:var(--ink-muted);margin-left:auto;}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.kpicard{background:var(--surface);border:1px solid var(--rule2);border-left:4px solid var(--card-c);border-radius:8px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;}
+.acronym{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:1.05rem;font-weight:700;color:var(--card-c);letter-spacing:0.01em;}
+.kpi-name{font-family:var(--serif);font-size:1.0625rem;font-weight:600;margin:2px 0 0;text-wrap:balance;}
+.definition{font-size:0.875rem;color:var(--ink2);margin:0;}
+.example{background:var(--surface-2);border:1px solid var(--rule2);border-radius:6px;padding:8px 11px;font-size:0.8125rem;}
+.example b{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);display:block;margin-bottom:3px;font-weight:600;}
+.example span{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-variant-numeric:tabular-nums;}
+.best-when{font-size:0.8125rem;color:var(--ink-muted);margin:0;}
+.best-when b{color:var(--ink2);font-weight:600;}
+.tagrow{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+.tag2b{font-size:0.68rem;padding:3px 8px;border-radius:100px;background:var(--surface-2);border:1px solid var(--rule2);color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.04em;}
+.empty-state{padding:60px 20px;text-align:center;color:var(--ink-muted);font-size:0.9375rem;}
+@media (max-width:640px){.chip-group-label{width:100%;}.stat-row{gap:20px;}}
+</style>
+</head>
+<body class="tool-body">
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">Andrew Alicea</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#tools">Tools</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap-tool" style="padding-top:24px;">
+  <a class="back-link" href="../index.html#tools">← Back to tools</a>
+</div>
+
+<div class="masthead2">
+  <div class="masthead-inner2">
+    <p class="eyebrow">A reference for choosing measurement, not just collecting it</p>
+    <h1>The Instrument Index</h1>
+    <p class="dek">Seventy-five KPIs spanning paid search, paid social, web analytics, tag governance, organic social, SEO, local, email, and SMS, each with a definition, a worked example, and the specific conditions under which it's the right gauge to be watching.</p>
+    <div class="stat-row">
+      <div class="stat2"><b id="stat-total">75</b><span>KPIs indexed</span></div>
+      <div class="stat2"><b>10</b><span>Channels covered</span></div>
+      <div class="stat2"><b id="stat-shown">75</b><span>Currently shown</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-row">
+      <input type="search" id="search" placeholder="Search by name, acronym, or definition, e.g. &quot;attribution&quot;, &quot;ROAS&quot;, &quot;review&quot;…" />
+      <span class="count-badge" id="count-badge">75 of 75</span>
+    </div>
+    <div class="chip-groups">
+      <div class="chip-group" id="cat-group">
+        <span class="chip-group-label">Channel</span>
+      </div>
+      <div class="chip-group" id="tag-group">
+        <span class="chip-group-label">Best for</span>
+      </div>
+      <div class="chip-group">
+        <button class="clear-btn" id="clear-filters">Clear all filters</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap-tool">
+  <div id="results"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Andrew Alicea · Digital Marketing Specialist</span>
+    <span><a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a> · (786) 258-7123</span>
+  </div>
+</footer>
+
+<script src="instrument-index.js"></script>
+</body>
+</html>
