@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get the 75-KPI Cheat Sheet | Andrew Alicea</title>
+<meta name="description" content="Free download: a 75-KPI marketing measurement cheat sheet across paid search, paid social, web analytics, SEO, local, email, and SMS, with definitions, worked examples, and when to use each one.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .sub-page { max-width: var(--max-narrow); margin: 0 auto; padding: 64px 24px 96px; }
+  .sub-card {
+    position: relative;
+    background:
+      radial-gradient(circle at 15% 20%, var(--accent-soft) 0%, transparent 45%),
+      radial-gradient(circle at 85% 85%, var(--accent-soft) 0%, transparent 45%);
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 56px 44px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .sub-card h1 { margin: 0 auto 16px; max-width: 20ch; }
+  .sub-card .lede { margin: 0 auto 8px; }
+  .sub-included {
+    text-align: left; max-width: 440px; margin: 28px auto 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px;
+    font-family: var(--mono); font-size: 0.84rem; color: var(--ink-soft);
+  }
+  .sub-included span::before { content: "\2713"; color: var(--positive); margin-right: 8px; font-weight: 700; }
+  .sub-form { max-width: 420px; margin: 0 auto; }
+  .sub-form .field-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sub-form input[type="email"] {
+    flex: 1; min-width: 220px;
+    background: var(--card); border: 1px solid var(--rule); color: var(--ink);
+    border-radius: 6px; padding: 12px 16px; font-size: 0.95rem; font-family: var(--sans);
+  }
+  .sub-form input[type="email"]:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sub-form button { font-family: inherit; }
+  .sub-privacy { font-size: 0.78rem; color: var(--ink-soft); margin-top: 14px; }
+  .sub-back { display: block; text-align: center; margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Andrew Alicea</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Case Studies</a></li>
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="sub-page">
+  <div class="sub-card reveal in-view">
+    <p class="eyebrow" style="justify-content:center;">Free Resource</p>
+    <h1>Get the 75-KPI Marketing Measurement Cheat Sheet</h1>
+    <p class="lede">Every KPI worth tracking across 10 channels, with a plain-English definition, a worked example, and the specific situation where it's actually the right metric to use. The same 75-KPI set behind <a href="tools/measurement-console.html">The Measurement Console</a>, as a free PDF you can keep.</p>
+
+    <div class="sub-included">
+      <span>Paid Search / SEM</span>
+      <span>Paid Social — Meta Ads</span>
+      <span>Web Analytics — GA4</span>
+      <span>Tagging — GTM</span>
+      <span>Organic Social</span>
+      <span>SEO</span>
+      <span>Local / GBP</span>
+      <span>Email Marketing</span>
+      <span>SMS Marketing</span>
+      <span>Cross-Channel Foundation</span>
+    </div>
+
+    <!--
+      MAILCHIMP SETUP — replace before going live:
+      1. Create a free Mailchimp account (mailchimp.com) and an Audience.
+      2. Audience > Signup forms > Embedded forms > Classic to get your real
+         form "action" URL and hidden bot-field input name (looks like
+         b_XXXXXXXXXXXXXXXXXXXXXXXX_XXXXXXXXXX below).
+      3. Replace YOUR_MAILCHIMP_ACTION_URL and the hidden field name/value.
+      4. In Audience > Signup forms > Form builder, set the
+         "Signup thank you page" to this site's thank-you.html URL
+         (https://drewvenus.github.io/andrew-portfolio/thank-you.html)
+         so subscribers land on the actual download page after confirming.
+    -->
+    <form action="YOUR_MAILCHIMP_ACTION_URL" method="post" class="sub-form" target="_blank" novalidate>
+      <div class="field-row">
+        <input type="email" name="EMAIL" placeholder="you@email.com" required>
+        <button type="submit" class="btn btn-primary">Send Me the Cheat Sheet</button>
+      </div>
+      <!-- Mailchimp bot-field honeypot, do not remove -->
+      <div style="position:absolute; left:-5000px;" aria-hidden="true">
+        <input type="text" name="b_YOUR_U_YOUR_ID" tabindex="-1" value="">
+      </div>
+    </form>
+    <p class="sub-privacy">No spam. Occasional notes on marketing measurement. Unsubscribe anytime.</p>
+  </div>
+
+  <a class="back-link sub-back" href="index.html">&#8592; Back to the portfolio</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Andrew Alicea &middot; Digital Marketing Specialist</span>
+    <span><a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a> &middot; (786) 258-7123</span>
+  </div>
+</footer>
+
+</body>
+</html>
