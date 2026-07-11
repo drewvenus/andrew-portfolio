@@ -66,3 +66,38 @@ document.querySelectorAll('.carousel-wrap').forEach(wrap => {
   window.addEventListener('resize', updateButtons);
   updateButtons();
 });
+
+// Galleries (work sample viewers)
+document.querySelectorAll('.gallery').forEach(gallery => {
+  const stageImg = gallery.querySelector('.gallery-stage img');
+  const thumbs = Array.from(gallery.querySelectorAll('.gallery-thumb'));
+  const counter = gallery.querySelector('.gallery-count .current');
+  const prevBtn = gallery.querySelector('.gallery-nav.prev');
+  const nextBtn = gallery.querySelector('.gallery-nav.next');
+  if (!stageImg || !thumbs.length) return;
+
+  let index = thumbs.findIndex(t => t.classList.contains('active'));
+  if (index < 0) index = 0;
+
+  const show = (i) => {
+    index = (i + thumbs.length) % thumbs.length;
+    const thumbImg = thumbs[index].querySelector('img');
+    stageImg.src = thumbs[index].dataset.full || thumbImg.src;
+    stageImg.alt = thumbImg.alt;
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumbs[index].classList.add('active');
+    if (counter) counter.textContent = index + 1;
+    thumbs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  };
+
+  thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)));
+  prevBtn && prevBtn.addEventListener('click', () => show(index - 1));
+  nextBtn && nextBtn.addEventListener('click', () => show(index + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+
+  show(index);
+});
