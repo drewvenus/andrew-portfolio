@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Measurement Console | Andrew Alicea</title>
-<meta name="description" content="A KPI reference, fit-to-engagement matcher, benchmarks, root-cause diagnostics, measurement plan builder, campaign copy workbench, optimization-loop simulator, and plain-English readout generator, one shared set of 75 marketing KPIs across eight linked tools.">
+<meta name="description" content="A KPI reference with flip-to-benchmark cards, a fit-to-engagement matcher, root-cause diagnostics with five worked case files, a measurement plan builder, a campaign copy workbench, and a plain-English readout generator, one shared set of 75 marketing KPIs across six linked tools.">
 <style>
 /* ============ Companion tools: shared subpanel header pattern ============ */
 .subpanel-title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.5rem; line-height:1.15; margin:0 0 8px;}
@@ -47,110 +47,110 @@
 #panel-workbench .kw-group.neg li{color:var(--bad);}
 
 /* ============ Optimization Loop Simulator (scoped) ============ */
-#panel-optimizer button{font-family:inherit;}
-#panel-optimizer .section-label{
+#panel-diag button{font-family:inherit;}
+#panel-diag .section-label{
   font-family:ui-monospace,monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em;
   color:var(--ink-muted); margin:34px 0 14px;
 }
-#panel-optimizer .opt-case-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
-#panel-optimizer .case-card{
+#panel-diag .opt-case-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
+#panel-diag .case-card{
   text-align:left; background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--cat-c);
   border-radius:8px; padding:16px 17px 15px; cursor:pointer; display:flex; flex-direction:column; gap:9px;
   color:var(--ink); font-family:inherit;
 }
-#panel-optimizer .case-card:hover{border-color:var(--ink-muted);}
-#panel-optimizer .case-card.active{outline:2px solid var(--focus); outline-offset:-1px;}
-#panel-optimizer .case-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
-#panel-optimizer .chan-chip{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; color:var(--cat-c); border:1px solid var(--cat-c); border-radius:100px; padding:2px 9px;}
-#panel-optimizer .case-title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.0625rem; margin:0; text-wrap:balance;}
-#panel-optimizer .case-client{font-size:0.8rem; color:var(--ink-muted); margin:0;}
-#panel-optimizer .case-spark{height:34px;}
-#panel-optimizer .case-delta{font-family:ui-monospace,monospace; font-size:0.82rem; font-variant-numeric:tabular-nums;}
-#panel-optimizer .case-delta .arrow{color:var(--sig-watch);}
-#panel-optimizer .case-bar{
+#panel-diag .case-card:hover{border-color:var(--ink-muted);}
+#panel-diag .case-card.active{outline:2px solid var(--focus); outline-offset:-1px;}
+#panel-diag .case-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+#panel-diag .chan-chip{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; color:var(--cat-c); border:1px solid var(--cat-c); border-radius:100px; padding:2px 9px;}
+#panel-diag .case-title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.0625rem; margin:0; text-wrap:balance;}
+#panel-diag .case-client{font-size:0.8rem; color:var(--ink-muted); margin:0;}
+#panel-diag .case-spark{height:34px;}
+#panel-diag .case-delta{font-family:ui-monospace,monospace; font-size:0.82rem; font-variant-numeric:tabular-nums;}
+#panel-diag .case-delta .arrow{color:var(--sig-watch);}
+#panel-diag .case-bar{
   display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--rule);
   border-radius:9px; padding:14px 18px; margin:34px 0 22px;
 }
-#panel-optimizer .case-bar .lbl{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted);}
-#panel-optimizer .case-bar .nm{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.0625rem;}
-#panel-optimizer .case-bar button{background:none; border:1px solid var(--rule); color:var(--ink-muted); border-radius:100px; padding:6px 13px; font-size:0.78rem; cursor:pointer; margin-left:auto;}
-#panel-optimizer .case-bar button:hover{color:var(--ink); border-color:var(--ink-muted);}
-#panel-optimizer .account-snapshot{display:flex; gap:24px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--rule); border-radius:8px; padding:14px 18px;}
-#panel-optimizer .account-snapshot .field{display:flex; flex-direction:column; gap:2px; min-width:180px; flex:1 1 220px;}
-#panel-optimizer .account-snapshot .lbl{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted); font-weight:600;}
-#panel-optimizer .account-snapshot .val{font-size:0.86rem;}
-#panel-optimizer .stepper{display:flex; align-items:center; margin-bottom:30px;}
-#panel-optimizer .opt-stepper{display:flex; align-items:center; margin-bottom:30px;}
-#panel-optimizer .step-node{display:flex; align-items:center; gap:10px; background:none; border:none; cursor:pointer; padding:8px 4px; flex:0 0 auto;}
-#panel-optimizer .step-node .dot{
+#panel-diag .case-bar .lbl{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted);}
+#panel-diag .case-bar .nm{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.0625rem;}
+#panel-diag .case-bar button{background:none; border:1px solid var(--rule); color:var(--ink-muted); border-radius:100px; padding:6px 13px; font-size:0.78rem; cursor:pointer; margin-left:auto;}
+#panel-diag .case-bar button:hover{color:var(--ink); border-color:var(--ink-muted);}
+#panel-diag .account-snapshot{display:flex; gap:24px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--rule); border-radius:8px; padding:14px 18px;}
+#panel-diag .account-snapshot .field{display:flex; flex-direction:column; gap:2px; min-width:180px; flex:1 1 220px;}
+#panel-diag .account-snapshot .lbl{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted); font-weight:600;}
+#panel-diag .account-snapshot .val{font-size:0.86rem;}
+#panel-diag .stepper{display:flex; align-items:center; margin-bottom:30px;}
+#panel-diag .opt-stepper{display:flex; align-items:center; margin-bottom:30px;}
+#panel-diag .step-node{display:flex; align-items:center; gap:10px; background:none; border:none; cursor:pointer; padding:8px 4px; flex:0 0 auto;}
+#panel-diag .step-node .dot{
   width:28px; height:28px; border-radius:50%; border:1.5px solid var(--rule); background:var(--surface);
   display:flex; align-items:center; justify-content:center; font-family:ui-monospace,monospace; font-size:0.78rem;
   font-weight:700; color:var(--ink-muted); flex:0 0 auto;
 }
-#panel-optimizer .step-node .lbl{font-size:0.86rem; font-weight:600; color:var(--ink-muted); white-space:nowrap;}
-#panel-optimizer .step-node.active .dot{border-color:var(--focus); background:var(--focus); color:#fff;}
-#panel-optimizer .step-node.active .lbl{color:var(--ink);}
-#panel-optimizer .step-node.done .dot{border-color:var(--accent); background:var(--accent); color:#fff;}
-#panel-optimizer .step-line{flex:1 1 auto; height:1.5px; background:var(--rule); margin:0 2px; min-width:16px;}
-#panel-optimizer .opt-stage-panel{display:flex; flex-direction:column; gap:20px;}
-#panel-optimizer .stage-head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
-#panel-optimizer .stage-head h2{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.375rem; margin:0;}
-#panel-optimizer .stage-head p{font-size:0.9rem; color:var(--ink-muted); margin:0;}
-#panel-optimizer .metrics-table{width:100%; border-collapse:collapse; font-size:0.88rem;}
-#panel-optimizer .metrics-table th{
+#panel-diag .step-node .lbl{font-size:0.86rem; font-weight:600; color:var(--ink-muted); white-space:nowrap;}
+#panel-diag .step-node.active .dot{border-color:var(--focus); background:var(--focus); color:#fff;}
+#panel-diag .step-node.active .lbl{color:var(--ink);}
+#panel-diag .step-node.done .dot{border-color:var(--accent); background:var(--accent); color:#fff;}
+#panel-diag .step-line{flex:1 1 auto; height:1.5px; background:var(--rule); margin:0 2px; min-width:16px;}
+#panel-diag .opt-stage-panel{display:flex; flex-direction:column; gap:20px;}
+#panel-diag .stage-head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+#panel-diag .stage-head h2{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.375rem; margin:0;}
+#panel-diag .stage-head p{font-size:0.9rem; color:var(--ink-muted); margin:0;}
+#panel-diag .metrics-table{width:100%; border-collapse:collapse; font-size:0.88rem;}
+#panel-diag .metrics-table th{
   text-align:left; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted);
   padding:0 12px 8px; font-weight:600;
 }
-#panel-optimizer .metrics-table td{padding:10px 12px; vertical-align:middle; border-top:1px solid var(--rule);}
-#panel-optimizer .metrics-table tr:first-child td{border-top:none;}
-#panel-optimizer .metrics-table .acr{font-family:ui-monospace,monospace; font-weight:700;}
-#panel-optimizer .metrics-table .full{display:block; font-size:0.72rem; color:var(--ink-muted); font-weight:400;}
-#panel-optimizer .metrics-table .num{font-family:ui-monospace,monospace; font-variant-numeric:tabular-nums; white-space:nowrap;}
-#panel-optimizer .tbl-scroll{overflow-x:auto; border:1px solid var(--rule); border-radius:8px; padding:4px 6px; background:var(--surface);}
-#panel-optimizer .delta-chip{
+#panel-diag .metrics-table td{padding:10px 12px; vertical-align:middle; border-top:1px solid var(--rule);}
+#panel-diag .metrics-table tr:first-child td{border-top:none;}
+#panel-diag .metrics-table .acr{font-family:ui-monospace,monospace; font-weight:700;}
+#panel-diag .metrics-table .full{display:block; font-size:0.72rem; color:var(--ink-muted); font-weight:400;}
+#panel-diag .metrics-table .num{font-family:ui-monospace,monospace; font-variant-numeric:tabular-nums; white-space:nowrap;}
+#panel-diag .tbl-scroll{overflow-x:auto; border:1px solid var(--rule); border-radius:8px; padding:4px 6px; background:var(--surface);}
+#panel-diag .delta-chip{
   display:inline-flex; align-items:center; gap:4px; font-family:ui-monospace,monospace; font-size:0.76rem; font-weight:700;
   padding:2px 9px; border-radius:100px;
 }
-#panel-optimizer .delta-chip.watch{color:var(--sig-watch); background:var(--sig-watch-bg);}
-#panel-optimizer .delta-chip.strong{color:var(--sig-strong); background:var(--sig-strong-bg);}
-#panel-optimizer .delta-chip.typical{color:var(--sig-typical); background:var(--sig-typical-bg);}
-#panel-optimizer .spark-cell{width:110px;}
-#panel-optimizer .context-note{font-size:0.9rem; color:var(--ink-muted); background:var(--surface-2); border:1px dashed var(--rule); border-radius:8px; padding:12px 15px; font-style:italic;}
-#panel-optimizer .cause-list{display:flex; flex-direction:column; gap:10px;}
-#panel-optimizer .cause-card{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:15px 17px; display:flex; gap:13px;}
-#panel-optimizer .cause-card.confirmed{border-color:var(--sig-strong); border-left-width:4px;}
-#panel-optimizer .cause-card.ruled-out{opacity:0.72;}
-#panel-optimizer .cause-mark{
+#panel-diag .delta-chip.watch{color:var(--sig-watch); background:var(--sig-watch-bg);}
+#panel-diag .delta-chip.strong{color:var(--sig-strong); background:var(--sig-strong-bg);}
+#panel-diag .delta-chip.typical{color:var(--sig-typical); background:var(--sig-typical-bg);}
+#panel-diag .spark-cell{width:110px;}
+#panel-diag .context-note{font-size:0.9rem; color:var(--ink-muted); background:var(--surface-2); border:1px dashed var(--rule); border-radius:8px; padding:12px 15px; font-style:italic;}
+#panel-diag .cause-list{display:flex; flex-direction:column; gap:10px;}
+#panel-diag .cause-card{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:15px 17px; display:flex; gap:13px;}
+#panel-diag .cause-card.confirmed{border-color:var(--sig-strong); border-left-width:4px;}
+#panel-diag .cause-card.ruled-out{opacity:0.72;}
+#panel-diag .cause-mark{
   flex:0 0 auto; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;
   font-size:0.8rem; font-weight:700; margin-top:1px;
 }
-#panel-optimizer .cause-card.confirmed .cause-mark{background:var(--sig-strong); color:#fff;}
-#panel-optimizer .cause-card.ruled-out .cause-mark{border:1.5px solid var(--rule); color:var(--ink-muted); font-size:0.72rem;}
-#panel-optimizer .cause-body{display:flex; flex-direction:column; gap:4px; min-width:0;}
-#panel-optimizer .cause-title{font-weight:700; font-size:0.9375rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-#panel-optimizer .cause-status{font-family:ui-monospace,monospace; font-size:0.64rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; padding:1px 7px; border-radius:4px;}
-#panel-optimizer .cause-status.confirmed{color:var(--sig-strong); border:1px solid var(--sig-strong);}
-#panel-optimizer .cause-status.ruled-out{color:var(--ink-muted); border:1px solid var(--rule);}
-#panel-optimizer .cause-why{font-size:0.86rem; color:var(--ink-muted); margin:0;}
-#panel-optimizer .rec-list{display:flex; flex-direction:column; gap:10px; counter-reset:rec;}
-#panel-optimizer .rec-item{display:flex; gap:13px; background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--focus); border-radius:8px; padding:14px 16px;}
-#panel-optimizer .rec-num{counter-increment:rec; font-family:ui-monospace,monospace; font-weight:700; color:var(--focus); flex:0 0 auto;}
-#panel-optimizer .rec-num::before{content:counter(rec);}
-#panel-optimizer .rec-text{font-size:0.9rem;}
-#panel-optimizer .rewrite-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
-#panel-optimizer .rewrite-col{border-radius:8px; padding:16px 17px; display:flex; flex-direction:column; gap:8px;}
-#panel-optimizer .rewrite-col.before{background:var(--surface-2); border:1px dashed var(--rule);}
-#panel-optimizer .rewrite-col.after{background:var(--surface); border:1px solid var(--sig-strong); border-left-width:4px;}
-#panel-optimizer .rewrite-lbl{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--ink-muted);}
-#panel-optimizer .rewrite-col.after .rewrite-lbl{color:var(--sig-strong);}
-#panel-optimizer .rewrite-copy{font-family:ui-monospace,monospace; font-size:0.84rem; white-space:pre-wrap; line-height:1.6;}
-#panel-optimizer .rewrite-col.before .rewrite-copy{color:var(--ink-muted); text-decoration:line-through; text-decoration-color:var(--rule);}
-#panel-optimizer .rewrite-note{font-size:0.82rem; color:var(--ink-muted); margin:2px 0 0;}
-#panel-optimizer .stage-actions{display:flex; gap:10px; margin-top:6px;}
-#panel-optimizer .btn-secondary:hover{color:var(--ink); border-color:var(--ink-muted);}
+#panel-diag .cause-card.confirmed .cause-mark{background:var(--sig-strong); color:#fff;}
+#panel-diag .cause-card.ruled-out .cause-mark{border:1.5px solid var(--rule); color:var(--ink-muted); font-size:0.72rem;}
+#panel-diag .cause-body{display:flex; flex-direction:column; gap:4px; min-width:0;}
+#panel-diag .cause-title{font-weight:700; font-size:0.9375rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+#panel-diag .cause-status{font-family:ui-monospace,monospace; font-size:0.64rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; padding:1px 7px; border-radius:4px;}
+#panel-diag .cause-status.confirmed{color:var(--sig-strong); border:1px solid var(--sig-strong);}
+#panel-diag .cause-status.ruled-out{color:var(--ink-muted); border:1px solid var(--rule);}
+#panel-diag .cause-why{font-size:0.86rem; color:var(--ink-muted); margin:0;}
+#panel-diag .rec-list{display:flex; flex-direction:column; gap:10px; counter-reset:rec;}
+#panel-diag .rec-item{display:flex; gap:13px; background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--focus); border-radius:8px; padding:14px 16px;}
+#panel-diag .rec-num{counter-increment:rec; font-family:ui-monospace,monospace; font-weight:700; color:var(--focus); flex:0 0 auto;}
+#panel-diag .rec-num::before{content:counter(rec);}
+#panel-diag .rec-text{font-size:0.9rem;}
+#panel-diag .rewrite-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+#panel-diag .rewrite-col{border-radius:8px; padding:16px 17px; display:flex; flex-direction:column; gap:8px;}
+#panel-diag .rewrite-col.before{background:var(--surface-2); border:1px dashed var(--rule);}
+#panel-diag .rewrite-col.after{background:var(--surface); border:1px solid var(--sig-strong); border-left-width:4px;}
+#panel-diag .rewrite-lbl{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--ink-muted);}
+#panel-diag .rewrite-col.after .rewrite-lbl{color:var(--sig-strong);}
+#panel-diag .rewrite-copy{font-family:ui-monospace,monospace; font-size:0.84rem; white-space:pre-wrap; line-height:1.6;}
+#panel-diag .rewrite-col.before .rewrite-copy{color:var(--ink-muted); text-decoration:line-through; text-decoration-color:var(--rule);}
+#panel-diag .rewrite-note{font-size:0.82rem; color:var(--ink-muted); margin:2px 0 0;}
+#panel-diag .stage-actions{display:flex; gap:10px; margin-top:6px;}
+#panel-diag .btn-secondary:hover{color:var(--ink); border-color:var(--ink-muted);}
 @media (max-width:640px){
-  #panel-optimizer .rewrite-grid{grid-template-columns:1fr;}
-  #panel-optimizer .opt-stepper{overflow-x:auto;}
+  #panel-diag .rewrite-grid{grid-template-columns:1fr;}
+  #panel-diag .opt-stepper{overflow-x:auto;}
 }
 
 /* ============ The Readout (scoped) ============ */
@@ -497,6 +497,13 @@ textarea.output-text{width:100%; min-height:260px; background:var(--surface-2); 
 .empty-state{padding:60px 20px; text-align:center; color:var(--ink-muted); font-size:0.9375rem;}
 
 /* Diagnostics */
+.diag-subnav{display:flex; gap:8px; margin:4px 0 28px; border-bottom:1px solid var(--rule); padding-bottom:0;}
+.diag-subnav-btn{
+  font-family:inherit; font-size:0.875rem; font-weight:600; color:var(--ink-muted);
+  background:none; border:none; border-bottom:3px solid transparent; padding:10px 4px 12px; margin-right:20px; cursor:pointer;
+}
+.diag-subnav-btn:hover{color:var(--ink);}
+.diag-subnav-btn.active{color:var(--ink); border-bottom-color:var(--focus);}
 .diag-search{position:relative;}
 .diag-results-list{
   position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:6;
@@ -595,13 +602,13 @@ footer.note{max-width:1160px; margin:40px auto 0; padding:20px 24px 0; border-to
 </div>
 <div class="masthead">
   <div class="masthead-inner">
-    <p class="eyebrow">Reference · Fit · Benchmarks · Diagnostics · Plan — one shared set of 75 KPIs</p>
+    <p class="eyebrow">Reference · Fit · Diagnostics · Plan · Workbench · Readout — one shared set of 75 KPIs</p>
     <h1 class="title">The Measurement Console</h1>
-    <p class="dek">Five instruments spanning a single measurement practice: look up any KPI, match a starter set to a new engagement, check whether a number is actually good, trace a metric's movement back to its likely cause, then turn the selected set into a client-ready measurement plan. Selections carry across every tab.</p>
+    <p class="dek">Six tools spanning a single measurement practice: look up any KPI and flip the card to check whether a number is actually good, match a starter set to a new engagement, diagnose a metric's movement solo or through five worked case files, turn the selected set into a client-ready measurement plan, draft ad copy and keywords from one brief, then turn a results table into the narrative you'd tell in the room. Selections carry across every tab.</p>
     <div class="stat-row">
       <div class="stat"><b>75</b><span>KPIs indexed</span></div>
+      <div class="stat"><b>6</b><span>Tools</span></div>
       <div class="stat"><b>10</b><span>Channels covered</span></div>
-      <div class="stat"><b>5</b><span>Instruments</span></div>
     </div>
   </div>
 </div>
@@ -613,7 +620,6 @@ footer.note{max-width:1160px; margin:40px auto 0; padding:20px 24px 0; border-to
     <button class="tab-btn" data-tab="diag">Diagnostics</button>
     <button class="tab-btn" data-tab="plan">Plan</button>
     <button class="tab-btn" data-tab="workbench">Workbench</button>
-    <button class="tab-btn" data-tab="optimizer">Optimizer</button>
     <button class="tab-btn" data-tab="readout">Readout</button>
     <div class="sel-indicator empty" id="sel-indicator">
       <span><b id="sel-count-mini">0</b> selected</span>
@@ -708,21 +714,69 @@ footer.note{max-width:1160px; margin:40px auto 0; padding:20px 24px 0; border-to
 
 <!-- ============ DIAGNOSTICS PANEL ============ -->
 <div class="panel-view" id="panel-diag" style="display:none;">
-  <div class="wrap" style="padding-top:28px; max-width:820px;">
-    <p class="dek" style="margin-bottom:24px;">Pick the KPI that moved, say which way it moved, and see what to check next — grounded in real funnel relationships, not just shared category.</p>
-    <div class="diag-search">
-      <input type="search" id="diag-search" placeholder="Search for the KPI that moved — e.g. &quot;CPA&quot;, &quot;open rate&quot;, &quot;local pack&quot;…" style="width:100%; background:var(--surface); border:1px solid var(--rule); color:var(--ink); border-radius:7px; padding:11px 14px; font-size:0.9375rem; font-family:inherit;" />
-      <div class="diag-results-list" id="diag-search-results" style="display:none;"></div>
+  <div class="wrap" style="padding-top:28px;">
+    <p class="dek" style="margin-bottom:20px; max-width:820px;">Two ways to work a metric that moved: a fast lookup across all 75 KPIs, or a full walkthrough using five real account case files.</p>
+    <div class="diag-subnav">
+      <button type="button" class="diag-subnav-btn active" data-sub="quick">Quick Diagnosis</button>
+      <button type="button" class="diag-subnav-btn" data-sub="cases">Case Files</button>
     </div>
-    <div id="diag-body" style="margin-top:20px;"></div>
+
+    <div id="diag-sub-quick" style="max-width:820px;">
+      <p class="dek" style="margin-bottom:24px;">Pick the KPI that moved, say which way it moved, and see what to check next — grounded in real funnel relationships, not just shared category.</p>
+      <div class="diag-search">
+        <input type="search" id="diag-search" placeholder="Search for the KPI that moved — e.g. &quot;CPA&quot;, &quot;open rate&quot;, &quot;local pack&quot;…" style="width:100%; background:var(--surface); border:1px solid var(--rule); color:var(--ink); border-radius:7px; padding:11px 14px; font-size:0.9375rem; font-family:inherit;" />
+        <div class="diag-results-list" id="diag-search-results" style="display:none;"></div>
+      </div>
+      <div id="diag-body" style="margin-top:20px;"></div>
+    </div>
+
+    <div id="diag-sub-cases" style="display:none;">
+      <p class="eyebrow">Case Files · Data → Diagnose → Recommend → Rewrite</p>
+      <h2 class="subpanel-title">The Optimization Loop</h2>
+      <p class="dek">Five real account problems, presented the way they actually show up: a metric moved, and it's not yet clear why. Pick a case, read the data, work through which cause the evidence actually supports, then see the fix written out as it would ship.</p>
+      <div class="stat-row" style="margin-bottom:8px;">
+        <div class="stat"><b>5</b><span>Cases</span></div>
+        <div class="stat"><b>3</b><span>Channels</span></div>
+        <div class="stat"><b>4</b><span>Steps per loop</span></div>
+      </div>
+      <p class="section-label" style="margin-top:34px;">Open a case</p>
+      <div class="opt-case-grid" id="opt-case-grid"></div>
+
+      <div id="opt-case-workspace" style="display:none;">
+        <div class="case-bar">
+          <div>
+            <span class="lbl">Active case</span><br/>
+            <span class="nm" id="opt-bar-case-title"></span>
+          </div>
+          <button id="opt-change-case-btn">Change case</button>
+        </div>
+
+        <div class="opt-stepper" id="opt-stepper"></div>
+        <div class="opt-stage-panel" id="opt-stage-panel"></div>
+      </div>
+
+      <footer class="note">
+        All five cases are constructed scenarios built to exercise real diagnostic logic — metrics, causes, and fixes reflect how each failure mode actually presents in Google Ads, Meta Ads, and Google Business Profile accounts.
+      </footer>
+    </div>
   </div>
 </div>
+
+<script>
+document.querySelectorAll('.diag-subnav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.diag-subnav-btn').forEach(b=>b.classList.toggle('active', b===btn));
+    document.getElementById('diag-sub-quick').style.display = btn.dataset.sub==='quick' ? '' : 'none';
+    document.getElementById('diag-sub-cases').style.display = btn.dataset.sub==='cases' ? '' : 'none';
+  });
+});
+</script>
 
 <!-- ============ PLAN PANEL ============ -->
 <div class="panel-view" id="panel-plan" style="display:none;">
   <div class="wrap" style="padding-top:28px;">
     <div id="plan-empty" class="empty-note">
-      No KPIs selected yet. Add KPIs from the Index, Benchmarks, or Diagnostics tabs (use the <b>+ Plan</b> button on any card), or build a starter set on the Fit tab — they'll all land here.
+      No KPIs selected yet. Add KPIs from the Index or Diagnostics tabs (use the <b>+ Plan</b> button on any card), or build a starter set on the Fit tab — they'll all land here.
     </div>
     <div id="plan-body" style="display:none;">
       <div class="panel">
@@ -880,40 +934,6 @@ footer.note{max-width:1160px; margin:40px auto 0; padding:20px 24px 0; border-to
 
 <footer class="note">
   Copy formulas and match-type expansion are template-generated from your brief — always read them back before uploading to a live account, especially any line built from an optional proof point.
-</footer>
-</div>
-
-<div class="panel-view" id="panel-optimizer" style="display:none;">
-
-
-<div class="wrap" style="padding-top:28px;">
-  <p class="eyebrow">Case Files · Data → Diagnose → Recommend → Rewrite</p>
-  <h2 class="subpanel-title">The Optimization Loop</h2>
-  <p class="dek">Five real account problems, presented the way they actually show up: a metric moved, and it's not yet clear why. Pick a case, read the data, work through which cause the evidence actually supports, then see the fix written out as it would ship.</p>
-  <div class="stat-row" style="margin-bottom:8px;">
-    <div class="stat"><b>5</b><span>Cases</span></div>
-    <div class="stat"><b>3</b><span>Channels</span></div>
-    <div class="stat"><b>4</b><span>Steps per loop</span></div>
-  </div>
-  <p class="section-label" style="margin-top:34px;">Open a case</p>
-  <div class="opt-case-grid" id="opt-case-grid"></div>
-
-  <div id="opt-case-workspace" style="display:none;">
-    <div class="case-bar">
-      <div>
-        <span class="lbl">Active case</span><br/>
-        <span class="nm" id="opt-bar-case-title"></span>
-      </div>
-      <button id="opt-change-case-btn">Change case</button>
-    </div>
-
-    <div class="opt-stepper" id="opt-stepper"></div>
-    <div class="opt-stage-panel" id="opt-stage-panel"></div>
-  </div>
-</div>
-
-<footer class="note">
-  All five cases are constructed scenarios built to exercise real diagnostic logic — metrics, causes, and fixes reflect how each failure mode actually presents in Google Ads, Meta Ads, and Google Business Profile accounts.
 </footer>
 </div>
 
@@ -1339,7 +1359,7 @@ function wireAddBtns(root){
 }
 
 // ---------------- tab switching ----------------
-const TABS = ["index","fit","diag","plan","workbench","optimizer","readout"];
+const TABS = ["index","fit","diag","plan","workbench","readout"];
 let currentTab = "index";
 function switchTab(tab){
   currentTab = tab;
