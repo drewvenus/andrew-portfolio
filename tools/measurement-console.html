@@ -1,0 +1,2775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Measurement Console | Andrew Alicea</title>
+<meta name="description" content="A KPI reference, fit-to-engagement matcher, benchmarks, root-cause diagnostics, measurement plan builder, campaign copy workbench, optimization-loop simulator, and plain-English readout generator, one shared set of 75 marketing KPIs across eight linked tools.">
+<style>
+/* ============ Companion tools: shared subpanel header pattern ============ */
+.subpanel-title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.5rem; line-height:1.15; margin:0 0 8px;}
+
+/* ============ Campaign Build Workbench (scoped) ============ */
+#panel-workbench{ --cat-google:var(--cat-sem); --cat-kw:var(--cat-seo); --ok:var(--sig-strong); --bad:var(--sig-watch); }
+#panel-workbench .field .hint{font-size:0.72rem; color:var(--ink-muted); font-style:italic;}
+#panel-workbench .field textarea{resize:vertical; min-height:56px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink); border-radius:7px; padding:10px 12px; font-size:0.9375rem; font-family:inherit;}
+#panel-workbench .field input:focus, #panel-workbench .field textarea:focus, #panel-workbench .field select:focus{outline:2px solid var(--focus); outline-offset:1px;}
+#panel-workbench .field-row{display:flex; gap:8px; align-items:center;}
+#panel-workbench .field-row input{flex:1; min-width:0;}
+#panel-workbench .dice-btn{
+  flex:0 0 auto; width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+  background:var(--surface-2); border:1px solid var(--rule); color:var(--ink); border-radius:7px;
+  font-size:1.05rem; cursor:pointer; padding:0; line-height:1;
+}
+#panel-workbench .dice-btn:hover{border-color:var(--accent); background:var(--surface);}
+#panel-workbench .dice-btn:active{transform:scale(0.92);}
+#panel-workbench .dice-btn:focus-visible{outline:2px solid var(--focus); outline-offset:1px;}
+#panel-workbench .btn-mini{font-family:ui-monospace,monospace; font-size:0.68rem; font-weight:700; letter-spacing:0.03em; border:1px solid var(--sec-c,var(--accent)); color:var(--sec-c,var(--accent)); background:none; border-radius:100px; padding:5px 11px; cursor:pointer; text-transform:uppercase;}
+#panel-workbench .btn-mini:hover{background:var(--sec-c,var(--accent)); color:#fff;}
+#panel-workbench .output-empty{padding:60px 20px; text-align:center; color:var(--ink-muted); font-size:0.9375rem; border:1px dashed var(--rule); border-radius:10px; margin:32px 0;}
+#panel-workbench .subblock{margin-bottom:22px;}
+#panel-workbench .subblock-label{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted); font-weight:600; margin:0 0 10px; display:flex; align-items:center; gap:10px;}
+#panel-workbench .hl-list{display:flex; flex-direction:column; gap:8px;}
+#panel-workbench .hl-row{display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--sec-c); border-radius:7px; padding:8px 10px;}
+#panel-workbench .hl-row input{flex:1; background:transparent; border:none; color:var(--ink); font-size:0.9rem; font-family:inherit; padding:2px 4px;}
+#panel-workbench .hl-row input:focus{outline:none;}
+#panel-workbench .cc-badge{font-family:ui-monospace,monospace; font-size:0.72rem; color:var(--ok); flex:0 0 auto; min-width:44px; text-align:right;}
+#panel-workbench .cc-badge.over{color:var(--bad); font-weight:700;}
+#panel-workbench .desc-card, #panel-workbench .meta-card{background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--sec-c); border-radius:7px; padding:12px 14px; margin-bottom:8px;}
+#panel-workbench .desc-card .body, #panel-workbench .meta-card .body{font-size:0.9rem;}
+#panel-workbench .meta-card .k{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-muted); font-weight:600; display:block; margin-bottom:4px;}
+#panel-workbench .wb-kw-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px;}
+#panel-workbench .kw-group{background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--kw-c,var(--cat-kw)); border-radius:8px; padding:14px 16px;}
+#panel-workbench .kw-group h3{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-size:0.95rem; font-weight:600; margin:0 0 8px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+#panel-workbench .kw-group h3 .n{font-family:ui-monospace,monospace; font-size:0.7rem; color:var(--ink-muted); font-weight:400;}
+#panel-workbench .kw-group ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:5px;}
+#panel-workbench .kw-group li{font-family:ui-monospace,monospace; font-size:0.8125rem; padding:5px 8px; background:var(--surface-2); border-radius:5px;}
+#panel-workbench .kw-group.neg li{color:var(--bad);}
+
+/* ============ Optimization Loop Simulator (scoped) ============ */
+#panel-optimizer button{font-family:inherit;}
+#panel-optimizer .section-label{
+  font-family:ui-monospace,monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em;
+  color:var(--ink-muted); margin:34px 0 14px;
+}
+#panel-optimizer .opt-case-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
+#panel-optimizer .case-card{
+  text-align:left; background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--cat-c);
+  border-radius:8px; padding:16px 17px 15px; cursor:pointer; display:flex; flex-direction:column; gap:9px;
+  color:var(--ink); font-family:inherit;
+}
+#panel-optimizer .case-card:hover{border-color:var(--ink-muted);}
+#panel-optimizer .case-card.active{outline:2px solid var(--focus); outline-offset:-1px;}
+#panel-optimizer .case-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+#panel-optimizer .chan-chip{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; color:var(--cat-c); border:1px solid var(--cat-c); border-radius:100px; padding:2px 9px;}
+#panel-optimizer .case-title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.0625rem; margin:0; text-wrap:balance;}
+#panel-optimizer .case-client{font-size:0.8rem; color:var(--ink-muted); margin:0;}
+#panel-optimizer .case-spark{height:34px;}
+#panel-optimizer .case-delta{font-family:ui-monospace,monospace; font-size:0.82rem; font-variant-numeric:tabular-nums;}
+#panel-optimizer .case-delta .arrow{color:var(--sig-watch);}
+#panel-optimizer .case-bar{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--rule);
+  border-radius:9px; padding:14px 18px; margin:34px 0 22px;
+}
+#panel-optimizer .case-bar .lbl{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted);}
+#panel-optimizer .case-bar .nm{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.0625rem;}
+#panel-optimizer .case-bar button{background:none; border:1px solid var(--rule); color:var(--ink-muted); border-radius:100px; padding:6px 13px; font-size:0.78rem; cursor:pointer; margin-left:auto;}
+#panel-optimizer .case-bar button:hover{color:var(--ink); border-color:var(--ink-muted);}
+#panel-optimizer .account-snapshot{display:flex; gap:24px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--rule); border-radius:8px; padding:14px 18px;}
+#panel-optimizer .account-snapshot .field{display:flex; flex-direction:column; gap:2px; min-width:180px; flex:1 1 220px;}
+#panel-optimizer .account-snapshot .lbl{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted); font-weight:600;}
+#panel-optimizer .account-snapshot .val{font-size:0.86rem;}
+#panel-optimizer .stepper{display:flex; align-items:center; margin-bottom:30px;}
+#panel-optimizer .opt-stepper{display:flex; align-items:center; margin-bottom:30px;}
+#panel-optimizer .step-node{display:flex; align-items:center; gap:10px; background:none; border:none; cursor:pointer; padding:8px 4px; flex:0 0 auto;}
+#panel-optimizer .step-node .dot{
+  width:28px; height:28px; border-radius:50%; border:1.5px solid var(--rule); background:var(--surface);
+  display:flex; align-items:center; justify-content:center; font-family:ui-monospace,monospace; font-size:0.78rem;
+  font-weight:700; color:var(--ink-muted); flex:0 0 auto;
+}
+#panel-optimizer .step-node .lbl{font-size:0.86rem; font-weight:600; color:var(--ink-muted); white-space:nowrap;}
+#panel-optimizer .step-node.active .dot{border-color:var(--focus); background:var(--focus); color:#fff;}
+#panel-optimizer .step-node.active .lbl{color:var(--ink);}
+#panel-optimizer .step-node.done .dot{border-color:var(--accent); background:var(--accent); color:#fff;}
+#panel-optimizer .step-line{flex:1 1 auto; height:1.5px; background:var(--rule); margin:0 2px; min-width:16px;}
+#panel-optimizer .opt-stage-panel{display:flex; flex-direction:column; gap:20px;}
+#panel-optimizer .stage-head{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+#panel-optimizer .stage-head h2{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.375rem; margin:0;}
+#panel-optimizer .stage-head p{font-size:0.9rem; color:var(--ink-muted); margin:0;}
+#panel-optimizer .metrics-table{width:100%; border-collapse:collapse; font-size:0.88rem;}
+#panel-optimizer .metrics-table th{
+  text-align:left; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted);
+  padding:0 12px 8px; font-weight:600;
+}
+#panel-optimizer .metrics-table td{padding:10px 12px; vertical-align:middle; border-top:1px solid var(--rule);}
+#panel-optimizer .metrics-table tr:first-child td{border-top:none;}
+#panel-optimizer .metrics-table .acr{font-family:ui-monospace,monospace; font-weight:700;}
+#panel-optimizer .metrics-table .full{display:block; font-size:0.72rem; color:var(--ink-muted); font-weight:400;}
+#panel-optimizer .metrics-table .num{font-family:ui-monospace,monospace; font-variant-numeric:tabular-nums; white-space:nowrap;}
+#panel-optimizer .tbl-scroll{overflow-x:auto; border:1px solid var(--rule); border-radius:8px; padding:4px 6px; background:var(--surface);}
+#panel-optimizer .delta-chip{
+  display:inline-flex; align-items:center; gap:4px; font-family:ui-monospace,monospace; font-size:0.76rem; font-weight:700;
+  padding:2px 9px; border-radius:100px;
+}
+#panel-optimizer .delta-chip.watch{color:var(--sig-watch); background:var(--sig-watch-bg);}
+#panel-optimizer .delta-chip.strong{color:var(--sig-strong); background:var(--sig-strong-bg);}
+#panel-optimizer .delta-chip.typical{color:var(--sig-typical); background:var(--sig-typical-bg);}
+#panel-optimizer .spark-cell{width:110px;}
+#panel-optimizer .context-note{font-size:0.9rem; color:var(--ink-muted); background:var(--surface-2); border:1px dashed var(--rule); border-radius:8px; padding:12px 15px; font-style:italic;}
+#panel-optimizer .cause-list{display:flex; flex-direction:column; gap:10px;}
+#panel-optimizer .cause-card{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:15px 17px; display:flex; gap:13px;}
+#panel-optimizer .cause-card.confirmed{border-color:var(--sig-strong); border-left-width:4px;}
+#panel-optimizer .cause-card.ruled-out{opacity:0.72;}
+#panel-optimizer .cause-mark{
+  flex:0 0 auto; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem; font-weight:700; margin-top:1px;
+}
+#panel-optimizer .cause-card.confirmed .cause-mark{background:var(--sig-strong); color:#fff;}
+#panel-optimizer .cause-card.ruled-out .cause-mark{border:1.5px solid var(--rule); color:var(--ink-muted); font-size:0.72rem;}
+#panel-optimizer .cause-body{display:flex; flex-direction:column; gap:4px; min-width:0;}
+#panel-optimizer .cause-title{font-weight:700; font-size:0.9375rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+#panel-optimizer .cause-status{font-family:ui-monospace,monospace; font-size:0.64rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; padding:1px 7px; border-radius:4px;}
+#panel-optimizer .cause-status.confirmed{color:var(--sig-strong); border:1px solid var(--sig-strong);}
+#panel-optimizer .cause-status.ruled-out{color:var(--ink-muted); border:1px solid var(--rule);}
+#panel-optimizer .cause-why{font-size:0.86rem; color:var(--ink-muted); margin:0;}
+#panel-optimizer .rec-list{display:flex; flex-direction:column; gap:10px; counter-reset:rec;}
+#panel-optimizer .rec-item{display:flex; gap:13px; background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--focus); border-radius:8px; padding:14px 16px;}
+#panel-optimizer .rec-num{counter-increment:rec; font-family:ui-monospace,monospace; font-weight:700; color:var(--focus); flex:0 0 auto;}
+#panel-optimizer .rec-num::before{content:counter(rec);}
+#panel-optimizer .rec-text{font-size:0.9rem;}
+#panel-optimizer .rewrite-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+#panel-optimizer .rewrite-col{border-radius:8px; padding:16px 17px; display:flex; flex-direction:column; gap:8px;}
+#panel-optimizer .rewrite-col.before{background:var(--surface-2); border:1px dashed var(--rule);}
+#panel-optimizer .rewrite-col.after{background:var(--surface); border:1px solid var(--sig-strong); border-left-width:4px;}
+#panel-optimizer .rewrite-lbl{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--ink-muted);}
+#panel-optimizer .rewrite-col.after .rewrite-lbl{color:var(--sig-strong);}
+#panel-optimizer .rewrite-copy{font-family:ui-monospace,monospace; font-size:0.84rem; white-space:pre-wrap; line-height:1.6;}
+#panel-optimizer .rewrite-col.before .rewrite-copy{color:var(--ink-muted); text-decoration:line-through; text-decoration-color:var(--rule);}
+#panel-optimizer .rewrite-note{font-size:0.82rem; color:var(--ink-muted); margin:2px 0 0;}
+#panel-optimizer .stage-actions{display:flex; gap:10px; margin-top:6px;}
+#panel-optimizer .btn-secondary:hover{color:var(--ink); border-color:var(--ink-muted);}
+@media (max-width:640px){
+  #panel-optimizer .rewrite-grid{grid-template-columns:1fr;}
+  #panel-optimizer .opt-stepper{overflow-x:auto;}
+}
+
+/* ============ The Readout (scoped) ============ */
+@media (prefers-reduced-motion: reduce){ #panel-readout *{transition:none !important; animation:none !important;} }
+#panel-readout .layout-grid{display:grid; grid-template-columns:1.6fr 1fr; gap:28px; align-items:start; padding-top:8px;}
+@media (max-width:980px){ #panel-readout .layout-grid{grid-template-columns:1fr;} #panel-readout .output-col{position:static !important;} }
+#panel-readout .output-col{position:sticky; top:20px;}
+#panel-readout .stat b.good{color:var(--sig-strong);}
+#panel-readout .stat b.watch{color:var(--sig-watch);}
+#panel-readout .form-grid{display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:18px;}
+@media (max-width:640px){ #panel-readout .form-grid{grid-template-columns:1fr;} }
+#panel-readout .input-with-rand{display:flex; gap:6px; align-items:stretch;}
+#panel-readout .input-with-rand input{flex:1; min-width:0;}
+#panel-readout .rand-btn{
+  flex:0 0 auto; font-size:0.9375rem; line-height:1; background:var(--surface-2); color:var(--ink);
+  border:1px solid var(--rule); border-radius:7px; padding:0 10px; cursor:pointer;
+}
+#panel-readout .rand-btn:hover{border-color:var(--focus); color:var(--focus);}
+#panel-readout table.kpi-table .input-with-rand{gap:4px;}
+#panel-readout table.kpi-table .rand-btn{padding:0 7px; font-size:0.82rem; border-radius:6px;}
+#panel-readout .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+#panel-readout .chip{
+  --cat-c:var(--accent);
+  border:1px solid var(--rule); background:var(--surface-2); color:var(--ink);
+  border-radius:100px; padding:7px 14px; font-size:0.8125rem; cursor:pointer; user-select:none;
+  display:flex; align-items:center; gap:6px;
+}
+#panel-readout .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--cat-c);flex:0 0 auto;}
+#panel-readout .chip:hover{border-color:var(--ink-muted);}
+#panel-readout .chip.active{background:var(--cat-c); border-color:var(--cat-c); color:#fff;}
+#panel-readout .chip.active .dot{background:#fff;}
+#panel-readout .table-wrap{overflow-x:auto; border:1px solid var(--rule); border-radius:8px;}
+#panel-readout table.kpi-table{width:100%; border-collapse:collapse; font-size:0.84rem; min-width:720px;}
+#panel-readout table.kpi-table th{
+  text-align:left; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted);
+  padding:10px 10px; font-weight:600; background:var(--surface-2); border-bottom:1px solid var(--rule);
+}
+#panel-readout table.kpi-table td{padding:9px 10px; vertical-align:middle; border-top:1px solid var(--rule);}
+#panel-readout table.kpi-table tr:first-child td{border-top:none;}
+#panel-readout .kpiname{display:flex; align-items:baseline; gap:7px; white-space:nowrap;}
+#panel-readout .kpiname .acr{font-family:ui-monospace,monospace; font-weight:700; font-size:0.82rem;}
+#panel-readout table.kpi-table input[type="number"], #panel-readout table.kpi-table input[type="text"]{
+  width:100%; min-width:88px; background:var(--surface); border:1px solid var(--rule); color:var(--ink);
+  border-radius:6px; padding:6px 8px; font-size:0.8125rem; font-family:ui-monospace,monospace;
+}
+#panel-readout table.kpi-table input[type="text"]{font-family:inherit; min-width:140px;}
+#panel-readout .dir-pill{
+  font-family:ui-monospace,monospace; font-size:0.72rem; font-weight:700; white-space:nowrap;
+  border-radius:5px; padding:3px 7px; display:inline-block;
+}
+#panel-readout .dir-pill.good{background:color-mix(in srgb, var(--sig-strong) 16%, transparent); color:var(--sig-strong);}
+#panel-readout .dir-pill.watch{background:color-mix(in srgb, var(--sig-watch) 16%, transparent); color:var(--sig-watch);}
+#panel-readout .dir-pill.flat{background:color-mix(in srgb, var(--sig-typical) 16%, transparent); color:var(--sig-typical);}
+#panel-readout .dir-pill.pending{color:var(--ink-muted); background:none;}
+#panel-readout .rm-btn{font-family:inherit; font-size:0.72rem; color:var(--ink-muted); background:none; border:1px solid var(--rule); border-radius:6px; padding:5px 8px; cursor:pointer;}
+#panel-readout .rm-btn:hover{color:var(--sig-watch); border-color:var(--sig-watch);}
+#panel-readout .empty-row td{padding:22px 10px; text-align:center; color:var(--ink-muted); font-size:0.875rem;}
+#panel-readout textarea.rpt-output-text{
+  width:100%; min-height:420px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink);
+  border-radius:8px; padding:16px; font-family:ui-monospace,monospace; font-size:0.78rem; line-height:1.65; resize:vertical;
+  white-space:pre-wrap;
+}
+#panel-readout .rpt-copy-status{font-size:0.78rem; color:var(--focus); opacity:0; transition:opacity .2s;}
+#panel-readout .rpt-copy-status.show{opacity:1;}
+</style>
+<style>
+:root{
+  --bg:#F2EFE6;
+  --surface:#FBFAF5;
+  --surface-2:#F5F3EA;
+  --ink:#21262B;
+  --ink-muted:#585F58;
+  --rule:#C9C2AE;
+  --accent:#6B3FA0;
+  --focus:#6B3FA0;
+
+  --cat-foundation:#4A5B8C;
+  --cat-sem:#B0792E;
+  --cat-meta:#A2483E;
+  --cat-ga4:#1E7A70;
+  --cat-gtm:#55708A;
+  --cat-social:#A8447C;
+  --cat-seo:#5C7A2E;
+  --cat-gbp:#7A4570;
+  --cat-email:#2E7A52;
+  --cat-sms:#6B4A9C;
+
+  --sig-watch:#B0472E;
+  --sig-typical:#8A7A3E;
+  --sig-strong:#3F6B4F;
+
+  --sig-watch-bg:#F4E4DF;
+  --sig-strong-bg:#DCE6DE;
+  --sig-typical-bg:#F1EADB;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#14181A;
+    --surface:#191E1F;
+    --surface-2:#1D2220;
+    --ink:#ECE7DA;
+    --ink-muted:#A6A99C;
+    --rule:#3A3F3B;
+    --accent:#B08AE0;
+    --focus:#B08AE0;
+
+    --cat-foundation:#7C8FC7;
+    --cat-sem:#E0A857;
+    --cat-meta:#D97F73;
+    --cat-ga4:#4FC2B5;
+    --cat-gtm:#8FA6C2;
+    --cat-social:#DC7CB0;
+    --cat-seo:#96BE5E;
+    --cat-gbp:#B57DAB;
+    --cat-email:#5FC08C;
+    --cat-sms:#A889D6;
+
+    --sig-watch:#E0836F;
+    --sig-typical:#D0BE7A;
+    --sig-strong:#6FA37F;
+
+    --sig-watch-bg:#33241F;
+    --sig-strong-bg:#22322A;
+    --sig-typical-bg:#2E2A1E;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14181A; --surface:#191E1F; --surface-2:#1D2220; --ink:#ECE7DA; --ink-muted:#A6A99C; --rule:#3A3F3B;
+  --accent:#B08AE0; --focus:#B08AE0;
+  --cat-foundation:#7C8FC7; --cat-sem:#E0A857; --cat-meta:#D97F73; --cat-ga4:#4FC2B5;
+  --cat-gtm:#8FA6C2; --cat-social:#DC7CB0; --cat-seo:#96BE5E; --cat-gbp:#B57DAB;
+  --cat-email:#5FC08C; --cat-sms:#A889D6;
+  --sig-watch:#E0836F; --sig-typical:#D0BE7A; --sig-strong:#6FA37F;
+  --sig-watch-bg:#33241F; --sig-strong-bg:#22322A; --sig-typical-bg:#2E2A1E;
+}
+:root[data-theme="light"]{
+  --bg:#F2EFE6; --surface:#FBFAF5; --surface-2:#F5F3EA; --ink:#21262B; --ink-muted:#585F58; --rule:#C9C2AE;
+  --accent:#6B3FA0; --focus:#6B3FA0;
+  --cat-foundation:#4A5B8C; --cat-sem:#B0792E; --cat-meta:#A2483E; --cat-ga4:#1E7A70;
+  --cat-gtm:#55708A; --cat-social:#A8447C; --cat-seo:#5C7A2E; --cat-gbp:#7A4570;
+  --cat-email:#2E7A52; --cat-sms:#6B4A9C;
+  --sig-watch:#B0472E; --sig-typical:#8A7A3E; --sig-strong:#3F6B4F;
+  --sig-watch-bg:#F4E4DF; --sig-strong-bg:#DCE6DE; --sig-typical-bg:#F1EADB;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--focus);color:var(--surface);}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+
+.font-display{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;}
+.font-mono{font-family:ui-monospace,'SF Mono','Cascadia Mono','Roboto Mono',Menlo,monospace; font-variant-numeric:tabular-nums;}
+
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px 96px;}
+
+/* Masthead */
+.masthead{padding:52px 24px 28px; border-bottom:1px solid var(--rule); margin-bottom:0;}
+.masthead-inner{max-width:1160px;margin:0 auto;}
+.eyebrow{
+  font-family:ui-monospace,'SF Mono',monospace; font-size:0.72rem; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--ink-muted); margin:0 0 14px;
+}
+h1.title{
+  font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  font-weight:600; font-size:clamp(2rem,4vw,2.75rem); line-height:1.08;
+  margin:0 0 14px; text-wrap:balance; max-width:20ch;
+}
+.dek{font-size:1.0625rem; color:var(--ink-muted); max-width:68ch; margin:0 0 20px;}
+.stat-row{display:flex; gap:28px; flex-wrap:wrap; margin-top:4px;}
+.stat{display:flex; flex-direction:column; gap:2px;}
+.stat b{font-family:ui-monospace,monospace; font-size:1.5rem; font-variant-numeric:tabular-nums;}
+.stat span{font-size:0.75rem; color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.08em;}
+
+/* Tab nav */
+.tabnav{
+  position:sticky; top:0; z-index:10;
+  background:var(--bg); border-bottom:1px solid var(--rule);
+}
+.tabnav-inner{
+  max-width:1160px; margin:0 auto; padding:0 24px;
+  display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+}
+.tab-btn{
+  font-family:inherit; font-size:0.875rem; font-weight:600; color:var(--ink-muted);
+  background:none; border:none; border-bottom:3px solid transparent;
+  padding:16px 14px 13px; cursor:pointer; white-space:nowrap;
+}
+.tab-btn .n{font-family:ui-monospace,monospace; font-weight:400; font-size:0.72rem; opacity:0.7;}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{color:var(--ink); border-bottom-color:var(--focus);}
+.sel-indicator{
+  margin-left:auto; display:flex; align-items:center; gap:10px;
+  font-size:0.8125rem; color:var(--ink-muted); padding:8px 0;
+}
+.sel-indicator b{font-family:ui-monospace,monospace; color:var(--ink); font-size:0.9375rem;}
+.sel-indicator button{
+  font-family:inherit; font-size:0.8125rem; font-weight:600; color:#fff;
+  background:var(--accent); border:none; border-radius:100px; padding:6px 14px; cursor:pointer;
+}
+.sel-indicator.empty{display:none;}
+
+/* Controls (search/filter bar shared by Index + Benchmarks) */
+.controls{padding:18px 24px 18px; border-bottom:1px solid var(--rule);}
+.controls-inner{max-width:1160px;margin:0 auto;}
+.search-row{display:flex; gap:12px; align-items:center; margin-bottom:14px;}
+.search-row input[type="search"]{
+  flex:1; background:var(--surface); border:1px solid var(--rule); color:var(--ink);
+  border-radius:7px; padding:10px 14px; font-size:0.9375rem; font-family:inherit;
+}
+.search-row input[type="search"]:focus{outline:2px solid var(--focus); outline-offset:1px;}
+.count-badge{font-family:ui-monospace,monospace; font-size:0.8125rem; color:var(--ink-muted); white-space:nowrap;}
+.chip-groups{display:flex; flex-direction:column; gap:10px;}
+.chip-group{display:flex; flex-wrap:wrap; gap:7px; align-items:center;}
+.chip-group-label{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-muted); width:88px; flex:0 0 auto;}
+.chip{
+  border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+  border-radius:100px; padding:5px 12px; font-size:0.78rem; cursor:pointer;
+  transition:background .12s, color .12s, border-color .12s; user-select:none;
+}
+.chip:hover{border-color:var(--ink-muted);}
+.chip.active{background:var(--cat-c, var(--accent)); border-color:var(--cat-c, var(--accent)); color:#fff;}
+.chip.tagchip.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+.clear-btn{font-size:0.78rem; color:var(--focus); background:none; border:none; cursor:pointer; padding:5px 4px; text-decoration:underline; text-underline-offset:2px;}
+
+/* Sections / grid */
+.section{margin-bottom:40px;}
+.section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; padding-bottom:10px; border-bottom:2px solid var(--sec-c);}
+.section-head .dot{width:11px;height:11px;border-radius:50%;background:var(--sec-c);flex:0 0 auto;}
+.section-head h2, .section-head h3{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; margin:0;}
+.section-head h2{font-size:1.375rem;}
+.section-head h3{font-size:1.1875rem;}
+.section-head .sec-count{font-family:ui-monospace,monospace; font-size:0.78rem; color:var(--ink-muted); margin-left:auto;}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px;}
+
+/* Card */
+.card{
+  background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--card-c);
+  border-radius:8px; padding:18px 18px 16px; display:flex; flex-direction:column; gap:10px;
+}
+.card-head{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+.acronym{font-family:ui-monospace,'SF Mono',monospace; font-size:1.05rem; font-weight:700; color:var(--card-c); letter-spacing:0.01em;}
+.kpi-name{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-size:1.0625rem; font-weight:600; margin:2px 0 0; text-wrap:balance;}
+.definition{font-size:0.875rem; color:var(--ink); margin:0;}
+.example{background:var(--surface-2); border:1px solid var(--rule); border-radius:6px; padding:8px 11px; font-size:0.8125rem;}
+.example b{font-family:ui-monospace,monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted); display:block; margin-bottom:3px; font-weight:600;}
+.example span{font-family:ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+.best-when{font-size:0.8125rem; color:var(--ink-muted); margin:0;}
+.best-when b{color:var(--ink); font-weight:600;}
+.tagrow{display:flex; flex-wrap:wrap; gap:5px; margin-top:2px;}
+.tag{font-size:0.68rem; padding:3px 8px; border-radius:100px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.04em;}
+
+.addbtn{
+  font-family:ui-monospace,monospace; font-size:0.68rem; font-weight:700; letter-spacing:0.03em;
+  border:1px solid var(--card-c); color:var(--card-c); background:none; border-radius:100px;
+  padding:4px 10px; cursor:pointer; white-space:nowrap; flex:0 0 auto; text-transform:uppercase;
+}
+.addbtn.added{background:var(--card-c); color:#fff;}
+
+/* Flip card (Index ↔ Benchmarks) */
+.card-flip{ perspective:1600px; }
+.card-flip-inner{
+  position:relative; display:grid; height:100%;
+  transition:transform .5s cubic-bezier(.4,.2,.2,1); transform-style:preserve-3d;
+}
+.card-flip.flipped .card-flip-inner{ transform:rotateY(180deg); }
+.card-face{
+  grid-area:1/1; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+}
+.card-face.back{ transform:rotateY(180deg); }
+.card-bench-btn{
+  align-self:flex-start; margin-top:auto;
+  font-family:ui-monospace,monospace; font-size:0.68rem; font-weight:700; letter-spacing:0.03em;
+  border:1px solid var(--card-c); color:var(--card-c); background:none; border-radius:100px;
+  padding:5px 11px; cursor:pointer; text-transform:uppercase;
+}
+.card-bench-btn:hover{ background:var(--card-c); color:#fff; }
+@media (prefers-reduced-motion: reduce){ .card-flip-inner{ transition:none; } }
+
+/* Benchmark strip */
+.bench{border-top:1px dashed var(--rule); padding-top:10px; margin-top:2px;}
+.bench-label{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted); margin:0 0 6px; font-weight:600;}
+.bench-bands{display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;}
+.band{border-left:3px solid var(--band-c); background:var(--surface-2); border-radius:4px; padding:6px 8px;}
+.band .band-tag{display:block; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--band-c); font-weight:700; margin-bottom:2px;}
+.band .band-val{display:block; font-family:ui-monospace,monospace; font-size:0.76rem; line-height:1.3;}
+.bench-note{font-size:0.78rem; color:var(--ink-muted); font-style:italic; background:var(--surface-2); border:1px dashed var(--rule); border-radius:6px; padding:8px 10px;}
+.bench-disclaimer{
+  max-width:1160px; margin:0 auto 28px; padding:12px 16px; background:var(--surface-2);
+  border:1px solid var(--rule); border-radius:8px; font-size:0.8125rem; color:var(--ink-muted);
+}
+.bench-disclaimer b{color:var(--ink);}
+
+/* Fit form */
+.panel{background:var(--surface); border:1px solid var(--rule); border-radius:10px; padding:26px 26px 24px; margin-bottom:32px;}
+.panel h2{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-size:1.1875rem; font-weight:600; margin:0 0 4px;}
+.panel .sub{font-size:0.8125rem; color:var(--ink-muted); margin:0 0 20px;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:22px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field.full{grid-column:1 / -1;}
+.field label{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted); font-weight:600;}
+.field input[type="text"], .field select{
+  background:var(--surface-2); border:1px solid var(--rule); color:var(--ink);
+  border-radius:7px; padding:10px 12px; font-size:0.9375rem; font-family:inherit;
+}
+.field input[type="text"]:focus, .field select:focus{outline:2px solid var(--focus); outline-offset:1px;}
+.check-grid{display:flex; flex-wrap:wrap; gap:8px;}
+.check-pill{display:flex; align-items:center; gap:7px; border:1px solid var(--rule); background:var(--surface-2); border-radius:100px; padding:6px 13px 6px 10px; font-size:0.84rem; cursor:pointer; user-select:none;}
+.check-pill input{accent-color:var(--accent); width:14px; height:14px;}
+.chan-chip{border:1px solid var(--rule); background:var(--surface-2); color:var(--ink); border-radius:100px; padding:7px 14px; font-size:0.84rem; cursor:pointer; user-select:none; transition:background .12s,color .12s,border-color .12s;}
+.chan-chip.active{background:var(--chip-c,var(--accent)); border-color:var(--chip-c,var(--accent)); color:#fff;}
+.form-actions{display:flex; gap:12px; align-items:center; border-top:1px solid var(--rule); margin-top:4px; padding-top:18px;}
+.btn-primary{background:var(--accent); color:#fff; border:none; border-radius:7px; padding:11px 20px; font-size:0.9375rem; font-weight:600; cursor:pointer; font-family:inherit;}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-secondary{background:none; border:1px solid var(--rule); color:var(--ink-muted); border-radius:7px; padding:11px 16px; font-size:0.875rem; cursor:pointer; font-family:inherit;}
+.form-hint{font-size:0.78rem; color:var(--ink-muted); margin-left:auto;}
+.kcard{background:var(--surface); border:1px solid var(--rule); border-left:4px solid var(--card-c); border-radius:8px; padding:14px 15px; display:flex; gap:11px; align-items:flex-start;}
+.kcard.unmatched{opacity:0.55;}
+.kcard.unmatched:hover{opacity:0.9;}
+.kcard .body{display:flex; flex-direction:column; gap:5px; min-width:0; flex:1;}
+.kcard .top{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+.kcard .acr{font-family:ui-monospace,monospace; font-weight:700; font-size:0.9rem; color:var(--card-c);}
+.kcard .nm{font-size:0.875rem; font-weight:600;}
+.kcard .why{font-size:0.78rem; color:var(--ink-muted); margin:0;}
+.matched-badge{font-size:0.64rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; color:var(--card-c); border:1px solid var(--card-c); border-radius:4px; padding:1px 6px;}
+.kgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px;}
+.summary-strip{display:flex; align-items:center; gap:16px; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--rule); border-radius:9px; padding:16px 20px; margin-bottom:28px;}
+.summary-strip .big{font-family:ui-monospace,monospace; font-size:1.4rem; font-weight:700;}
+.summary-strip .meta{font-size:0.8125rem; color:var(--ink-muted); line-height:1.6;}
+.output-panel{margin-top:38px;}
+.output-panel h2{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-size:1.1875rem; font-weight:600; margin:0 0 4px;}
+.output-panel .sub{font-size:0.8125rem; color:var(--ink-muted); margin:0 0 14px;}
+textarea.output-text{width:100%; min-height:260px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink); border-radius:8px; padding:16px; font-family:ui-monospace,monospace; font-size:0.8125rem; line-height:1.6; resize:vertical;}
+.output-actions{display:flex; gap:10px; align-items:center; margin-top:12px;}
+.copy-status{font-size:0.78rem; color:var(--focus); opacity:0; transition:opacity .2s;}
+.copy-status.show{opacity:1;}
+.empty-note{padding:20px; background:var(--surface-2); border:1px dashed var(--rule); border-radius:8px; color:var(--ink-muted); font-size:0.875rem;}
+.empty-state{padding:60px 20px; text-align:center; color:var(--ink-muted); font-size:0.9375rem;}
+
+/* Diagnostics */
+.diag-search{position:relative;}
+.diag-results-list{
+  position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:6;
+  background:var(--surface); border:1px solid var(--rule); border-radius:8px;
+  max-height:260px; overflow-y:auto; box-shadow:0 8px 24px rgba(0,0,0,0.12);
+}
+.diag-results-list button{
+  display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer;
+  padding:9px 14px; font-family:inherit; font-size:0.875rem; color:var(--ink); border-bottom:1px solid var(--rule);
+}
+.diag-results-list button:last-child{border-bottom:none;}
+.diag-results-list button:hover{background:var(--surface-2);}
+.diag-results-list .acr{font-family:ui-monospace,monospace; font-weight:700; margin-right:8px;}
+.dir-toggle{display:flex; gap:10px; margin:20px 0;}
+.dir-btn{
+  flex:1; text-align:center; font-family:inherit; font-size:0.9375rem; font-weight:600;
+  border:1.5px solid var(--rule); background:var(--surface); color:var(--ink);
+  border-radius:8px; padding:14px; cursor:pointer;
+}
+.dir-btn.active{border-color:var(--focus); background:var(--surface-2); color:var(--focus);}
+.diag-current{
+  display:flex; align-items:center; gap:10px; padding:14px 18px; background:var(--surface-2);
+  border:1px solid var(--rule); border-radius:8px; margin-bottom:4px;
+}
+.diag-current .acr{font-family:ui-monospace,monospace; font-weight:700; font-size:1.05rem; color:var(--card-c);}
+.diag-current .nm{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1rem;}
+.diag-list{display:flex; flex-direction:column; gap:10px; margin-top:20px;}
+.diag-item{
+  display:flex; align-items:flex-start; gap:12px; background:var(--surface); border:1px solid var(--rule);
+  border-left:4px solid var(--card-c); border-radius:8px; padding:13px 15px;
+}
+.diag-item .body{flex:1; display:flex; flex-direction:column; gap:3px;}
+.diag-item .head{display:flex; align-items:baseline; gap:8px;}
+.diag-item .acr{font-family:ui-monospace,monospace; font-weight:700; color:var(--card-c);}
+.diag-item .nm{font-size:0.9375rem; font-weight:600;}
+.diag-item .reason{font-size:0.8125rem; color:var(--ink-muted); margin:0;}
+.diag-fallback-tag{font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-muted); background:var(--surface-2); border:1px solid var(--rule); border-radius:4px; padding:2px 6px; margin-left:6px;}
+
+/* Plan */
+.plan-header-fields{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px;}
+.plan-section-toolbar{
+  display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:var(--surface-2);
+  border:1px solid var(--rule); border-radius:7px; padding:10px 12px; margin-bottom:12px;
+}
+.plan-section-toolbar span{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted); font-weight:600; margin-right:4px;}
+.plan-section-toolbar input, .plan-section-toolbar select{
+  background:var(--surface); border:1px solid var(--rule); color:var(--ink); border-radius:6px;
+  padding:6px 9px; font-size:0.8125rem; font-family:inherit; width:120px;
+}
+.plan-section-toolbar button{
+  font-family:inherit; font-size:0.78rem; font-weight:600; color:#fff; background:var(--accent);
+  border:none; border-radius:6px; padding:7px 12px; cursor:pointer;
+}
+.plan-table{width:100%; border-collapse:collapse; font-size:0.84rem;}
+.plan-table th{text-align:left; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted); padding:0 8px 8px; font-weight:600;}
+.plan-table td{padding:6px 8px; vertical-align:middle; border-top:1px solid var(--rule);}
+.plan-table tr:first-child td{border-top:none;}
+.plan-table .kpiname{white-space:nowrap;}
+.plan-table .kpiname .acr{font-family:ui-monospace,monospace; font-weight:700; color:var(--card-c); margin-right:6px;}
+.plan-table input, .plan-table select{
+  width:100%; background:var(--surface); border:1px solid var(--rule); color:var(--ink);
+  border-radius:6px; padding:6px 8px; font-size:0.8125rem; font-family:inherit;
+}
+.plan-scroll{overflow-x:auto; border:1px solid var(--rule); border-radius:8px; padding:2px 4px;}
+
+footer.note{max-width:1160px; margin:40px auto 0; padding:20px 24px 0; border-top:1px solid var(--rule); color:var(--ink-muted); font-size:0.78rem;}
+
+@media (max-width:640px){
+  .chip-group-label{width:100%;}
+  .stat-row{gap:20px;}
+  .form-grid{grid-template-columns:1fr;}
+  .plan-header-fields{grid-template-columns:1fr;}
+  .bench-bands{grid-template-columns:1fr;}
+}
+</style>
+<style>
+.mc-topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:16px 24px; border-bottom:1px solid var(--rule); background:var(--bg);
+}
+.mc-topbar a{ color:var(--ink); text-decoration:none; font-size:0.875rem; }
+.mc-topbar a:hover{ color:var(--accent); }
+.mc-topbar .mc-brand{ font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.05rem; }
+.mc-footer{
+  padding:28px 24px; border-top:1px solid var(--rule); text-align:center;
+  font-size:0.8rem; color:var(--ink-muted);
+}
+.mc-footer a{ color:var(--ink-muted); text-decoration:underline; text-underline-offset:2px; }
+.mc-footer a:hover{ color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="mc-topbar">
+  <a class="mc-brand" href="../index.html">Andrew Alicea</a>
+  <a href="../index.html#tools">&#8592; Back to tools</a>
+</div>
+<div class="masthead">
+  <div class="masthead-inner">
+    <p class="eyebrow">Reference · Fit · Benchmarks · Diagnostics · Plan — one shared set of 75 KPIs</p>
+    <h1 class="title">The Measurement Console</h1>
+    <p class="dek">Five instruments spanning a single measurement practice: look up any KPI, match a starter set to a new engagement, check whether a number is actually good, trace a metric's movement back to its likely cause, then turn the selected set into a client-ready measurement plan. Selections carry across every tab.</p>
+    <div class="stat-row">
+      <div class="stat"><b>75</b><span>KPIs indexed</span></div>
+      <div class="stat"><b>10</b><span>Channels covered</span></div>
+      <div class="stat"><b>5</b><span>Instruments</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="tabnav">
+  <div class="tabnav-inner">
+    <button class="tab-btn active" data-tab="index">Index</button>
+    <button class="tab-btn" data-tab="fit">Fit</button>
+    <button class="tab-btn" data-tab="diag">Diagnostics</button>
+    <button class="tab-btn" data-tab="plan">Plan</button>
+    <button class="tab-btn" data-tab="workbench">Workbench</button>
+    <button class="tab-btn" data-tab="optimizer">Optimizer</button>
+    <button class="tab-btn" data-tab="readout">Readout</button>
+    <div class="sel-indicator empty" id="sel-indicator">
+      <span><b id="sel-count-mini">0</b> selected</span>
+      <button id="goto-plan-btn">Go to Plan →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INDEX PANEL ============ -->
+<div class="panel-view" id="panel-index">
+  <div class="bench-disclaimer" style="margin:24px auto 0; max-width:1160px;">
+    <b>Benchmarks are directional ranges, not client-specific targets.</b> Flip any card below to see them — they reflect general, widely-observed industry norms compiled from common practice, not a sourced study. Always validate against the client's own trailing baseline before setting them as targets; a healthy number for one business can be a red flag for another.
+  </div>
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="search-row">
+        <input type="search" id="index-search" placeholder="Search by name, acronym, or definition — e.g. &quot;attribution&quot;, &quot;ROAS&quot;, &quot;review&quot;…" />
+        <span class="count-badge" id="index-count-badge">75 of 75</span>
+      </div>
+      <div class="chip-groups">
+        <div class="chip-group" id="index-cat-group"><span class="chip-group-label">Channel</span></div>
+        <div class="chip-group" id="index-tag-group"><span class="chip-group-label">Best for</span></div>
+        <div class="chip-group"><button class="clear-btn" id="index-clear">Clear all filters</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap"><div id="index-results"></div></div>
+</div>
+
+<!-- ============ FIT PANEL ============ -->
+<div class="panel-view" id="panel-fit" style="display:none;">
+  <div class="wrap" style="padding-top:28px;">
+    <div class="panel">
+      <h2>1. Describe the engagement</h2>
+      <p class="sub">This drives which KPIs get pre-selected — everything stays editable afterward, and selections here feed straight into Plan.</p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="client-name">Client / engagement name</label>
+          <input type="text" id="client-name" placeholder="e.g. Riverside Dental" />
+        </div>
+        <div class="field">
+          <label for="industry">Industry</label>
+          <select id="industry">
+            <option value="">— Select —</option>
+            <option value="ecommerce">Ecommerce / DTC Retail</option>
+            <option value="b2b">B2B / SaaS</option>
+            <option value="local">Local Service Business</option>
+            <option value="content">Content / Media / Publisher</option>
+            <option value="">Other / Mixed (no bias)</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="goal">Primary business goal</label>
+          <select id="goal">
+            <option value="">— Select —</option>
+            <option value="efficiency,conversion">Grow revenue / sales efficiently</option>
+            <option value="leadgen,conversion">Generate leads / pipeline</option>
+            <option value="awareness,brand">Build brand awareness</option>
+            <option value="retention">Improve retention / loyalty</option>
+            <option value="dataquality">Strengthen measurement / data foundation</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Funnel stage focus (select all that apply)</label>
+          <div class="check-grid" id="stage-group">
+            <label class="check-pill"><input type="checkbox" value="awareness"> Awareness</label>
+            <label class="check-pill"><input type="checkbox" value="consideration"> Consideration</label>
+            <label class="check-pill"><input type="checkbox" value="conversion"> Conversion</label>
+            <label class="check-pill"><input type="checkbox" value="retention"> Retention</label>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Channels currently live</label>
+          <div class="check-grid" id="channel-group"></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" id="build-btn">Build recommended KPI set</button>
+        <button class="btn-secondary" id="fit-reset-btn">Reset</button>
+        <span class="form-hint">Foundation KPIs are included by default — uncheck below to drop them.</span>
+      </div>
+    </div>
+    <div id="fit-results" style="display:none;">
+      <div class="summary-strip">
+        <span class="big font-mono" id="fit-sel-count">0</span>
+        <span class="meta" id="fit-sel-meta">Selected KPIs will appear here.</span>
+      </div>
+      <div id="fit-sections"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DIAGNOSTICS PANEL ============ -->
+<div class="panel-view" id="panel-diag" style="display:none;">
+  <div class="wrap" style="padding-top:28px; max-width:820px;">
+    <p class="dek" style="margin-bottom:24px;">Pick the KPI that moved, say which way it moved, and see what to check next — grounded in real funnel relationships, not just shared category.</p>
+    <div class="diag-search">
+      <input type="search" id="diag-search" placeholder="Search for the KPI that moved — e.g. &quot;CPA&quot;, &quot;open rate&quot;, &quot;local pack&quot;…" style="width:100%; background:var(--surface); border:1px solid var(--rule); color:var(--ink); border-radius:7px; padding:11px 14px; font-size:0.9375rem; font-family:inherit;" />
+      <div class="diag-results-list" id="diag-search-results" style="display:none;"></div>
+    </div>
+    <div id="diag-body" style="margin-top:20px;"></div>
+  </div>
+</div>
+
+<!-- ============ PLAN PANEL ============ -->
+<div class="panel-view" id="panel-plan" style="display:none;">
+  <div class="wrap" style="padding-top:28px;">
+    <div id="plan-empty" class="empty-note">
+      No KPIs selected yet. Add KPIs from the Index, Benchmarks, or Diagnostics tabs (use the <b>+ Plan</b> button on any card), or build a starter set on the Fit tab — they'll all land here.
+    </div>
+    <div id="plan-body" style="display:none;">
+      <div class="panel">
+        <h2>Engagement details</h2>
+        <p class="sub">Pulled from the Fit tab automatically — edit there, or override the client name here.</p>
+        <div class="plan-header-fields">
+          <div class="field"><label>Client</label><input type="text" id="plan-client-echo" readonly /></div>
+          <div class="field"><label>Industry</label><input type="text" id="plan-industry-echo" readonly /></div>
+          <div class="field"><label>Goal</label><input type="text" id="plan-goal-echo" readonly /></div>
+        </div>
+      </div>
+      <div id="plan-sections"></div>
+      <div class="output-panel">
+        <h2>Copy for the measurement plan</h2>
+        <p class="sub">Updates live as you edit cadence, source, owner, or target below.</p>
+        <textarea class="output-text" id="plan-output-text" readonly></textarea>
+        <div class="output-actions">
+          <button class="btn-primary" id="plan-copy-btn">Copy to clipboard</button>
+          <span class="copy-status" id="plan-copy-status">Copied.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-view" id="panel-workbench" style="display:none;">
+
+
+<div class="wrap" style="padding-top:28px;">
+  <p class="eyebrow">Ad Copy · Keyword Research — One Brief, Three Deliverables</p>
+  <h2 class="subpanel-title">Campaign Build Workbench</h2>
+  <p class="dek">Describe the client and the offer once. Get a Google Ads RSA set, Meta ad copy, and a grouped keyword list back — each editable in place before it goes into a build.</p>
+  <div class="stat-row" style="margin-bottom:8px;">
+    <div class="stat"><b id="wb-stat-hl">—</b><span>RSA headlines</span></div>
+    <div class="stat"><b id="wb-stat-desc">—</b><span>RSA descriptions</span></div>
+    <div class="stat"><b id="wb-stat-kw">—</b><span>Keywords grouped</span></div>
+  </div>
+  <div class="panel">
+    <h2>1. Describe the brief</h2>
+    <p class="sub">Every output below is generated from these fields — edit any of them and rebuild.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="wb-biz">Business / product name</label>
+        <div class="field-row">
+          <input type="text" id="wb-biz" placeholder="e.g. Riverside Dental" />
+          <button type="button" class="dice-btn" data-target="wb-biz" title="Randomize" aria-label="Randomize business name">🎲</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wb-industry">Industry</label>
+        <select id="wb-industry">
+          <option value="">— Select —</option>
+          <option value="ecommerce">Ecommerce / DTC Retail</option>
+          <option value="b2b">B2B / SaaS</option>
+          <option value="local">Local Service Business</option>
+          <option value="content">Content / Media</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="wb-desc">Product or service, in a few words</label>
+        <div class="field-row">
+          <input type="text" id="wb-desc" placeholder="e.g. same-day teeth whitening" />
+          <button type="button" class="dice-btn" data-target="wb-desc" title="Randomize" aria-label="Randomize product/service">🎲</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wb-audience">Target audience, one line</label>
+        <div class="field-row">
+          <input type="text" id="wb-audience" placeholder="e.g. busy professionals in Miami" />
+          <button type="button" class="dice-btn" data-target="wb-audience" title="Randomize" aria-label="Randomize target audience">🎲</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wb-benefit">Primary benefit / differentiator</label>
+        <div class="field-row">
+          <input type="text" id="wb-benefit" placeholder="e.g. results in one visit" />
+          <button type="button" class="dice-btn" data-target="wb-benefit" title="Randomize" aria-label="Randomize benefit">🎲</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wb-proof">Proof point (optional)</label>
+        <div class="field-row">
+          <input type="text" id="wb-proof" placeholder="e.g. 4.9★ rating, 10 yrs in business" />
+          <button type="button" class="dice-btn" data-target="wb-proof" title="Randomize" aria-label="Randomize proof point">🎲</button>
+        </div>
+        <span class="hint">Only used if you give a real one — nothing is fabricated. Randomizer fills a clearly-marked sample to replace.</span>
+      </div>
+      <div class="field">
+        <label for="wb-tone">Tone</label>
+        <select id="wb-tone">
+          <option value="professional">Professional</option>
+          <option value="casual">Casual</option>
+          <option value="urgent">Urgent</option>
+          <option value="premium">Premium</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="wb-goal">Primary CTA goal</label>
+        <select id="wb-goal">
+          <option value="buy">Buy now</option>
+          <option value="quote">Get a quote</option>
+          <option value="book">Book a call</option>
+          <option value="signup">Sign up</option>
+          <option value="learn">Learn more</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="wb-seeds">Seed keyword(s), comma-separated</label>
+        <div class="field-row">
+          <input type="text" id="wb-seeds" placeholder="e.g. teeth whitening, cosmetic dentist" />
+          <button type="button" class="dice-btn" data-target="wb-seeds" title="Randomize" aria-label="Randomize seed keywords">🎲</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-primary" id="wb-build-btn">Build campaign assets</button>
+      <button class="btn-secondary" id="wb-reset-btn">Reset</button>
+      <span class="form-hint">Nothing is sent anywhere — all generated in your browser.</span>
+    </div>
+  </div>
+
+  <div id="wb-empty-note" class="output-empty">Fill in the brief above and click <b>Build campaign assets</b> to generate RSA copy, Meta copy, and keyword groups.</div>
+
+  <div id="wb-results" style="display:none;">
+    <div class="section" style="--sec-c:var(--cat-google);">
+      <div class="section-head"><span class="dot"></span><h2>Google Ads — Responsive Search Ad</h2><span class="sec-count" id="wb-google-count"></span></div>
+      <div class="subblock">
+        <p class="subblock-label">Headlines <span class="cc-badge font-mono" style="color:var(--ink-muted);">max 50 chars</span> <button class="btn-mini" id="wb-copy-headlines" style="--sec-c:var(--cat-google);">Copy</button><span class="copy-status" id="wb-cs-headlines">Copied.</span></p>
+        <div class="hl-list" id="wb-headline-list"></div>
+      </div>
+      <div class="subblock">
+        <p class="subblock-label">Descriptions <span class="cc-badge font-mono" style="color:var(--ink-muted);">max 90 chars</span> <button class="btn-mini" id="wb-copy-descs" style="--sec-c:var(--cat-google);">Copy</button><span class="copy-status" id="wb-cs-descs">Copied.</span></p>
+        <div id="wb-desc-list"></div>
+      </div>
+    </div>
+
+    <div class="section" style="--sec-c:var(--cat-meta);">
+      <div class="section-head"><span class="dot"></span><h2>Meta Ads — Facebook / Instagram</h2><span class="sec-count" id="wb-meta-count"></span></div>
+      <div id="wb-meta-block"></div>
+      <button class="btn-mini" id="wb-copy-meta" style="--sec-c:var(--cat-meta); margin-top:6px;">Copy Meta copy</button><span class="copy-status" id="wb-cs-meta">Copied.</span>
+    </div>
+
+    <div class="section" style="--sec-c:var(--cat-kw);">
+      <div class="section-head"><span class="dot"></span><h2>Keyword Research</h2><span class="sec-count" id="wb-kw-count"></span></div>
+      <div class="wb-kw-grid" id="wb-kw-grid"></div>
+      <button class="btn-mini" id="wb-copy-kw" style="--sec-c:var(--cat-kw); margin-top:14px;">Copy keyword list</button><span class="copy-status" id="wb-cs-kw">Copied.</span>
+    </div>
+
+    <div class="output-panel">
+      <button class="btn-primary" id="wb-copy-all">Copy everything to clipboard</button>
+      <span class="copy-status" id="wb-cs-all">Copied.</span>
+    </div>
+  </div>
+</div>
+
+<footer class="note">
+  Copy formulas and match-type expansion are template-generated from your brief — always read them back before uploading to a live account, especially any line built from an optional proof point.
+</footer>
+</div>
+
+<div class="panel-view" id="panel-optimizer" style="display:none;">
+
+
+<div class="wrap" style="padding-top:28px;">
+  <p class="eyebrow">Case Files · Data → Diagnose → Recommend → Rewrite</p>
+  <h2 class="subpanel-title">The Optimization Loop</h2>
+  <p class="dek">Five real account problems, presented the way they actually show up: a metric moved, and it's not yet clear why. Pick a case, read the data, work through which cause the evidence actually supports, then see the fix written out as it would ship.</p>
+  <div class="stat-row" style="margin-bottom:8px;">
+    <div class="stat"><b>5</b><span>Cases</span></div>
+    <div class="stat"><b>3</b><span>Channels</span></div>
+    <div class="stat"><b>4</b><span>Steps per loop</span></div>
+  </div>
+  <p class="section-label" style="margin-top:34px;">Open a case</p>
+  <div class="opt-case-grid" id="opt-case-grid"></div>
+
+  <div id="opt-case-workspace" style="display:none;">
+    <div class="case-bar">
+      <div>
+        <span class="lbl">Active case</span><br/>
+        <span class="nm" id="opt-bar-case-title"></span>
+      </div>
+      <button id="opt-change-case-btn">Change case</button>
+    </div>
+
+    <div class="opt-stepper" id="opt-stepper"></div>
+    <div class="opt-stage-panel" id="opt-stage-panel"></div>
+  </div>
+</div>
+
+<footer class="note">
+  All five cases are constructed scenarios built to exercise real diagnostic logic — metrics, causes, and fixes reflect how each failure mode actually presents in Google Ads, Meta Ads, and Google Business Profile accounts.
+</footer>
+</div>
+
+<div class="panel-view" id="panel-readout" style="display:none;">
+
+
+<div class="wrap" style="padding-top:28px;">
+  <p class="eyebrow">Client Reporting · Narrative Draft Tool</p>
+  <h2 class="subpanel-title">The Readout</h2>
+  <p class="dek">Turn a metrics table into the story you'd actually tell in the room — wins framed as wins, watch-outs framed honestly, and next steps that follow from the data instead of generic advice.</p>
+  <div class="stat-row" style="margin-bottom:8px;">
+    <div class="stat"><b class="font-mono" id="rpt-stat-tracked">0</b><span>KPIs tracked</span></div>
+    <div class="stat"><b class="font-mono good" id="rpt-stat-wins">0</b><span>Wins</span></div>
+    <div class="stat"><b class="font-mono watch" id="rpt-stat-watch">0</b><span>Watch-outs</span></div>
+  </div>
+  <div class="layout-grid">
+    <div class="col-left">
+
+      <div class="panel">
+        <h2>1. Engagement details</h2>
+        <p class="sub">These frame the executive summary at the top of the draft.</p>
+        <div class="form-grid">
+          <div class="field">
+            <label for="rpt-client-name">Client / engagement</label>
+            <div class="input-with-rand">
+              <input type="text" id="rpt-client-name" placeholder="e.g. Riverside Dental" />
+              <button type="button" class="rand-btn" id="rpt-rand-client-name" title="Randomize" aria-label="Randomize client name">🎲</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rpt-report-period">Reporting period</label>
+            <div class="input-with-rand">
+              <input type="text" id="rpt-report-period" placeholder="e.g. March 2026" />
+              <button type="button" class="rand-btn" id="rpt-rand-report-period" title="Randomize" aria-label="Randomize reporting period">🎲</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rpt-period-framing">How would you frame the period?</label>
+            <select id="rpt-period-framing">
+              <option value="steady growth">Steady growth</option>
+              <option value="recovery month">Recovery month</option>
+              <option value="scaling test">Scaling test</option>
+              <option value="mixed signals">Mixed signals</option>
+              <option value="early days">Early days — still baselining</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>2. Select the KPIs you're reporting on</h2>
+        <p class="sub">Click to add a row below. Click again to remove it.</p>
+        <div class="chip-row" id="rpt-kpi-chips"></div>
+      </div>
+
+      <div class="panel">
+        <h2>3. Enter this period's numbers</h2>
+        <p class="sub">Direction (good / watch / flat) is inferred per metric — a falling CPA is a win, a falling ROAS isn't.</p>
+        <div class="table-wrap">
+          <table class="kpi-table">
+            <thead>
+              <tr><th>Metric</th><th>This period</th><th>Prior period</th><th>Change</th><th>Context note (optional)</th><th></th></tr>
+            </thead>
+            <tbody id="rpt-kpi-tbody">
+              <tr class="empty-row"><td colspan="6">No KPIs selected yet — pick some above.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-right output-col">
+      <div class="panel output-panel">
+        <h2>Copy for the deck</h2>
+        <p class="sub">Updates as you edit the numbers above.</p>
+        <textarea class="rpt-output-text" id="rpt-output-text" readonly></textarea>
+        <div class="output-actions">
+          <button class="btn-primary" id="rpt-copy-btn">Copy to clipboard</button>
+          <span class="rpt-copy-status" id="rpt-copy-status">Copied.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="note">Directional read only — always sanity-check the framing against what the client actually cares about this period before sending.</footer>
+</div>
+</div>
+
+<footer class="note">
+  Compiled as a cross-channel measurement practice — pair with the client's own historical baseline before setting benchmark-derived targets; GA4 and GTM entries assume standard ecommerce/lead-gen event schemas.
+</footer>
+
+<script>
+const CATEGORIES = {
+  foundation: {label:"Cross-Channel Foundation", short:"Foundation"},
+  sem:        {label:"Paid Search / SEM — Google Ads", short:"Google Ads / SEM"},
+  meta:       {label:"Paid Social — Meta Ads", short:"Meta Ads"},
+  ga4:        {label:"Web Analytics — GA4", short:"GA4"},
+  gtm:        {label:"Tagging Infrastructure — GTM", short:"GTM"},
+  social:     {label:"Organic Social", short:"Organic Social"},
+  seo:        {label:"SEO / Organic Search", short:"SEO"},
+  gbp:        {label:"Local — Google Business Profile", short:"GBP / Local"},
+  email:      {label:"Email Marketing", short:"Email"},
+  sms:        {label:"SMS Marketing", short:"SMS"}
+};
+
+const TAGS = {
+  awareness:"Awareness", consideration:"Consideration", conversion:"Conversion",
+  retention:"Retention", ecommerce:"Ecommerce", b2b:"B2B / SaaS",
+  local:"Local / Service", leadgen:"Lead Gen", brand:"Brand",
+  efficiency:"Budget Efficiency", content:"Content / SEO", dataquality:"Data Quality"
+};
+
+const KPIS = [
+{cat:"foundation", acr:"CAC", name:"Customer Acquisition Cost", def:"Total sales & marketing spend divided by the number of new customers acquired in a period.", ex:"$50,000 spend ÷ 250 new customers = $200 CAC", best:"Evaluating overall marketing efficiency and comparing channel profitability. Central to profitable-growth mandates in SaaS and ecommerce; less useful alone in awareness-only phases.", tags:["efficiency","ecommerce","b2b"]},
+{cat:"foundation", acr:"LTV / CLV", name:"Customer Lifetime Value", def:"Predicted net revenue or profit a customer generates over the full relationship with the business.", ex:"$80 AOV × 4 orders/yr × 3-yr retention = $960 LTV", best:"Setting acceptable CAC ceilings and target LTV:CAC ratios. Essential wherever repeat purchase exists (subscription, DTC, retail); less central for single-purchase categories like real estate.", tags:["retention","ecommerce","b2b"]},
+{cat:"foundation", acr:"LTV:CAC", name:"LTV-to-CAC Ratio", def:"LTV divided by CAC — the return generated per dollar spent acquiring a customer.", ex:"$960 LTV ÷ $200 CAC = 4.8:1", best:"Board and investor reporting, and budget allocation across channels. A ratio below 3:1 usually signals unsustainable acquisition spend; below 1:1 means losing money per customer.", tags:["efficiency","b2b","ecommerce"]},
+{cat:"foundation", acr:"ROAS", name:"Return on Ad Spend", def:"Revenue generated per dollar of ad spend, across all paid channels combined.", ex:"$12,000 revenue ÷ $3,000 spend = 4.0 ROAS", best:"Direct-response and ecommerce campaigns where revenue is trackable per click. Less meaningful for brand-awareness or long B2B sales cycles where revenue lags by months.", tags:["ecommerce","efficiency","conversion"]},
+{cat:"foundation", acr:"MER", name:"Marketing Efficiency Ratio", def:"Total revenue divided by total marketing spend across all channels — the blended, platform-agnostic version of ROAS.", ex:"$200,000 total revenue ÷ $40,000 total spend = 5.0 MER", best:"Multi-channel ecommerce brands where individual platform-reported ROAS is inflated by overlapping attribution claims. Use as the business-level 'north star' efficiency number.", tags:["ecommerce","efficiency"]},
+{cat:"foundation", acr:"ROI", name:"Marketing Return on Investment", def:"(Revenue attributable to marketing − marketing cost) ÷ marketing cost, expressed as a percentage.", ex:"($150,000 − $50,000) ÷ $50,000 = 200% ROI", best:"Justifying budget to finance and leadership. Requires reliable revenue attribution, so it pairs best with CRM-connected reporting in B2B or high-ticket industries.", tags:["b2b","efficiency"]},
+{cat:"foundation", acr:"Payback Period", name:"CAC Payback Period", def:"Number of months needed for a customer's gross margin to repay the cost of acquiring them.", ex:"$200 CAC ÷ $40 monthly gross margin = 5-month payback", best:"SaaS and subscription businesses managing cash flow, runway, and fundraising narratives. Critical before deciding to increase paid spend aggressively.", tags:["b2b","efficiency","retention"]},
+{cat:"foundation", acr:"MQL→SQL", name:"MQL-to-SQL Conversion Rate", def:"Percentage of Marketing Qualified Leads that convert to Sales Qualified Leads.", ex:"400 MQLs → 80 SQLs = 20% conversion", best:"B2B demand-gen programs aligning marketing and sales. A drop here flags a lead-quality problem distinct from a lead-volume problem.", tags:["b2b","leadgen","conversion"]},
+{cat:"foundation", acr:"Pipeline Velocity", name:"Pipeline Value & Velocity", def:"Total dollar value of marketing-sourced or -influenced opportunities, and the speed they move through funnel stages.", ex:"$1.2M marketing-sourced pipeline this quarter, 45-day avg stage velocity", best:"Long B2B sales cycles where revenue lags campaign activity by months. Ties marketing activity to sales outcomes for leadership review.", tags:["b2b","leadgen"]},
+
+{cat:"sem", acr:"CTR", name:"Click-Through Rate (Search)", def:"Clicks divided by impressions on a search ad.", ex:"450 clicks ÷ 15,000 impressions = 3.0% CTR", best:"Diagnosing ad relevance and headline performance early — a leading indicator available before conversion volume is statistically significant.", tags:["awareness","efficiency"]},
+{cat:"sem", acr:"CPC", name:"Cost Per Click", def:"Average amount paid per click on a search ad.", ex:"$3,000 spend ÷ 1,000 clicks = $3.00 CPC", best:"Managing bid strategy in high-CPC verticals (legal, insurance, finance) and forecasting traffic-volume budgets.", tags:["efficiency"]},
+{cat:"sem", acr:"CPA", name:"Cost Per Acquisition", def:"Ad spend divided by number of conversions.", ex:"$5,000 spend ÷ 100 leads = $50 CPA", best:"Lead-gen and ecommerce campaigns with a defined conversion action — the default bid-optimization target for Target CPA strategies.", tags:["leadgen","ecommerce","conversion"]},
+{cat:"sem", acr:"CVR", name:"Conversion Rate (Search)", def:"Conversions divided by clicks.", ex:"100 conversions ÷ 1,000 clicks = 10% CVR", best:"Isolating landing-page and offer performance from targeting performance. Read alongside CTR to separate a 'clicks' problem from a 'converting' problem.", tags:["conversion","efficiency"]},
+{cat:"sem", acr:"QS", name:"Quality Score", def:"Google's 1–10 diagnostic of ad relevance, expected CTR, and landing-page experience.", ex:"Quality Score 7/10 on a core keyword", best:"Diagnosing high CPCs or weak ad visibility in mature, keyword-based Search campaigns. Not exposed in Performance Max.", tags:["efficiency"]},
+{cat:"sem", acr:"Search IS", name:"Search Impression Share", def:"Impressions received divided by total eligible impressions available to the campaign.", ex:"62% impression share (38% lost to budget/rank)", best:"Diagnosing whether growth is capped by budget or by ad rank — essential when scaling spend in a category with headroom, or defending branded terms.", tags:["efficiency","brand"]},
+{cat:"sem", acr:"Abs. Top IS", name:"Search Absolute Top Impression Share", def:"Percentage of impressions shown in the very first ad position on the page.", ex:"40% Absolute Top Impression Share", best:"Brand-defense campaigns and high-intent commercial keywords, where the top position carries disproportionate CTR.", tags:["brand","conversion"]},
+{cat:"sem", acr:"ROAS", name:"Return on Ad Spend (Shopping/PMax)", def:"Revenue per dollar spent within Google Ads, typically via Shopping or Performance Max.", ex:"$8 revenue per $1 spent = 800% ROAS", best:"Ecommerce campaigns with purchase-value tracking — the primary target for Target ROAS bidding strategies.", tags:["ecommerce","efficiency"]},
+{cat:"sem", acr:"CPM", name:"Cost Per Mille (Display/YouTube)", def:"Cost per 1,000 impressions.", ex:"$12,000 spend ÷ 2,000,000 impressions = $6.00 CPM", best:"Upper-funnel reach campaigns (Display, YouTube, Demand Gen) where awareness — not clicks — is the goal.", tags:["awareness","brand"]},
+
+{cat:"meta", acr:"CPM", name:"Cost Per Mille (Meta)", def:"Cost per 1,000 impressions on Facebook or Instagram.", ex:"$4.50 CPM", best:"Awareness and reach objectives, and as an early signal of audience saturation or rising auction pressure.", tags:["awareness","efficiency"]},
+{cat:"meta", acr:"CPC (Link)", name:"Cost Per Link Click", def:"Cost per click to an external destination, distinct from 'all clicks' which includes likes and comments.", ex:"$0.85 CPC (link clicks only)", best:"Traffic campaigns driving to a landing or product page. Always read 'link click,' not 'all clicks,' to avoid vanity inflation.", tags:["conversion","efficiency"]},
+{cat:"meta", acr:"CTR (Link)", name:"Link Click-Through Rate", def:"Link clicks divided by impressions.", ex:"1.2% link CTR", best:"Creative testing — the fastest available signal of whether a hook or concept resonates, before conversion volume is meaningful.", tags:["awareness","efficiency"]},
+{cat:"meta", acr:"Frequency", name:"Frequency", def:"Average number of times a unique user has seen the ad within the reporting window.", ex:"Frequency of 3.4 over 30 days", best:"Retargeting and always-on campaigns, to catch ad fatigue and creative burnout before CPMs and CPAs start climbing.", tags:["retention","efficiency"]},
+{cat:"meta", acr:"CPR", name:"Cost Per Result", def:"Cost per the campaign's chosen optimization event — purchase, lead, install, etc.", ex:"$18 CPR on a Leads objective", best:"Comparing efficiency across campaigns that use different objectives on a like-for-like basis. The default headline metric in Ads Manager.", tags:["leadgen","efficiency","conversion"]},
+{cat:"meta", acr:"Ad Rankings", name:"Quality / Engagement / Conversion Ranking", def:"Meta's three relative diagnostics comparing an ad to competitors targeting the same audience.", ex:"\"Below Average (bottom 35%)\" on Conversion Rate ranking", best:"Root-causing underperformance: creative quality vs. landing-page/offer fit vs. audience-conversion mismatch.", tags:["efficiency","conversion"]},
+{cat:"meta", acr:"Hook Rate", name:"Hook Rate (3-Second Video Views)", def:"Percentage of viewers who watch at least 3 seconds of a video ad.", ex:"28% hook rate", best:"Video and Reels creative testing for scroll-stopping power, especially in crowded feeds (DTC, entertainment, apps).", tags:["awareness","conversion"]},
+{cat:"meta", acr:"ROAS", name:"Return on Ad Spend (Meta)", def:"Purchase revenue per dollar of ad spend, per Meta's own attribution window.", ex:"3.5 ROAS", best:"Ecommerce and app-purchase campaigns. Always cross-check against blended MER — Meta's attribution tends to over-credit itself.", tags:["ecommerce","efficiency"]},
+
+{cat:"ga4", acr:"Engaged Sessions", name:"Engaged Sessions", def:"Sessions lasting 10+ seconds, containing a key event, or with 2+ pageviews — GA4's engagement threshold.", ex:"8,400 engaged sessions of 12,000 total", best:"Assessing content and landing-page quality across any industry. GA4's replacement for the old 'non-bounce' concept.", tags:["content","conversion"]},
+{cat:"ga4", acr:"Engagement Rate", name:"Engagement Rate", def:"Engaged sessions divided by total sessions.", ex:"70% engagement rate", best:"Comparing traffic-source or landing-page quality. A low rate on paid traffic flags a targeting or landing-page mismatch even when CTR looks healthy.", tags:["efficiency","content"]},
+{cat:"ga4", acr:"Avg. Engagement Time", name:"Average Engagement Time", def:"Average time a session was actively in focus (not merely open) per active user.", ex:"1m 42s average engagement time", best:"Content, editorial, and product-detail pages where dwell time correlates with intent.", tags:["content","consideration"]},
+{cat:"ga4", acr:"Key Events", name:"Key Events (Conversions)", def:"GA4's term for events explicitly marked as conversions — purchase, lead-form submit, sign-up, etc.", ex:"340 key events recorded from \"generate_lead\"", best:"Any goal-driven site. Only as reliable as the underlying event setup, so pair with GTM tag-health metrics below.", tags:["conversion","leadgen","dataquality"]},
+{cat:"ga4", acr:"Sessions/User", name:"Sessions per User", def:"Average number of sessions per user within a period.", ex:"1.8 sessions per user", best:"Evaluating return-visit behavior for content, media, or high-consideration purchases like B2B and real estate.", tags:["b2b","content","consideration"]},
+{cat:"ga4", acr:"DDA", name:"Data-Driven Attribution Credit", def:"GA4's default model, which algorithmically distributes conversion credit across touchpoints using observed conversion paths.", ex:"Paid Social 22% · Organic Search 48% · Direct 30% credit on one conversion", best:"Multi-touch, multi-channel campaigns where last-click attribution would understate upper-funnel channel value.", tags:["efficiency","brand"]},
+{cat:"ga4", acr:"Revenue/User", name:"Purchase Revenue per User", def:"Total or per-user transactional revenue tracked via ecommerce events.", ex:"$14.20 revenue per active user", best:"Ecommerce — connects traffic data directly to business revenue, feeding MER and ROAS calculations upstream.", tags:["ecommerce","conversion"]},
+
+{cat:"gtm", acr:"Fire Rate", name:"Tag Firing Success Rate", def:"Percentage of intended tag fires that execute without error, verified via preview/debug mode or a QA tool.", ex:"98.5% fire rate across production tags", best:"Post-launch QA after any container publish, and periodically wherever paid bidding algorithms depend on clean signal (Google, Meta both need it to optimize).", tags:["dataquality","efficiency"]},
+{cat:"gtm", acr:"Data Layer Completeness", name:"Data Layer Completeness", def:"Percentage of required dataLayer variables present and correctly typed across page and event types.", ex:"92% of product-page views push a complete ecommerce object", best:"Ecommerce and lead-gen sites before scaling paid spend — incomplete data layers silently under-report conversions and mislead bid algorithms.", tags:["dataquality","ecommerce","leadgen"]},
+{cat:"gtm", acr:"Publish Error Rate", name:"Container Publish Error Rate", def:"Frequency of GTM container versions published with tag or trigger misconfigurations that later require rollback.", ex:"1 rollback in the last 14 publishes", best:"Teams with multiple contributors editing GTM — justifies a formal QA and versioning workflow.", tags:["dataquality"]},
+{cat:"gtm", acr:"Consent Coverage", name:"Consent Mode Coverage", def:"Percentage of sessions where consent state is correctly signaled before tags fire, for regions under GDPR/CCPA.", ex:"100% of EU sessions gated by Consent Mode v2", best:"Any business serving EU, UK, or California traffic — required for compliance and directly affects whether Google can model conversions for consent-denied users.", tags:["dataquality","b2b"]},
+{cat:"gtm", acr:"Duplicate Rate", name:"Duplicate / Ghost Tracking Rate", def:"Percentage of events fired more than once per user action due to redundant tags.", ex:"6% duplicate purchase events inflating reported revenue", best:"Auditing after a platform migration (e.g., Universal Analytics → GA4) or an agency handoff, where legacy tags often linger unnoticed.", tags:["dataquality","ecommerce"]},
+
+{cat:"social", acr:"Engagement Rate", name:"Engagement Rate (Organic)", def:"Likes, comments, shares, and saves divided by reach or follower count.", ex:"4.2% engagement rate on an Instagram post", best:"Brand-awareness and community goals — a more meaningful read on content resonance than raw follower count.", tags:["brand","awareness"]},
+{cat:"social", acr:"Reach", name:"Reach", def:"Number of unique accounts that saw a post.", ex:"45,000 reach on a Reel", best:"Awareness campaigns and evaluating algorithmic distribution of content independent of follower base.", tags:["awareness","brand"]},
+{cat:"social", acr:"Impressions", name:"Impressions", def:"Total number of times content displayed, including repeat views by the same account.", ex:"61,000 impressions vs. 45,000 reach (1.35 avg views/viewer)", best:"Comparing content frequency, e.g., Stories sequences or retargeting-style organic content.", tags:["awareness"]},
+{cat:"social", acr:"Follower Growth", name:"Follower Growth Rate", def:"Net new followers divided by starting follower count over a period.", ex:"+1,200 net followers ÷ 30,000 starting = 4% monthly growth", best:"Early-stage brand building. De-prioritize once a channel matures and engagement or conversion matter more than audience size.", tags:["brand","awareness"]},
+{cat:"social", acr:"SOV", name:"Share of Voice (Social)", def:"Brand's mentions or engagement volume as a percentage of total category conversation.", ex:"18% share of voice vs. the top 4 competitors", best:"Crowded, competitive categories (CPG, retail, media) where relative presence matters more than absolute volume.", tags:["brand","awareness"]},
+{cat:"social", acr:"Completion Rate", name:"Video Completion / View-Through Rate", def:"Percentage of viewers who watch a video to completion or a set threshold (e.g., 75%).", ex:"34% completion rate on a 15-second Reel", best:"Storytelling and brand-narrative content — signals whether length and pacing match audience attention span.", tags:["brand","content"]},
+{cat:"social", acr:"Amplification", name:"Amplification Rate", def:"Shares divided by total reach or followers.", ex:"0.8% amplification rate", best:"Evaluating word-of-mouth potential — most relevant for content explicitly designed to be shared (UGC, cause marketing, contests).", tags:["brand","awareness"]},
+
+{cat:"seo", acr:"Organic Traffic", name:"Organic Traffic", def:"Sessions arriving via unpaid search engine results.", ex:"22,000 organic sessions per month", best:"The core top-of-funnel health metric for any content- or SEO-led business — media, SaaS blogs, ecommerce category pages.", tags:["content","efficiency"]},
+{cat:"seo", acr:"Visibility", name:"Keyword Rankings / Visibility Score", def:"Tracked position for target keywords, often aggregated into a weighted visibility index across a keyword set.", ex:"Avg. position 4.2 across 150 tracked terms; visibility score 62/100", best:"Competitive categories where rank volatility from algorithm updates or new competitor content needs catching before traffic actually drops.", tags:["content","brand"]},
+{cat:"seo", acr:"Organic CTR", name:"Organic CTR (SERP)", def:"Clicks divided by impressions in Search Console, by query or page.", ex:"3.8% CTR at position 4", best:"Diagnosing title-tag and meta-description effectiveness independent of ranking position — a page can rank well and still underperform.", tags:["content","efficiency"]},
+{cat:"seo", acr:"DA / DR", name:"Domain Authority / Domain Rating", def:"Third-party composite score (Moz/Ahrefs) predicting ranking strength, driven largely by backlink profile.", ex:"Domain Rating 54", best:"Competitive benchmarking and prioritizing link-building investment. Directional only — not a Google metric, don't over-index day to day.", tags:["content","brand"]},
+{cat:"seo", acr:"Ref. Domains", name:"Referring Domains / Backlinks", def:"Count of unique external domains, and total links, pointing to the site.", ex:"310 referring domains, up from 260 last quarter", best:"Authority-building phases for newer sites, and measuring digital PR campaign output.", tags:["content","brand"]},
+{cat:"seo", acr:"Organic CVR", name:"Organic Conversion Rate", def:"Conversions from organic-search sessions divided by organic sessions.", ex:"2.1% organic conversion rate", best:"Proving SEO's revenue contribution to leadership — not just traffic volume — especially when justifying continued content investment.", tags:["content","efficiency","ecommerce"]},
+{cat:"seo", acr:"CWV", name:"Core Web Vitals (LCP / INP / CLS)", def:"Google's page-experience metrics: Largest Contentful Paint (load speed), Interaction to Next Paint (responsiveness), Cumulative Layout Shift (visual stability).", ex:"LCP 2.1s · INP 180ms · CLS 0.05 — all \"Good\"", best:"Technical SEO audits on any site, especially ecommerce and publisher sites, where Google has confirmed these as ranking and UX factors.", tags:["content","ecommerce","dataquality"]},
+{cat:"seo", acr:"Index Coverage", name:"Index Coverage / Crawl Error Rate", def:"Percentage of submitted URLs successfully indexed vs. excluded or errored, per Search Console.", ex:"96% of 1,200 submitted URLs indexed; 4% \"crawled, not indexed\"", best:"Large sites — ecommerce catalogs, programmatic SEO, publishers — where crawl budget and indexation bugs can silently cap organic growth.", tags:["content","dataquality"]},
+
+{cat:"gbp", acr:"GBP Views", name:"GBP Total Views (Search + Maps)", def:"Number of times the business profile was viewed on Google Search and Maps combined.", ex:"8,200 profile views per month", best:"Local service businesses and multi-location retail measuring visibility in local search before it converts to action.", tags:["local","awareness"]},
+{cat:"gbp", acr:"Directions", name:"Direction Requests", def:"Number of users who tapped \"Directions\" from the profile.", ex:"340 direction requests per month", best:"Businesses reliant on foot traffic — restaurants, retail, healthcare clinics. A strong proxy for offline visit intent.", tags:["local","conversion"]},
+{cat:"gbp", acr:"Call Clicks", name:"Call Clicks", def:"Number of phone calls initiated directly from the GBP listing.", ex:"210 call clicks per month", best:"Service businesses where the phone call is the primary conversion action — home services, legal, medical — rather than a web form.", tags:["local","leadgen"]},
+{cat:"gbp", acr:"Website Clicks", name:"Website Clicks (from GBP)", def:"Number of clicks to the business website originating from the profile.", ex:"190 website clicks per month", best:"Businesses moving local searchers into a fuller funnel — booking flow, menu, portfolio — rather than converting on the profile itself.", tags:["local","conversion"]},
+{cat:"gbp", acr:"Reviews", name:"Review Rating & Volume", def:"Average star rating and total count of Google reviews.", ex:"4.6★ across 312 reviews, +14 new this month", best:"Trust-sensitive local categories — healthcare, home services, hospitality — where rating directly influences Local Pack ranking and click-through.", tags:["local","brand"]},
+{cat:"gbp", acr:"Local Pack Rank", name:"Local Pack (Map Pack) Ranking", def:"Position within Google's top-3 local results shown for a given search-plus-location query.", ex:"Ranks #2 in the Map Pack for \"emergency plumber [city]\"", best:"Any single- or multi-location local business competing on proximity, relevance, and prominence — the single highest-leverage local SEO metric to track by keyword and location.", tags:["local","conversion","efficiency"]},
+
+{cat:"email", acr:"Open Rate", name:"Open Rate", def:"Percentage of delivered emails opened, tracked via pixel.", ex:"220 opens ÷ 1,000 delivered = 22% open rate", best:"Subject-line testing and send-time optimization — but read directionally, not literally: iOS 15+ Mail Privacy Protection auto-triggers opens for a large share of Apple Mail users, inflating the number.", tags:["awareness","content"]},
+{cat:"email", acr:"CTR", name:"Click-Through Rate (Email)", def:"Clicks divided by delivered emails.", ex:"45 clicks ÷ 1,000 delivered = 4.5% CTR", best:"The core engagement metric for promotional and lifecycle sends — less distorted by privacy proxies than open rate, so more trustworthy for judging real interest.", tags:["conversion","efficiency"]},
+{cat:"email", acr:"CTOR", name:"Click-to-Open Rate", def:"Clicks divided by opens — isolates content and CTA performance from subject-line/deliverability performance.", ex:"45 clicks ÷ 220 opens = 20.5% CTOR", best:"Creative and CTA testing within an already-opened cohort — the cleanest read on whether the body content itself is working.", tags:["content","conversion"]},
+{cat:"email", acr:"CVR", name:"Conversion Rate (Email)", def:"Conversions divided by delivered (or clicked) emails.", ex:"18 purchases ÷ 1,000 delivered = 1.8% CVR", best:"Ecommerce and lead-gen email judged on revenue or pipeline outcome rather than engagement alone.", tags:["ecommerce","leadgen","conversion"]},
+{cat:"email", acr:"RPE", name:"Revenue Per Email", def:"Revenue generated divided by emails sent or delivered.", ex:"$2,400 revenue ÷ 20,000 sent = $0.12 RPE", best:"Comparing campaign ROI across sends of different sizes — especially for ecommerce lifecycle flows like abandoned cart and post-purchase.", tags:["ecommerce","efficiency","retention"]},
+{cat:"email", acr:"List Growth", name:"List Growth Rate", def:"Net new subscribers divided by total list size over a period.", ex:"+500 net new ÷ 20,000 existing = 2.5% monthly growth", best:"Early-stage owned-audience building. Always read alongside unsubscribe rate — growth without retention just churns the list faster.", tags:["awareness","brand"]},
+{cat:"email", acr:"Unsub Rate", name:"Unsubscribe Rate", def:"Unsubscribes divided by delivered emails.", ex:"8 unsubscribes ÷ 1,000 delivered = 0.8%", best:"Diagnosing send-frequency fatigue or content-relevance mismatch — watch closely during win-back campaigns and immediately after any list migration.", tags:["retention","dataquality"]},
+{cat:"email", acr:"Inbox Placement", name:"Deliverability / Inbox Placement Rate", def:"Percentage of sent emails that land in the inbox — not spam — across major providers.", ex:"94% inbox placement across a Gmail/Outlook/Yahoo seed-list panel", best:"Any list at scale. A silent upstream killer of every other metric if domain reputation degrades — check after a volume increase or a purchased/imported list.", tags:["dataquality","efficiency"]},
+{cat:"email", acr:"Bounce Rate", name:"Bounce Rate (Hard / Soft)", def:"Percentage of sends that fail to deliver — hard (permanent, e.g. invalid address) vs. soft (temporary, e.g. mailbox full).", ex:"1.2% hard bounce, 0.6% soft bounce", best:"List hygiene audits. Hard bounce rates above roughly 2% put sender reputation at risk and should trigger a list-cleaning pass.", tags:["dataquality"]},
+
+{cat:"sms", acr:"Opt-In Rate", name:"Opt-In Rate", def:"Percentage of eligible contacts — site visitors, checkout customers — who subscribe to SMS.", ex:"320 opt-ins ÷ 8,000 eligible sessions = 4% opt-in rate", best:"Early-phase SMS launch or testing new acquisition placements (checkout, popup, post-purchase) — the metric that matters before the channel has volume to optimize anything else.", tags:["awareness","ecommerce"]},
+{cat:"sms", acr:"Delivery Rate", name:"Delivery Rate", def:"Percentage of sent messages successfully delivered to carrier and handset.", ex:"98.2% delivery rate", best:"Infrastructure health check — a drop usually signals carrier filtering or a 10DLC registration/compliance issue, not a creative problem.", tags:["dataquality"]},
+{cat:"sms", acr:"CTR", name:"Click-Through Rate (SMS)", def:"Link clicks divided by delivered messages.", ex:"120 clicks ÷ 5,000 delivered = 2.4% CTR", best:"Flash sales, time-sensitive promos, and abandoned-cart recovery — SMS CTR typically runs well above email CTR because of near-instant read behavior.", tags:["ecommerce","conversion"]},
+{cat:"sms", acr:"CVR", name:"Conversion Rate (SMS)", def:"Conversions attributed to the SMS send divided by delivered messages.", ex:"40 purchases ÷ 5,000 delivered = 0.8% CVR", best:"Ecommerce flash-sale and cart-recovery flows, where SMS frequently outperforms email conversion rate due to immediacy.", tags:["ecommerce","conversion","retention"]},
+{cat:"sms", acr:"RPM", name:"Revenue Per Message", def:"Revenue generated divided by messages sent.", ex:"$1,800 revenue ÷ 5,000 sent = $0.36 RPM", best:"Comparing SMS program ROI against email RPE — SMS costs meaningfully more per send, so this is what justifies the channel's spend.", tags:["ecommerce","efficiency"]},
+{cat:"sms", acr:"Opt-Out Rate", name:"Opt-Out Rate", def:"STOP replies divided by delivered messages.", ex:"25 opt-outs ÷ 5,000 delivered = 0.5%", best:"Monitoring frequency fatigue on every single send, not just periodically — audience tolerance for over-messaging is much lower on SMS than email.", tags:["retention","dataquality"]},
+{cat:"sms", acr:"Response Rate", name:"Response Rate (Conversational SMS)", def:"Percentage of recipients who reply to a two-way message, distinct from STOP replies.", ex:"6% reply rate on a \"Reply YES for early access\" send", best:"Conversational commerce, customer service SMS, and appointment-based local businesses using confirm/reschedule flows.", tags:["local","conversion","retention"]}
+];
+
+// ---- Benchmarks: keyed "cat|acr" ----
+// mode "seg": per-industry-segment 3-band ranges. mode "single": one 3-band range. mode "note": qualitative, no bands.
+const BENCH = {
+"foundation|CAC": {mode:"seg", segs:{ecommerce:{watch:">$80",typical:"$20–60",strong:"<$20"}, b2b:{watch:">$1,500",typical:"$300–1,000",strong:"<$300"}, local:{watch:">$200",typical:"$50–150",strong:"<$50"}}},
+"foundation|LTV / CLV": {mode:"note", note:"Absolute LTV is business-specific ($ scale varies enormously by AOV and repeat rate) — benchmark it indirectly via the LTV:CAC ratio below."},
+"foundation|LTV:CAC": {mode:"single", watch:"<2:1", typical:"3:1–4:1", strong:">5:1"},
+"foundation|ROAS": {mode:"single", watch:"<2.0", typical:"3.0–4.0", strong:">5.0"},
+"foundation|MER": {mode:"single", watch:"<2.5", typical:"3.5–5.0", strong:">6.0"},
+"foundation|ROI": {mode:"single", watch:"<100%", typical:"150–300%", strong:">400%"},
+"foundation|Payback Period": {mode:"single", watch:">18 months", typical:"7–15 months", strong:"<6 months"},
+"foundation|MQL→SQL": {mode:"single", watch:"<10%", typical:"15–25%", strong:">30%"},
+"foundation|Pipeline Velocity": {mode:"note", note:"Absolute pipeline $ and velocity are deal-size- and cycle-length-specific — track trend against the account's own trailing quarters rather than an external benchmark."},
+
+"sem|CTR": {mode:"seg", segs:{ecommerce:{watch:"<1.5%",typical:"2–4%",strong:">5%"}, b2b:{watch:"<1%",typical:"2–3%",strong:">4%"}, local:{watch:"<2%",typical:"3–6%",strong:">7%"}, content:{watch:"<1%",typical:"1.5–3%",strong:">4%"}}},
+"sem|CPC": {mode:"note", note:"Driven almost entirely by keyword competitiveness — from under $1 in low-competition niches to $50+ in legal/insurance. Benchmark against your own category and prior periods, not a universal figure."},
+"sem|CPA": {mode:"seg", segs:{ecommerce:{watch:">$75",typical:"$20–50",strong:"<$20"}, b2b:{watch:">$200",typical:"$50–150",strong:"<$50"}, local:{watch:">$150",typical:"$30–100",strong:"<$30"}}},
+"sem|CVR": {mode:"seg", segs:{ecommerce:{watch:"<1.5%",typical:"2–4%",strong:">5%"}, b2b:{watch:"<2%",typical:"3–6%",strong:">8%"}, local:{watch:"<3%",typical:"5–10%",strong:">12%"}}},
+"sem|QS": {mode:"single", watch:"1–4", typical:"5–7", strong:"8–10"},
+"sem|Search IS": {mode:"single", watch:"<50%", typical:"60–80%", strong:">85%"},
+"sem|Abs. Top IS": {mode:"single", watch:"<20%", typical:"30–50%", strong:">60%"},
+"sem|ROAS": {mode:"single", watch:"<2.0", typical:"3–5", strong:">6"},
+"sem|CPM": {mode:"single", watch:">$15", typical:"$5–12", strong:"<$5"},
+
+"meta|CPM": {mode:"single", watch:">$20", typical:"$8–15", strong:"<$8"},
+"meta|CPC (Link)": {mode:"single", watch:">$2.00", typical:"$0.50–1.50", strong:"<$0.50"},
+"meta|CTR (Link)": {mode:"single", watch:"<0.8%", typical:"1–2%", strong:">2.5%"},
+"meta|Frequency": {mode:"single", watch:">4.5 (14-day)", typical:"1.8–3.5", strong:"<1.8 (fresh reach)", note:"Lower isn't automatically \"strong\" for a retargeting-only campaign — read alongside campaign objective."},
+"meta|CPR": {mode:"seg", segs:{ecommerce:{watch:">$40",typical:"$10–25",strong:"<$10"}, b2b:{watch:">$100",typical:"$25–60",strong:"<$25"}}},
+"meta|Ad Rankings": {mode:"note", note:"Reported as relative percentile bands by Meta (Below Average / Average / Above Average) rather than a numeric range — treat any \"Below Average\" ranking as the one to fix first."},
+"meta|Hook Rate": {mode:"single", watch:"<15%", typical:"20–35%", strong:">40%"},
+"meta|ROAS": {mode:"single", watch:"<1.5", typical:"2.5–4", strong:">5"},
+
+"ga4|Engaged Sessions": {mode:"note", note:"Track the rate (Engagement Rate, below) rather than the raw count — raw engaged sessions scales with traffic volume alone."},
+"ga4|Engagement Rate": {mode:"seg", segs:{ecommerce:{watch:"<50%",typical:"55–65%",strong:">70%"}, content:{watch:"<45%",typical:"50–65%",strong:">70%"}, b2b:{watch:"<55%",typical:"60–70%",strong:">75%"}}},
+"ga4|Avg. Engagement Time": {mode:"seg", segs:{content:{watch:"<30s",typical:"1–2 min",strong:">3 min"}, ecommerce:{watch:"<20s",typical:"30–90s",strong:">90s"}}},
+"ga4|Key Events": {mode:"note", note:"A count, not a rate — benchmark the underlying conversion rate (CVR/CPA above) instead of the raw event total."},
+"ga4|Sessions/User": {mode:"single", watch:"1.0–1.1 (mostly one-and-done)", typical:"1.3–1.8", strong:">2.0"},
+"ga4|DDA": {mode:"note", note:"A credit-distribution model, not a scored metric — sanity-check it by confirming no single channel is claiming an implausibly high share (>80%) of multi-touch conversions."},
+"ga4|Revenue/User": {mode:"note", note:"Highly AOV-dependent — benchmark against the account's own trailing baseline and trend, not a cross-industry number."},
+
+"gtm|Fire Rate": {mode:"single", watch:"<95%", typical:"95–98%", strong:">99%"},
+"gtm|Data Layer Completeness": {mode:"single", watch:"<85%", typical:"90–97%", strong:">98%"},
+"gtm|Publish Error Rate": {mode:"single", watch:">1 rollback per 10 publishes", typical:"1 per 15–25 publishes", strong:"<1 per 30 publishes"},
+"gtm|Consent Coverage": {mode:"single", watch:"<98%", typical:"98–99.5%", strong:"100%"},
+"gtm|Duplicate Rate": {mode:"single", watch:">5%", typical:"1–5%", strong:"<1%"},
+
+"social|Engagement Rate": {mode:"seg", segs:{ecommerce:{watch:"<1%",typical:"1–3%",strong:">4%"}, b2b:{watch:"<0.5%",typical:"1–2%",strong:">3%"}, content:{watch:"<1.5%",typical:"2–4%",strong:">5%"}}},
+"social|Reach": {mode:"note", note:"A volume metric that scales with audience/spend size — track as a rate of follower count, or trend period-over-period, rather than against an external number."},
+"social|Impressions": {mode:"note", note:"Most useful read alongside Reach (impressions ÷ reach = views per viewer) rather than in isolation."},
+"social|Follower Growth": {mode:"single", watch:"<1%/mo", typical:"2–5%/mo", strong:">8%/mo (early stage)"},
+"social|SOV": {mode:"note", note:"Meaningful only relative to a defined competitor set — there's no universal healthy share, only \"growing vs. shrinking\" against that set."},
+"social|Completion Rate": {mode:"single", watch:"<15%", typical:"20–35%", strong:">45%"},
+"social|Amplification": {mode:"single", watch:"<0.3%", typical:"0.5–1.5%", strong:">2%"},
+
+"seo|Organic Traffic": {mode:"note", note:"Absolute volume is domain-age- and category-size-dependent — track month-over-month and year-over-year trend rather than a fixed target."},
+"seo|Visibility": {mode:"note", note:"A relative index against your own tracked keyword set — compare to your prior period and named competitors, not an external scale."},
+"seo|Organic CTR": {mode:"single", watch:"<2% (positions 6–10)", typical:"3–8% (positions 3–5)", strong:">15% (position 1)"},
+"seo|DA / DR": {mode:"single", watch:"<20 (new domain)", typical:"30–50", strong:">60"},
+"seo|Ref. Domains": {mode:"note", note:"Scale expectations to competitor domains in the same category rather than an absolute count — 50 referring domains can be strong for a local site and thin for a national publisher."},
+"seo|Organic CVR": {mode:"seg", segs:{ecommerce:{watch:"<1%",typical:"1.5–3%",strong:">4%"}, b2b:{watch:"<1.5%",typical:"2–4%",strong:">5%"}}},
+"seo|CWV": {mode:"single", watch:"Poor (LCP>4s / INP>500ms / CLS>0.25)", typical:"Needs Improvement", strong:"Good (LCP<2.5s / INP<200ms / CLS<0.1)", note:"Google's own published pass/fail thresholds — not industry-variable."},
+"seo|Index Coverage": {mode:"single", watch:"<85% indexed", typical:"90–95%", strong:">97%"},
+
+"gbp|GBP Views": {mode:"note", note:"Volume scales with location count and category search demand — benchmark month-over-month trend for the specific listing."},
+"gbp|Directions": {mode:"note", note:"Track as a rate of profile views (Directions ÷ Views) for comparability across locations of different traffic volume."},
+"gbp|Call Clicks": {mode:"note", note:"Track as a rate of profile views for comparability across locations of different traffic volume."},
+"gbp|Website Clicks": {mode:"note", note:"Track as a rate of profile views for comparability across locations."},
+"gbp|Reviews": {mode:"single", watch:"<4.0★ or <10 reviews", typical:"4.2–4.6★ with steady new reviews", strong:">4.7★ with consistent monthly volume"},
+"gbp|Local Pack Rank": {mode:"single", watch:"Not in top 3 (page 2+)", typical:"Ranks #2–3 for priority terms", strong:"Ranks #1 for priority terms"},
+
+"email|Open Rate": {mode:"seg", segs:{ecommerce:{watch:"<15%",typical:"18–25%",strong:">30%"}, b2b:{watch:"<20%",typical:"25–35%",strong:">40%"}}, note:"iOS 15+ Mail Privacy Protection auto-triggers opens for a large share of Apple Mail users — read directionally, not literally."},
+"email|CTR": {mode:"seg", segs:{ecommerce:{watch:"<1%",typical:"1.5–3%",strong:">4%"}, b2b:{watch:"<1.5%",typical:"2–4%",strong:">5%"}}},
+"email|CTOR": {mode:"single", watch:"<8%", typical:"10–20%", strong:">25%"},
+"email|CVR": {mode:"seg", segs:{ecommerce:{watch:"<0.5%",typical:"1–2%",strong:">3%"}, b2b:{watch:"<1%",typical:"2–4%",strong:">5%"}}},
+"email|RPE": {mode:"note", note:"AOV-dependent dollar figure — benchmark trend against the account's own flows (especially abandoned cart / post-purchase), not a cross-brand number."},
+"email|List Growth": {mode:"single", watch:"<1%/mo", typical:"2–4%/mo", strong:">5%/mo"},
+"email|Unsub Rate": {mode:"single", watch:">0.5%", typical:"0.2–0.5%", strong:"<0.1%"},
+"email|Inbox Placement": {mode:"single", watch:"<90%", typical:"93–97%", strong:">98%"},
+"email|Bounce Rate": {mode:"single", watch:">2% hard bounce", typical:"0.5–2%", strong:"<0.5%"},
+
+"sms|Opt-In Rate": {mode:"single", watch:"<2%", typical:"3–6%", strong:">8%"},
+"sms|Delivery Rate": {mode:"single", watch:"<95%", typical:"96–98%", strong:">99%"},
+"sms|CTR": {mode:"single", watch:"<15%", typical:"20–30%", strong:">35%"},
+"sms|CVR": {mode:"single", watch:"<5%", typical:"8–15%", strong:">18%"},
+"sms|RPM": {mode:"note", note:"AOV-dependent — benchmark against the account's own trailing sends and against email RPE, not an external figure."},
+"sms|Opt-Out Rate": {mode:"single", watch:">1% per send", typical:"0.3–1%", strong:"<0.3%"},
+"sms|Response Rate": {mode:"single", watch:"<3%", typical:"5–10%", strong:">12%"}
+};
+
+// ---- Diagnostics: keyed "cat|acr", each direction an array of {ref:"cat|acr", reason} ----
+const DIAG = {
+"sem|CTR": {
+  down:[{ref:"sem|QS", reason:"Low CTR drags Quality Score down, which raises CPCs even further."},
+        {ref:"sem|Search IS", reason:"Falling Impression Share can mean losing the top positions where CTR is highest — confirm it's not a rank-position issue."},
+        {ref:"meta|Hook Rate", reason:"If creative/messaging is the root cause, a parallel dip in social hook rate often confirms a broader message-fatigue problem."}],
+  up:[{ref:"sem|CVR", reason:"A CTR gain from broader or lower-intent keywords can dilute CVR — confirm conversion quality held."},
+      {ref:"sem|CPC", reason:"Higher CTR usually lowers CPC via Quality Score — verify the efficiency gain actually showed up."}]
+},
+"sem|CPC": {
+  up:[{ref:"sem|QS", reason:"A Quality Score drop is the most common driver of rising CPCs at the same bid."},
+      {ref:"sem|Search IS", reason:"Rising CPCs from more competitive auctions often show up as falling Impression Share too."}],
+  down:[{ref:"sem|QS", reason:"Confirm the drop is a real Quality Score improvement, not just softer competition that could reverse."}]
+},
+"sem|CPA": {
+  up:[{ref:"sem|CTR", reason:"Falling CTR raises CPA by cutting Quality Score and inflating CPC."},
+      {ref:"sem|CVR", reason:"A landing-page or offer breakdown shows up first as falling CVR."},
+      {ref:"sem|QS", reason:"Quality Score erosion raises the CPCs feeding every conversion."},
+      {ref:"foundation|CAC", reason:"Confirm the CPA rise is actually moving blended CAC, or if other channels are absorbing it."}],
+  down:[{ref:"sem|CVR", reason:"Confirm CPA fell because CVR improved, not because conversion volume or quality dropped in a way that inflates the rate."}]
+},
+"sem|CVR": {
+  down:[{ref:"ga4|Engagement Rate", reason:"A falling landing-page engagement rate usually co-moves with CVR — points to an on-page or offer issue."},
+        {ref:"gtm|Fire Rate", reason:"Rule out a broken conversion tag before assuming it's a real demand problem."},
+        {ref:"sem|CTR", reason:"Check whether new, lower-intent traffic from a CTR-driving change is diluting the conversion rate."}]
+},
+"meta|CPR": {
+  up:[{ref:"meta|CTR (Link)", reason:"Falling link CTR is usually the first sign creative has fatigued."},
+      {ref:"meta|Frequency", reason:"Rising frequency into the same audience signals saturation — check this before blaming creative."},
+      {ref:"meta|Ad Rankings", reason:"A drop in Conversion Ranking points specifically to landing-page or offer fit rather than creative."},
+      {ref:"meta|Hook Rate", reason:"A falling hook rate confirms the creative itself has stopped working, not just the audience."}]
+},
+"meta|ROAS": {
+  down:[{ref:"meta|CPR", reason:"Rising cost per result is the most direct driver of falling ROAS."},
+        {ref:"foundation|MER", reason:"Cross-check blended MER — a Meta-reported ROAS dip can be an attribution-window artifact, not a real revenue drop."}]
+},
+"meta|Frequency": {
+  up:[{ref:"meta|CPM", reason:"Rising frequency into a saturated audience typically pushes CPMs up as the auction gets more competitive for that same pool."},
+      {ref:"meta|Hook Rate", reason:"Falling hook rate alongside rising frequency confirms real creative fatigue, not just a reporting artifact."}]
+},
+"foundation|CAC": {
+  up:[{ref:"sem|CPA", reason:"Check whether one paid channel's CPA is driving the blended number up."},
+      {ref:"meta|CPR", reason:"Same check on the Meta side — isolate which channel's cost-per-result moved."},
+      {ref:"foundation|MER", reason:"MER moving in tandem confirms it's a real efficiency problem, not a mix-shift artifact."}]
+},
+"foundation|MER": {
+  down:[{ref:"foundation|ROAS", reason:"Compare against platform-reported ROAS — a widening gap suggests over-crediting by one platform, not real inefficiency."},
+        {ref:"foundation|CAC", reason:"Confirm CAC is rising in step — if not, this may be a revenue-mix issue rather than a spend-efficiency one."}]
+},
+"foundation|LTV:CAC": {
+  down:[{ref:"foundation|CAC", reason:"Check whether it's CAC rising or LTV falling that's driving the ratio down."},
+        {ref:"foundation|Payback Period", reason:"A falling ratio usually stretches payback period too — confirm the cash-flow impact."},
+        {ref:"email|Unsub Rate", reason:"Rising unsubscribe/churn signals are often the earliest visible sign that LTV itself is eroding."}]
+},
+"foundation|MQL→SQL": {
+  down:[{ref:"sem|CVR", reason:"A lead-quality problem often starts upstream — check whether paid CVR gains came from lower-intent traffic."},
+        {ref:"ga4|Engagement Rate", reason:"Low-intent form-fillers usually show lower on-site engagement too."}]
+},
+"ga4|Engagement Rate": {
+  down:[{ref:"ga4|Avg. Engagement Time", reason:"Check whether time-on-page fell too, or just the engaged-session threshold — the two can diverge."},
+        {ref:"seo|CWV", reason:"A page-speed regression (especially LCP) is a common, silent cause of falling engagement."},
+        {ref:"gtm|Fire Rate", reason:"Rule out a tracking or tagging break before assuming real user behavior changed."}]
+},
+"gtm|Fire Rate": {
+  down:[{ref:"gtm|Data Layer Completeness", reason:"Broken or missing dataLayer objects are the most common cause of silent tag failures."},
+        {ref:"gtm|Publish Error Rate", reason:"Check recent container publishes for an unreviewed change."},
+        {ref:"ga4|Key Events", reason:"A drop in Key Events with no real traffic change is the downstream symptom that confirms this."}]
+},
+"social|Engagement Rate": {
+  down:[{ref:"social|Reach", reason:"Shrinking algorithmic reach can lower engagement rate even with unchanged content quality — check reach trend first."},
+        {ref:"social|Completion Rate", reason:"Falling completion rate points to a content or hook problem rather than a distribution problem."}]
+},
+"gbp|Local Pack Rank": {
+  down:[{ref:"gbp|Reviews", reason:"A rating or review-velocity drop is one of the most common Local Pack ranking factors to slip."},
+        {ref:"gbp|GBP Views", reason:"Confirm the rank drop is actually costing visibility, not just reshuffling within an already-strong top 3."}]
+},
+"gbp|Reviews": {
+  down:[{ref:"gbp|Local Pack Rank", reason:"A rating dip is one of the most direct levers on Local Pack position — watch for correlated movement."}]
+},
+"seo|Organic Traffic": {
+  down:[{ref:"seo|Visibility", reason:"Check whether rankings actually dropped, or whether SERP features (AI Overviews, featured snippets) are absorbing clicks at the same rank."},
+        {ref:"seo|Index Coverage", reason:"Rule out a technical deindexing issue before assuming a ranking or content problem."},
+        {ref:"seo|CWV", reason:"A Core Web Vitals regression after a site change can quietly suppress rankings."}]
+},
+"email|Open Rate": {
+  down:[{ref:"email|Inbox Placement", reason:"A deliverability problem (landing in spam) looks identical to a subject-line problem — rule this out first."},
+        {ref:"email|Bounce Rate", reason:"Rising bounces degrade sender reputation, which suppresses opens on the next send."},
+        {ref:"email|List Growth", reason:"A stale, unpurged list naturally opens less — check growth and hygiene trend."}]
+},
+"email|CTOR": {
+  down:[{ref:"email|Open Rate", reason:"Rule out this being a deliverability/open problem rather than a content problem — CTOR isolates content quality once already opened."}]
+},
+"email|Unsub Rate": {
+  up:[{ref:"email|Open Rate", reason:"Check if send frequency increased — fatigue usually shows as opens softening alongside unsubscribes rising."},
+      {ref:"email|CTOR", reason:"Falling CTOR alongside rising unsubscribes points to a content-relevance mismatch, not just frequency."}]
+},
+"email|Bounce Rate": {
+  up:[{ref:"email|List Growth", reason:"A recent import or unscrubbed list-growth spike is the most common cause."},
+      {ref:"email|Inbox Placement", reason:"High bounce rates directly damage sender reputation and inbox placement — check both together."}]
+},
+"sms|Opt-Out Rate": {
+  up:[{ref:"sms|CTR", reason:"Rising opt-outs alongside falling CTR points to message fatigue from frequency, not message quality."}]
+}
+};
+
+// ---------------- shared state ----------------
+const state = { selected: new Set(), plan: {} };
+const kkey = k => k.cat+"|"+k.acr;
+const findKPI = key => { const i = key.indexOf("|"); const cat = key.slice(0,i), acr = key.slice(i+1); return KPIS.find(k=>k.cat===cat && k.acr===acr); };
+
+function toggleSelect(key, forceState){
+  const has = state.selected.has(key);
+  const next = forceState === undefined ? !has : forceState;
+  if (next) state.selected.add(key); else state.selected.delete(key);
+  updateSelIndicator();
+  renderCurrentTab();
+}
+function updateSelIndicator(){
+  const n = state.selected.size;
+  const ind = document.getElementById('sel-indicator');
+  document.getElementById('sel-count-mini').textContent = n;
+  ind.classList.toggle('empty', n===0);
+}
+function addBtnHTML(key){
+  const added = state.selected.has(key);
+  return `<button type="button" class="addbtn ${added?'added':''}" data-selkey="${key}">${added?'✓ Added':'+ Plan'}</button>`;
+}
+function wireAddBtns(root){
+  root.querySelectorAll('[data-selkey]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleSelect(btn.dataset.selkey); });
+  });
+}
+
+// ---------------- tab switching ----------------
+const TABS = ["index","fit","diag","plan","workbench","optimizer","readout"];
+let currentTab = "index";
+function switchTab(tab){
+  currentTab = tab;
+  TABS.forEach(t=>{
+    document.getElementById('panel-'+t).style.display = (t===tab) ? '' : 'none';
+    document.querySelector(`.tab-btn[data-tab="${t}"]`).classList.toggle('active', t===tab);
+  });
+  renderCurrentTab();
+}
+function renderCurrentTab(){
+  if (currentTab==="index") renderIndex();
+  else if (currentTab==="fit") renderFitSelectedView();
+  else if (currentTab==="diag") renderDiagBody();
+  else if (currentTab==="plan") renderPlan();
+}
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+document.getElementById('goto-plan-btn').addEventListener('click', ()=>switchTab('plan'));
+
+// ================= INDEX =================
+function buildIndexChips(){
+  const catGroup = document.getElementById('index-cat-group');
+  Object.entries(CATEGORIES).forEach(([key,meta])=>{
+    const b = document.createElement('button');
+    b.className='chip'; b.dataset.cat=key; b.textContent=meta.short;
+    b.style.setProperty('--cat-c', `var(--cat-${key})`);
+    b.addEventListener('click',()=>{ b.classList.toggle('active'); renderIndex(); });
+    catGroup.appendChild(b);
+  });
+  const tagGroup = document.getElementById('index-tag-group');
+  Object.entries(TAGS).forEach(([key,label])=>{
+    const b = document.createElement('button');
+    b.className='chip tagchip'; b.dataset.tag=key; b.textContent=label;
+    b.addEventListener('click',()=>{ b.classList.toggle('active'); renderIndex(); });
+    tagGroup.appendChild(b);
+  });
+}
+function activeSet(selector){
+  return new Set(Array.from(document.querySelectorAll(selector+'.active')).map(el=>el.dataset.cat||el.dataset.tag));
+}
+function renderIndex(){
+  const q = document.getElementById('index-search').value.trim().toLowerCase();
+  const cats = activeSet('#index-cat-group .chip');
+  const tags = activeSet('#index-tag-group .chip');
+  const filtered = KPIS.filter(k=>{
+    if (cats.size && !cats.has(k.cat)) return false;
+    if (tags.size && !k.tags.some(t=>tags.has(t))) return false;
+    if (q){ const hay=(k.acr+' '+k.name+' '+k.def+' '+k.best).toLowerCase(); if (!hay.includes(q)) return false; }
+    return true;
+  });
+  document.getElementById('index-count-badge').textContent = filtered.length+' of '+KPIS.length;
+  const results = document.getElementById('index-results');
+  results.innerHTML='';
+  if (!filtered.length){ results.innerHTML='<div class="empty-state">No KPIs match those filters. Try clearing a filter or broadening the search.</div>'; return; }
+  Object.entries(CATEGORIES).forEach(([key,meta])=>{
+    const items = filtered.filter(k=>k.cat===key);
+    if (!items.length) return;
+    const section = document.createElement('section');
+    section.className='section';
+    section.innerHTML = `
+      <div class="section-head" style="--sec-c:var(--cat-${key})"><span class="dot"></span><h2>${meta.label}</h2><span class="sec-count">${items.length} KPI${items.length===1?'':'s'}</span></div>
+      <div class="grid">${items.map(k=>`
+        <div class="card-flip" style="--card-c:var(--cat-${key})">
+          <div class="card-flip-inner">
+            <article class="card card-face front">
+              <div class="card-head">
+                <div><div class="acronym font-mono">${k.acr}</div><h3 class="kpi-name">${k.name}</h3></div>
+                ${addBtnHTML(kkey(k))}
+              </div>
+              <p class="definition">${k.def}</p>
+              <div class="example"><b>Example</b><span>${k.ex}</span></div>
+              <p class="best-when"><b>Best tracked when:</b> ${k.best}</p>
+              <div class="tagrow">${k.tags.map(t=>`<span class="tag">${TAGS[t]}</span>`).join('')}</div>
+              <button type="button" class="card-bench-btn" data-action="flip">Benchmarks →</button>
+            </article>
+            <article class="card card-face back">
+              <div class="card-head">
+                <div><div class="acronym font-mono">${k.acr}</div><h3 class="kpi-name">${k.name}</h3></div>
+              </div>
+              <p class="bench-label">Is this number good?</p>
+              ${benchBandsHTML(BENCH[kkey(k)])}
+              <button type="button" class="card-bench-btn" data-action="flip">← Back</button>
+            </article>
+          </div>
+        </div>`).join('')}</div>`;
+    results.appendChild(section);
+  });
+  wireAddBtns(results);
+  results.querySelectorAll('[data-action="flip"]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      btn.closest('.card-flip').classList.toggle('flipped');
+    });
+  });
+}
+document.getElementById('index-search').addEventListener('input', renderIndex);
+document.getElementById('index-clear').addEventListener('click', ()=>{
+  document.querySelectorAll('#panel-index .chip.active').forEach(c=>c.classList.remove('active'));
+  document.getElementById('index-search').value=''; renderIndex();
+});
+
+// ================= BENCHMARKS (shown on the back of Index cards) =================
+function benchBandsHTML(b){
+  if (!b) return '<p class="bench-note">No benchmark authored yet for this KPI.</p>';
+  if (b.mode==='note') return `<p class="bench-note">${b.note}</p>`;
+  if (b.mode==='single'){
+    let html = `<div class="bench-bands">
+      <div class="band" style="--band-c:var(--sig-watch)"><span class="band-tag">Watch</span><span class="band-val">${b.watch}</span></div>
+      <div class="band" style="--band-c:var(--sig-typical)"><span class="band-tag">Typical</span><span class="band-val">${b.typical}</span></div>
+      <div class="band" style="--band-c:var(--sig-strong)"><span class="band-tag">Strong</span><span class="band-val">${b.strong}</span></div>
+    </div>`;
+    if (b.note) html += `<p class="bench-note" style="margin-top:8px;">${b.note}</p>`;
+    return html;
+  }
+  if (b.mode==='seg'){
+    const segLabels = {ecommerce:"Ecommerce / DTC", b2b:"B2B / SaaS", local:"Local Service", content:"Content / Publisher"};
+    let html = Object.entries(b.segs).map(([seg,v])=>`
+      <div style="margin-bottom:8px;">
+        <p class="bench-label" style="margin-bottom:4px;">${segLabels[seg]||seg}</p>
+        <div class="bench-bands">
+          <div class="band" style="--band-c:var(--sig-watch)"><span class="band-tag">Watch</span><span class="band-val">${v.watch}</span></div>
+          <div class="band" style="--band-c:var(--sig-typical)"><span class="band-tag">Typical</span><span class="band-val">${v.typical}</span></div>
+          <div class="band" style="--band-c:var(--sig-strong)"><span class="band-tag">Strong</span><span class="band-val">${v.strong}</span></div>
+        </div>
+      </div>`).join('');
+    if (b.note) html += `<p class="bench-note">${b.note}</p>`;
+    return html;
+  }
+  return '';
+}
+// ================= FIT =================
+const INDUSTRY_LABELS = {ecommerce:"Ecommerce / DTC Retail", b2b:"B2B / SaaS", local:"Local Service Business", content:"Content / Media / Publisher", "":"Other / Mixed"};
+const GOAL_LABELS = {
+  "efficiency,conversion":"Grow revenue / sales efficiently",
+  "leadgen,conversion":"Generate leads / pipeline",
+  "awareness,brand":"Build brand awareness",
+  "retention":"Improve retention / loyalty",
+  "dataquality":"Strengthen measurement / data foundation"
+};
+function buildChannelChips(){
+  const group = document.getElementById('channel-group');
+  Object.entries(CATEGORIES).forEach(([key,meta])=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='chan-chip'+(key==='foundation' ? ' active':''); b.dataset.chan=key; b.textContent=meta.short;
+    b.style.setProperty('--chip-c', `var(--cat-${key})`);
+    b.addEventListener('click',()=>b.classList.toggle('active'));
+    group.appendChild(b);
+  });
+}
+function selectedChannels(){ return Array.from(document.querySelectorAll('.chan-chip.active')).map(b=>b.dataset.chan); }
+function selectedStages(){ return Array.from(document.querySelectorAll('#stage-group input:checked')).map(i=>i.value); }
+function fitMeta(){
+  return {
+    clientName: document.getElementById('client-name').value.trim() || 'Untitled engagement',
+    industryLabel: INDUSTRY_LABELS[document.getElementById('industry').value] || 'Not specified',
+    goalLabel: GOAL_LABELS[document.getElementById('goal').value] || 'Not specified',
+    stageLabels: selectedStages().length ? selectedStages().map(s=>s[0].toUpperCase()+s.slice(1)).join(', ') : 'Not specified',
+    channelLabels: selectedChannels().length ? selectedChannels().map(c=>CATEGORIES[c].short).join(', ') : 'Not specified'
+  };
+}
+function buildFitSet(){
+  const channels = selectedChannels();
+  if (!channels.length){ alert('Select at least one live channel before building a recommended set.'); return; }
+  const industryVal = document.getElementById('industry').value;
+  const goalVal = document.getElementById('goal').value;
+  const stageVals = selectedStages();
+  const matchTags = new Set([...(goalVal?goalVal.split(','):[]), ...(industryVal?[industryVal]:[]), ...stageVals]);
+  KPIS.forEach(k=>{
+    if (!channels.includes(k.cat)) return;
+    const matched = matchTags.size===0 || k.tags.some(t=>matchTags.has(t));
+    if (matched) state.selected.add(kkey(k));
+  });
+  document.getElementById('fit-results').style.display='';
+  updateSelIndicator();
+  renderFitSelectedView();
+  document.getElementById('fit-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function renderFitSelectedView(){
+  if (document.getElementById('fit-results').style.display === 'none') return;
+  const channels = selectedChannels();
+  const industryVal = document.getElementById('industry').value;
+  const goalVal = document.getElementById('goal').value;
+  const stageVals = selectedStages();
+  const matchTags = new Set([...(goalVal?goalVal.split(','):[]), ...(industryVal?[industryVal]:[]), ...stageVals]);
+  const sections = document.getElementById('fit-sections');
+  sections.innerHTML='';
+  Object.entries(CATEGORIES).forEach(([key,meta])=>{
+    if (!channels.includes(key)) return;
+    const items = KPIS.filter(k=>k.cat===key);
+    if (!items.length) return;
+    const matchedCount = items.filter(k=>matchTags.size===0 || k.tags.some(t=>matchTags.has(t))).length;
+    const section = document.createElement('div');
+    section.className='section';
+    section.innerHTML = `
+      <div class="section-head" style="--sec-c:var(--cat-${key})"><span class="dot"></span><h3>${meta.label}</h3><span class="n">${matchedCount} of ${items.length} matched</span></div>
+      <div class="kgrid">${items.map(k=>{
+        const matched = matchTags.size===0 || k.tags.some(t=>matchTags.has(t));
+        const sel = state.selected.has(kkey(k));
+        return `<label class="kcard ${matched?'':'unmatched'}" style="--card-c:var(--cat-${key})">
+          <input type="checkbox" data-selkey="${kkey(k)}" ${sel?'checked':''}>
+          <div class="body">
+            <div class="top"><span class="acr">${k.acr}</span>${matched?'<span class="matched-badge">Matched</span>':''}</div>
+            <div class="nm">${k.name}</div>
+            <p class="why">${k.def}</p>
+          </div>
+        </label>`;
+      }).join('')}</div>`;
+    sections.appendChild(section);
+  });
+  sections.querySelectorAll('input[data-selkey]').forEach(cb=>{
+    cb.addEventListener('change', ()=>{ toggleSelect(cb.dataset.selkey, cb.checked); });
+  });
+  const m = fitMeta();
+  document.getElementById('fit-sel-count').textContent = state.selected.size;
+  document.getElementById('fit-sel-meta').innerHTML = `KPIs selected for <b>${m.clientName}</b> across all tabs — check or uncheck here, or from Index/Benchmarks/Diagnostics.`;
+}
+document.getElementById('build-btn').addEventListener('click', buildFitSet);
+document.getElementById('fit-reset-btn').addEventListener('click', ()=>{
+  document.getElementById('client-name').value='';
+  document.getElementById('industry').value='';
+  document.getElementById('goal').value='';
+  document.querySelectorAll('#stage-group input').forEach(i=>i.checked=false);
+  document.querySelectorAll('.chan-chip').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.chan-chip[data-chan="foundation"]').classList.add('active');
+  document.getElementById('fit-results').style.display='none';
+  document.getElementById('fit-sections').innerHTML='';
+});
+
+// ================= DIAGNOSTICS =================
+let diagSelectedKey = null;
+let diagDirection = 'down';
+function diagFallback(k){
+  const siblings = KPIS.filter(o=>kkey(o)!==kkey(k) && (o.cat===k.cat || o.tags.some(t=>k.tags.includes(t))));
+  const scored = siblings.map(o=>({o, score:(o.cat===k.cat?2:0)+o.tags.filter(t=>k.tags.includes(t)).length}));
+  scored.sort((a,b)=>b.score-a.score);
+  return scored.slice(0,5).map(s=>({ref:kkey(s.o), reason:`Related ${CATEGORIES[s.o.cat].short} metric sharing ${s.o.cat===k.cat?'the same channel':'overlapping goals'} — check for correlated movement.`, fallback:true}));
+}
+function diagVerb(dir){ return dir==='up' ? 'increased' : 'decreased'; }
+function renderDiagBody(){
+  const body = document.getElementById('diag-body');
+  if (!diagSelectedKey){ body.innerHTML = '<div class="empty-state">Search for a KPI above to see what to check when it moves.</div>'; return; }
+  const k = findKPI(diagSelectedKey);
+  const entry = DIAG[diagSelectedKey];
+  let list = (entry && entry[diagDirection]) ? entry[diagDirection].slice() : null;
+  let usedFallback = false;
+  if (!list || !list.length){ list = diagFallback(k); usedFallback = true; }
+  body.innerHTML = `
+    <div class="diag-current" style="--card-c:var(--cat-${k.cat})">
+      <span class="acr font-mono">${k.acr}</span><span class="nm">${k.name}</span>
+      ${addBtnHTML(kkey(k))}
+    </div>
+    <div class="dir-toggle">
+      <button type="button" class="dir-btn ${diagDirection==='up'?'active':''}" data-dir="up">▲ ${k.acr} increased</button>
+      <button type="button" class="dir-btn ${diagDirection==='down'?'active':''}" data-dir="down">▼ ${k.acr} decreased</button>
+    </div>
+    <p class="best-when" style="margin-bottom:4px;">Check these next${usedFallback?' <span class="diag-fallback-tag">no curated entry — showing related metrics</span>':''}:</p>
+    <div class="diag-list">${list.map(item=>{
+      const ref = findKPI(item.ref);
+      if (!ref) return '';
+      return `<div class="diag-item" style="--card-c:var(--cat-${ref.cat})">
+        <div class="body">
+          <div class="head"><span class="acr">${ref.acr}</span><span class="nm">${ref.name}</span></div>
+          <p class="reason">${item.reason}</p>
+        </div>
+        ${addBtnHTML(kkey(ref))}
+      </div>`;
+    }).join('')}</div>`;
+  body.querySelectorAll('.dir-btn').forEach(b=>b.addEventListener('click', ()=>{ diagDirection=b.dataset.dir; renderDiagBody(); }));
+  wireAddBtns(body);
+}
+const diagSearchInput = document.getElementById('diag-search');
+const diagResultsList = document.getElementById('diag-search-results');
+diagSearchInput.addEventListener('input', ()=>{
+  const q = diagSearchInput.value.trim().toLowerCase();
+  if (!q){ diagResultsList.style.display='none'; diagResultsList.innerHTML=''; return; }
+  const matches = KPIS.filter(k=>(k.acr+' '+k.name).toLowerCase().includes(q)).slice(0,10);
+  if (!matches.length){ diagResultsList.style.display='none'; diagResultsList.innerHTML=''; return; }
+  diagResultsList.innerHTML = matches.map(k=>`<button type="button" data-selkey="${kkey(k)}"><span class="acr">${k.acr}</span>${k.name} <span style="color:var(--ink-muted); font-size:0.78rem;">— ${CATEGORIES[k.cat].short}</span></button>`).join('');
+  diagResultsList.style.display='';
+  diagResultsList.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+    diagSelectedKey = b.dataset.selkey;
+    diagSearchInput.value = findKPI(diagSelectedKey).acr;
+    diagResultsList.style.display='none';
+    renderDiagBody();
+  }));
+});
+document.addEventListener('click', (e)=>{ if (!e.target.closest('.diag-search')) diagResultsList.style.display='none'; });
+
+// ================= PLAN =================
+const CADENCE_OPTS = ["Weekly","Monthly","Quarterly","Ad hoc"];
+function planFieldsFor(key){
+  if (!state.plan[key]) state.plan[key] = {cadence:"Monthly", source:"", owner:"", target:""};
+  return state.plan[key];
+}
+function renderPlan(){
+  const hasSel = state.selected.size>0;
+  document.getElementById('plan-empty').style.display = hasSel ? 'none' : '';
+  document.getElementById('plan-body').style.display = hasSel ? '' : 'none';
+  if (!hasSel) return;
+  const m = fitMeta();
+  document.getElementById('plan-client-echo').value = m.clientName;
+  document.getElementById('plan-industry-echo').value = m.industryLabel;
+  document.getElementById('plan-goal-echo').value = m.goalLabel;
+
+  const sections = document.getElementById('plan-sections');
+  sections.innerHTML='';
+  Object.entries(CATEGORIES).forEach(([catKey,meta])=>{
+    const items = KPIS.filter(k=>k.cat===catKey && state.selected.has(kkey(k)));
+    if (!items.length) return;
+    const section = document.createElement('div');
+    section.className='section';
+    const toolbarId = 'tb-'+catKey;
+    section.innerHTML = `
+      <div class="section-head" style="--sec-c:var(--cat-${catKey})"><span class="dot"></span><h3>${meta.label}</h3><span class="sec-count">${items.length} KPI${items.length===1?'':'s'}</span></div>
+      <div class="plan-section-toolbar" id="${toolbarId}">
+        <span>Apply to all in section:</span>
+        <select data-field="cadence">${CADENCE_OPTS.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+        <input type="text" data-field="source" placeholder="Data source">
+        <input type="text" data-field="owner" placeholder="Owner">
+        <input type="text" data-field="target" placeholder="Target">
+        <button type="button" data-apply="${catKey}">Apply</button>
+      </div>
+      <div class="plan-scroll">
+        <table class="plan-table">
+          <thead><tr><th>KPI</th><th>Cadence</th><th>Data source</th><th>Owner</th><th>Target</th></tr></thead>
+          <tbody>${items.map(k=>{
+            const f = planFieldsFor(kkey(k));
+            return `<tr data-row="${kkey(k)}">
+              <td class="kpiname"><span class="acr">${k.acr}</span>${k.name}</td>
+              <td><select data-field="cadence">${CADENCE_OPTS.map(c=>`<option value="${c}" ${f.cadence===c?'selected':''}>${c}</option>`).join('')}</select></td>
+              <td><input type="text" data-field="source" value="${f.source.replace(/"/g,'&quot;')}" placeholder="e.g. GA4"></td>
+              <td><input type="text" data-field="owner" value="${f.owner.replace(/"/g,'&quot;')}" placeholder="e.g. A. Alicea"></td>
+              <td><input type="text" data-field="target" value="${f.target.replace(/"/g,'&quot;')}" placeholder="e.g. <$40"></td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>`;
+    sections.appendChild(section);
+  });
+
+  sections.querySelectorAll('tbody tr').forEach(row=>{
+    const key = row.dataset.row;
+    row.querySelectorAll('[data-field]').forEach(el=>{
+      el.addEventListener('input', ()=>{ planFieldsFor(key)[el.dataset.field] = el.value; updatePlanOutput(); });
+      el.addEventListener('change', ()=>{ planFieldsFor(key)[el.dataset.field] = el.value; updatePlanOutput(); });
+    });
+  });
+  sections.querySelectorAll('[data-apply]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const catKey = btn.dataset.apply;
+      const toolbar = document.getElementById('tb-'+catKey);
+      const vals = {};
+      toolbar.querySelectorAll('[data-field]').forEach(el=>{ if(el.value) vals[el.dataset.field]=el.value; });
+      KPIS.filter(k=>k.cat===catKey && state.selected.has(kkey(k))).forEach(k=>{
+        Object.assign(planFieldsFor(kkey(k)), vals);
+      });
+      renderPlan();
+    });
+  });
+  updatePlanOutput();
+}
+function updatePlanOutput(){
+  const m = fitMeta();
+  let out = `MEASUREMENT PLAN — ${m.clientName}\n`;
+  out += `Industry: ${m.industryLabel}  ·  Goal: ${m.goalLabel}\n`;
+  out += `Funnel focus: ${m.stageLabels}  ·  Channels: ${m.channelLabels}\n\n`;
+  Object.entries(CATEGORIES).forEach(([catKey,meta])=>{
+    const items = KPIS.filter(k=>k.cat===catKey && state.selected.has(kkey(k)));
+    if (!items.length) return;
+    out += `${meta.label.toUpperCase()}\n`;
+    items.forEach(k=>{
+      const f = planFieldsFor(kkey(k));
+      out += `- ${k.acr} (${k.name}) — ${k.def}\n`;
+      out += `  Cadence: ${f.cadence}  ·  Source: ${f.source||'—'}  ·  Owner: ${f.owner||'—'}  ·  Target: ${f.target||'—'}\n`;
+    });
+    out += `\n`;
+  });
+  document.getElementById('plan-output-text').value = out.trim();
+}
+document.getElementById('plan-copy-btn').addEventListener('click', ()=>{
+  const text = document.getElementById('plan-output-text').value;
+  const status = document.getElementById('plan-copy-status');
+  const showStatus = (msg)=>{ status.textContent=msg; status.classList.add('show'); setTimeout(()=>status.classList.remove('show'),1800); };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showStatus('Copied.')).catch(()=>{
+      document.getElementById('plan-output-text').select(); showStatus('Press Cmd/Ctrl+C — text is selected.');
+    });
+  } else {
+    document.getElementById('plan-output-text').select(); showStatus('Press Cmd/Ctrl+C — text is selected.');
+  }
+});
+
+// ---------------- init ----------------
+buildIndexChips();
+buildChannelChips();
+renderIndex();
+updateSelIndicator();
+</script>
+
+
+<script>
+(function(){
+
+const CTA_MAP = {
+  buy:    {verb:"Shop Now",      meta:"Shop Now"},
+  quote:  {verb:"Get a Quote",   meta:"Get Quote"},
+  book:   {verb:"Book a Call",   meta:"Book Now"},
+  signup: {verb:"Sign Up",       meta:"Sign Up"},
+  learn:  {verb:"Learn More",    meta:"Learn More"}
+};
+const TONE_MAP = {
+  professional: {adj:"Trusted",     closer:"Get Started"},
+  casual:       {adj:"Friendly",    closer:"Let's Go"},
+  urgent:       {adj:"Limited-Time",closer:"Don't Wait"},
+  premium:      {adj:"Elevated",    closer:"Discover More"}
+};
+const INDUSTRY_LABEL = {ecommerce:"Retail", b2b:"B2B", local:"Local Service", content:"Media", "":"Industry"};
+const NEG_BASE = ["free","jobs","salary","diy","training","course","how to","internship"];
+
+const RANDOM_POOLS = {
+  ecommerce: {
+    biz: ["Coastal Supply Co.","Northbound Apparel","Lumen Home Goods","Verde Skincare","Anchor & Oak","Palmetto Provisions","Wildline Outdoor","Halcyon Beauty"],
+    desc: ["sustainable everyday backpacks","small-batch skincare for sensitive skin","handmade ceramic dinnerware","minimalist home decor","performance activewear","artisan coffee subscriptions","eco-friendly cleaning products","curated gift boxes"],
+    audience: ["eco-conscious shoppers in their 20s and 30s","busy parents who value quality over quantity","gift-givers looking for something different","outdoor enthusiasts who hate single-use plastic","skincare shoppers with sensitive skin","home cooks who care about good design"],
+    benefit: ["free shipping on every order","a 60-day no-questions returns policy","materials sourced entirely in the US","handmade in small batches, never mass-produced","carbon-neutral shipping on every order","a design that actually lasts"],
+    proof: ["4.8★ average rating (sample — swap in your real number)","10,000+ orders shipped (sample — swap in your real number)","Featured in a regional lifestyle blog (sample — replace with your real placement)"],
+    seeds: ["organic skincare, sensitive skin lotion","sustainable backpacks, eco friendly bags","ceramic dinnerware, handmade plates","activewear leggings, performance gym wear"]
+  },
+  b2b: {
+    biz: ["Meridian Analytics","Ledgerline Software","Northpoint Consulting","Vantable Systems","Ampersand Ops","Corestack Technologies","Fieldwire Solutions","Bridgeway SaaS"],
+    desc: ["workflow automation for finance teams","a CRM built for small sales teams","compliance tracking software","an all-in-one project management platform","payroll software for growing companies","a scheduling tool for field service teams"],
+    audience: ["operations leaders at mid-market companies","finance teams tired of spreadsheets","sales managers scaling a small team","IT directors evaluating new vendors","HR teams at fast-growing startups"],
+    benefit: ["setup in under a week, not a quarter","a dedicated onboarding specialist for every account","integrates with the tools you already use","no long-term contract required","SOC 2 Type II compliant from day one"],
+    proof: ["Trusted by 200+ companies (sample — swap in your real number)","4.7/5 on G2 (sample — replace with your real rating)","99.9% uptime over the last 12 months (sample — verify before using)"],
+    seeds: ["workflow automation software, business process automation","CRM for small business, sales pipeline software","compliance tracking tool, audit software"]
+  },
+  local: {
+    biz: ["Riverside Dental","Sunport Plumbing","Magnolia Family Law","Coral Gate HVAC","Brightside Veterinary","Downtown Auto Repair","Palm Ridge Roofing","Harbor View Salon"],
+    desc: ["same-day teeth whitening","emergency plumbing repair","family law consultations","AC repair and installation","same-day vet appointments","brake and alignment service","roof repair and replacement","haircuts and color"],
+    audience: ["busy professionals in Miami","homeowners dealing with an urgent repair","families going through a difficult transition","renters needing fast, reliable service","pet owners who want a same-day appointment"],
+    benefit: ["same-day appointments, most weeks","a licensed technician on every job","upfront pricing with no surprise fees","20+ years serving this neighborhood","a satisfaction guarantee on every job"],
+    proof: ["4.9★ on Google (sample — swap in your real rating)","10 years serving this neighborhood (sample — replace with your real number)","500+ five-star reviews (sample — verify before using)"],
+    seeds: ["teeth whitening, cosmetic dentist near me","emergency plumber, plumbing repair near me","family lawyer, divorce attorney near me"]
+  },
+  content: {
+    biz: ["The Weekly Signal","Fieldnotes Media","Longform Digest","Groundwork Studio","The Margin Newsletter","Compass Content Co.","Afterglow Media","Northline Press"],
+    desc: ["a weekly newsletter on independent business","in-depth industry research reports","a members-only podcast and community","long-form journalism on climate and cities","a daily briefing for marketing leaders"],
+    audience: ["curious professionals who read past the headline","marketing leaders short on time","independent founders building in public","industry analysts and researchers","readers tired of surface-level takes"],
+    benefit: ["no ads, ever","written by working practitioners, not generalists","a new issue every week, rain or shine","archives going back to our first issue","a community of 5,000+ engaged readers"],
+    proof: ["12,000+ subscribers (sample — swap in your real number)","Featured in a national media roundup (sample — replace with your real placement)","94% open rate on our welcome series (sample — verify before using)"],
+    seeds: ["business newsletter, independent media newsletter","industry research report, market analysis newsletter","founder podcast, startup community"]
+  }
+};
+RANDOM_POOLS[""] = ["biz","desc","audience","benefit","proof","seeds"].reduce((acc,key)=>{
+  acc[key] = [].concat(...Object.values(RANDOM_POOLS).map(p=>p[key]));
+  return acc;
+}, {});
+
+const TONE_WRAP = {
+  professional: b => b,
+  casual: b => b.charAt(0).toLowerCase()+b.slice(1),
+  urgent: b => `${b} — limited availability`,
+  premium: b => `${b}, done right`
+};
+
+function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function getRandomPool(){
+  const industry = document.getElementById("wb-industry").value;
+  return RANDOM_POOLS[industry] || RANDOM_POOLS[""];
+}
+function randomizeField(target){
+  const pool = getRandomPool();
+  const tone = document.getElementById("wb-tone").value;
+  let val = "";
+  if (target === "wb-biz") val = pickRandom(pool.biz);
+  else if (target === "wb-desc") val = pickRandom(pool.desc);
+  else if (target === "wb-audience") val = pickRandom(pool.audience);
+  else if (target === "wb-benefit") val = (TONE_WRAP[tone]||(x=>x))(pickRandom(pool.benefit));
+  else if (target === "wb-proof") val = pickRandom(pool.proof);
+  else if (target === "wb-seeds") val = pickRandom(pool.seeds);
+  const el = document.getElementById(target);
+  el.value = val;
+  el.dispatchEvent(new Event("input"));
+}
+
+function cap(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function truncateWords(str, max){
+  str = str.trim();
+  if (str.length <= max) return str;
+  let cut = str.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  if (lastSpace > 0) cut = cut.slice(0, lastSpace);
+  return cut.trim();
+}
+function dedupe(arr){ return [...new Set(arr.filter(Boolean))]; }
+function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+function readInputs(){
+  const biz = document.getElementById("wb-biz").value.trim() || "Your Business";
+  const industry = document.getElementById("wb-industry").value;
+  const desc = document.getElementById("wb-desc").value.trim() || "our service";
+  const audience = document.getElementById("wb-audience").value.trim() || "customers";
+  const benefit = cap(document.getElementById("wb-benefit").value.trim()) || "Real results";
+  const proof = document.getElementById("wb-proof").value.trim();
+  const tone = document.getElementById("wb-tone").value;
+  const goal = document.getElementById("wb-goal").value;
+  const seeds = dedupe(document.getElementById("wb-seeds").value.split(",").map(s=>s.trim().toLowerCase()));
+  return {biz, industry, desc, audience, benefit, proof, tone, goal, seeds};
+}
+
+function buildHeadlines(ctx){
+  const cta = CTA_MAP[ctx.goal].verb;
+  const t = TONE_MAP[ctx.tone];
+  const indLabel = INDUSTRY_LABEL[ctx.industry] || "Industry";
+  const audShort = cap(ctx.audience.split(" ").slice(-2).join(" "));
+  let formulas = [
+    `${ctx.biz} — ${ctx.benefit}`,
+    `${ctx.benefit} for ${ctx.audience}`,
+    `Need ${ctx.desc}?`,
+    `${ctx.biz}: ${cta} Today`,
+    `Get ${ctx.benefit}`,
+    `${audShort}, Meet ${ctx.biz}`,
+    `${cta} — ${ctx.desc}`,
+    `Why Choose ${ctx.biz}?`,
+    `${ctx.benefit}. ${cta}.`,
+    `${t.adj} ${indLabel} Experts`,
+    `${cap(ctx.desc)}, Made Simple`,
+    `See Why ${ctx.audience} Choose Us`,
+    `${cta} — No Hassle`,
+    `Quality ${ctx.desc}`
+  ];
+  if (ctx.proof){
+    formulas.unshift(`${ctx.proof} — ${ctx.biz}`);
+    formulas.unshift(ctx.proof);
+  }
+  formulas = dedupe(formulas).filter(f=>f.length<=50);
+  return formulas.slice(0,15);
+}
+
+function buildDescriptions(ctx){
+  const cta = CTA_MAP[ctx.goal].verb;
+  let d = [
+    `${ctx.benefit} at ${ctx.biz}. ${cta} today.`,
+    ctx.proof
+      ? `${ctx.proof}. ${cta} now — it only takes a minute.`
+      : `${cap(ctx.audience)} trust ${ctx.biz} for ${ctx.desc}. ${cta} now.`,
+    `${cap(ctx.desc)} built for ${ctx.audience}. ${ctx.benefit}. ${cta}.`,
+    `Serving ${ctx.audience} with ${ctx.desc}. ${ctx.benefit} — ${cta.toLowerCase()}.`
+  ];
+  d = dedupe(d).filter(x=>x.length<=90);
+  return d.slice(0,4);
+}
+
+function buildMeta(ctx){
+  const meta = CTA_MAP[ctx.goal].meta;
+  const primaryShort = truncateWords(`${ctx.benefit}. ${CTA_MAP[ctx.goal].verb} today.`, 125);
+  const primaryLong = truncateWords(
+    `${ctx.biz} helps ${ctx.audience} get ${ctx.desc} without the hassle. ${ctx.benefit}` +
+    (ctx.proof ? ` — ${ctx.proof.toLowerCase()}.` : ".") +
+    ` ${CTA_MAP[ctx.goal].verb} and see the difference.`,
+    280
+  );
+  const headline = truncateWords(`${ctx.biz}: ${ctx.benefit}`, 40);
+  const linkDesc = truncateWords(`${cap(ctx.desc)} for ${ctx.audience}`, 50);
+  return {primaryShort, primaryLong, headline, linkDesc, cta: meta};
+}
+
+function buildKeywords(ctx){
+  const seeds = ctx.seeds.length ? ctx.seeds : [ctx.desc.toLowerCase()];
+  const audNoun = ctx.audience.split(" ").slice(-2).join(" ").toLowerCase() || "customers";
+  let broad=[], phrase=[], exact=[], neg=[];
+  seeds.forEach(s=>{
+    broad.push(`best ${s}`, `${s} near me`, `affordable ${s}`, `top ${s}`, `${s} services`, `${s} company`);
+    phrase.push(`"${s} cost"`, `"${s} reviews"`, `"${s} for ${audNoun}"`, `"local ${s}"`);
+    exact.push(`[${s}]`, `[${s} near me]`, `[buy ${s}]`);
+    neg.push(`${s} jobs`, `${s} salary`);
+  });
+  neg = NEG_BASE.concat(neg);
+  return {
+    broad: dedupe(broad).slice(0,8),
+    phrase: dedupe(phrase).slice(0,6),
+    exact: dedupe(exact).slice(0,6),
+    neg: dedupe(neg).slice(0,10)
+  };
+}
+
+let STATE = null;
+
+function render(){
+  const ctx = readInputs();
+  const headlines = buildHeadlines(ctx);
+  const descs = buildDescriptions(ctx);
+  const meta = buildMeta(ctx);
+  const kw = buildKeywords(ctx);
+  STATE = {ctx, headlines, descs, meta, kw};
+
+  document.getElementById("wb-stat-hl").textContent = headlines.length;
+  document.getElementById("wb-stat-desc").textContent = descs.length;
+  document.getElementById("wb-stat-kw").textContent = kw.broad.length+kw.phrase.length+kw.exact.length+kw.neg.length;
+
+  document.getElementById("wb-google-count").textContent = `${headlines.length} headlines · ${descs.length} descriptions`;
+  const hlList = document.getElementById("wb-headline-list");
+  hlList.innerHTML = headlines.map((h,i)=>`
+    <div class="hl-row">
+      <input type="text" value="${esc(h)}" data-idx="${i}" class="hl-input" />
+      <span class="cc-badge font-mono">${h.length}/50</span>
+    </div>`).join("");
+  hlList.querySelectorAll(".hl-input").forEach(inp=>{
+    inp.addEventListener("input", ()=>{
+      const badge = inp.parentElement.querySelector(".cc-badge");
+      const len = inp.value.length;
+      badge.textContent = `${len}/50`;
+      badge.classList.toggle("over", len>50);
+    });
+  });
+
+  const descList = document.getElementById("wb-desc-list");
+  descList.innerHTML = descs.map(d=>`
+    <div class="desc-card" style="--sec-c:var(--cat-google);">
+      <span class="cc-badge font-mono" style="float:right;">${d.length}/90</span>
+      <div class="body">${esc(d)}</div>
+    </div>`).join("");
+
+  document.getElementById("wb-meta-count").textContent = `CTA: ${meta.cta}`;
+  document.getElementById("wb-meta-block").innerHTML = `
+    <div class="meta-card" style="--sec-c:var(--cat-meta);"><span class="k">Primary text — short</span><div class="body">${esc(meta.primaryShort)}</div></div>
+    <div class="meta-card" style="--sec-c:var(--cat-meta);"><span class="k">Primary text — long</span><div class="body">${esc(meta.primaryLong)}</div></div>
+    <div class="meta-card" style="--sec-c:var(--cat-meta);"><span class="k">Headline (max 40)</span><div class="body font-mono">${esc(meta.headline)} <span class="cc-badge">${meta.headline.length}/40</span></div></div>
+    <div class="meta-card" style="--sec-c:var(--cat-meta);"><span class="k">Link description</span><div class="body">${esc(meta.linkDesc)}</div></div>
+    <div class="meta-card" style="--sec-c:var(--cat-meta);"><span class="k">CTA button</span><div class="body font-mono">${esc(meta.cta)}</div></div>
+  `;
+
+  const total = kw.broad.length+kw.phrase.length+kw.exact.length+kw.neg.length;
+  document.getElementById("wb-kw-count").textContent = `${total} terms across 4 groups`;
+  document.getElementById("wb-kw-grid").innerHTML = `
+    <div class="kw-group"><h3>Broad match ideas <span class="n">${kw.broad.length}</span></h3><ul>${kw.broad.map(k=>`<li>${esc(k)}</li>`).join("")}</ul></div>
+    <div class="kw-group"><h3>Phrase match ideas <span class="n">${kw.phrase.length}</span></h3><ul>${kw.phrase.map(k=>`<li>${esc(k)}</li>`).join("")}</ul></div>
+    <div class="kw-group"><h3>Exact match ideas <span class="n">${kw.exact.length}</span></h3><ul>${kw.exact.map(k=>`<li>${esc(k)}</li>`).join("")}</ul></div>
+    <div class="kw-group neg"><h3>Starter negatives <span class="n">${kw.neg.length}</span></h3><ul>${kw.neg.map(k=>`<li>${esc(k)}</li>`).join("")}</ul></div>
+  `;
+
+  document.getElementById("wb-empty-note").style.display = "none";
+  document.getElementById("wb-results").style.display = "block";
+}
+
+function currentHeadlines(){
+  return [...document.querySelectorAll(".hl-input")].map(i=>i.value);
+}
+
+function flashCopied(id){
+  const el = document.getElementById(id);
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"), 1600);
+}
+function copyText(text, statusId){
+  navigator.clipboard.writeText(text).then(()=>flashCopied(statusId));
+}
+
+document.querySelectorAll(".dice-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>randomizeField(btn.dataset.target));
+});
+
+document.getElementById("wb-build-btn").addEventListener("click", render);
+document.getElementById("wb-reset-btn").addEventListener("click", ()=>{
+  ["wb-biz","wb-desc","wb-audience","wb-benefit","wb-proof","wb-seeds"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("wb-industry").value="";
+  document.getElementById("wb-tone").value="professional";
+  document.getElementById("wb-goal").value="buy";
+  document.getElementById("wb-results").style.display="none";
+  document.getElementById("wb-empty-note").style.display="block";
+  document.getElementById("wb-stat-hl").textContent="—";
+  document.getElementById("wb-stat-desc").textContent="—";
+  document.getElementById("wb-stat-kw").textContent="—";
+});
+
+document.getElementById("wb-copy-headlines").addEventListener("click", ()=>{
+  copyText(currentHeadlines().join("\n"), "wb-cs-headlines");
+});
+document.getElementById("wb-copy-descs").addEventListener("click", ()=>{
+  copyText(STATE.descs.join("\n"), "wb-cs-descs");
+});
+document.getElementById("wb-copy-meta").addEventListener("click", ()=>{
+  const m = STATE.meta;
+  const text = `Primary text (short): ${m.primaryShort}\nPrimary text (long): ${m.primaryLong}\nHeadline: ${m.headline}\nLink description: ${m.linkDesc}\nCTA button: ${m.cta}`;
+  copyText(text, "wb-cs-meta");
+});
+document.getElementById("wb-copy-kw").addEventListener("click", ()=>{
+  const kw = STATE.kw;
+  const text = `BROAD MATCH\n${kw.broad.join("\n")}\n\nPHRASE MATCH\n${kw.phrase.join("\n")}\n\nEXACT MATCH\n${kw.exact.join("\n")}\n\nNEGATIVES\n${kw.neg.join("\n")}`;
+  copyText(text, "wb-cs-kw");
+});
+document.getElementById("wb-copy-all").addEventListener("click", ()=>{
+  const m = STATE.meta, kw = STATE.kw;
+  const text =
+`GOOGLE ADS — RESPONSIVE SEARCH AD
+Headlines:
+${currentHeadlines().join("\n")}
+
+Descriptions:
+${STATE.descs.join("\n")}
+
+META ADS
+Primary text (short): ${m.primaryShort}
+Primary text (long): ${m.primaryLong}
+Headline: ${m.headline}
+Link description: ${m.linkDesc}
+CTA button: ${m.cta}
+
+KEYWORD RESEARCH
+Broad match:
+${kw.broad.join("\n")}
+Phrase match:
+${kw.phrase.join("\n")}
+Exact match:
+${kw.exact.join("\n")}
+Negatives:
+${kw.neg.join("\n")}`;
+  copyText(text, "wb-cs-all");
+});
+
+})();
+</script>
+
+<script>
+(function(){
+
+const STAGES = ["data","diagnose","recommend","rewrite"];
+const STAGE_LABEL = {data:"Data", diagnose:"Diagnose", recommend:"Recommend", rewrite:"Rewrite"};
+
+const CASES = [
+{
+  id:"sem-cpa",
+  channel:"sem", chanLabel:"Google Ads",
+  title:"CPA Doubled Week-Over-Week",
+  client:"Boutique fitness studio — lead-gen search campaign",
+  context:"Spend held flat at $2,400/wk. Something downstream of the click broke.",
+  account:{
+    industry:"Local service — boutique fitness studio, single location",
+    engagement:"$2,400/wk search budget, managed under a $10K/mo full-service retainer",
+    tenure:"Account live 14 months; this campaign has run continuously for the last 9"
+  },
+  headlineMetric:"CPA",
+  trend:[26,27,26,28,29,61],
+  trendBad:"up",
+  metrics:[
+    {acr:"CPA", full:"Cost Per Acquisition", before:"$28", after:"$61", bad:true},
+    {acr:"CPC", full:"Cost Per Click", before:"$1.12", after:"$1.15", bad:null},
+    {acr:"CTR", full:"Click-Through Rate", before:"4.1%", after:"4.0%", bad:null},
+    {acr:"CVR", full:"Conversion Rate", before:"3.9%", after:"1.9%", bad:true},
+    {acr:"Impr. Share", full:"Search Impression Share", before:"68%", after:"70%", bad:false},
+    {acr:"New Search Terms", full:"Unique queries triggering the ad (7d)", before:"210", after:"480", bad:true}
+  ],
+  causes:[
+    {label:"Broad-match keyword drift", confirmed:true, why:"Search terms report shows queries like “free yoga class” and “yoga instructor certification” now account for 38% of clicks, up from 6% last week. CTR held because these terms still look relevant to the ad — they just don't convert. Of the 480 unique queries logged this week, 182 have never appeared in the account before — nearly all trace back to the newly-drifted broad match term."},
+    {label:"Landing page broke", confirmed:false, why:"CVR on branded/direct traffic — unaffected by keyword targeting — held steady at 4.1%, so the page itself still converts fine for qualified visitors."},
+    {label:"Ad fatigue / creative burnout", confirmed:false, why:"CTR is flat, not declining. Fatigue would show impressions climbing while CTR falls — that's not what happened here."},
+    {label:"Rising competition pushing up CPCs", confirmed:false, why:"CPC only moved 3 cents. A real competitive squeeze would show a sharper CPC jump than that."}
+  ],
+  recommend:[
+    "Add negative keywords: free, certification, jobs, at home, DIY — all appearing in the search terms report against zero conversions.",
+    "Tighten the “yoga classes” broad match term to phrase match to cut off drift while preserving the converting core.",
+    "Turn the search-terms review into a standing weekly task, not a monthly one.",
+    "Set a CPA guardrail alert at $40 so drift like this surfaces in days, not a full week."
+  ],
+  rewrite:{
+    beforeLabel:"Current keyword setup", before:"Keyword: yoga classes (Broad Match)\nNegatives applied: none",
+    afterLabel:"Rewritten setup", after:"Keyword: \"yoga studio membership\" (Phrase Match)\n+ Negatives: free, certification, jobs, at home, diy",
+    note:"Same core term, tighter match type, drift terms blocked at the account level."
+  }
+},
+{
+  id:"meta-ctr",
+  channel:"meta", chanLabel:"Meta Ads",
+  title:"Link CTR Collapsed After 10 Days",
+  client:"DTC skincare brand — cold-audience prospecting campaign",
+  context:"Same $150/day budget, same audience, day 11 of the flight.",
+  account:{
+    industry:"Ecommerce — DTC skincare brand, single hero-SKU launch",
+    engagement:"$150/day prospecting budget, part of a $6K/mo paid social scope",
+    tenure:"Campaign in its first full flight — day 11 of a planned 30-day test"
+  },
+  headlineMetric:"Hook Rate",
+  trend:[34,33,34,33,32,14],
+  trendBad:"down",
+  metrics:[
+    {acr:"Frequency", full:"Avg. times seen per user", before:"1.8", after:"4.6", bad:true},
+    {acr:"CPM", full:"Cost Per Mille", before:"$8.20", after:"$14.10", bad:true},
+    {acr:"CTR (Link)", full:"Link Click-Through Rate", before:"1.4%", after:"0.5%", bad:true},
+    {acr:"Hook Rate", full:"3-Second Video Views", before:"32%", after:"14%", bad:true},
+    {acr:"CPR", full:"Cost Per Result", before:"$22", after:"$58", bad:true},
+    {acr:"Unique Reach", full:"Unique users reached (7d)", before:"18,400", after:"9,600", bad:true}
+  ],
+  causes:[
+    {label:"Creative fatigue / audience saturation", confirmed:true, why:"Frequency climbed from 1.8 to 4.6 in the same window Hook Rate cut by more than half. The same people are seeing the same hook for the fourth-plus time and scrolling past it. Unique reach fell by nearly half in that same week — the algorithm is re-serving a shrinking pool rather than finding new eyes, which is what actually drives frequency up this fast."},
+    {label:"Audience too broad or poorly targeted", confirmed:false, why:"CPM rising alongside frequency is the auction repricing an audience that's been shown the ad repeatedly — not a signal the audience itself is wrong."},
+    {label:"Landing page or offer problem", confirmed:false, why:"Hook Rate and link CTR are both top-of-funnel metrics measured before the click. A landing page issue shows up as CTR holding while post-click conversion drops, not this pattern."},
+    {label:"Category-wide seasonal softness", confirmed:false, why:"Brand's own spot-check of competitor share-of-voice in the category held flat this week — this isn't a market-wide dip."}
+  ],
+  recommend:[
+    "Rotate in 2 new hook variants — the first 3 seconds need a new visual pattern, not just new copy.",
+    "Expand to a lookalike audience or broaden the current one to reset frequency.",
+    "Pause the single worst-performing ad in the set; it's carrying most of the frequency burden.",
+    "Set a frequency-cap alert at 3.5 for cold-audience flights going forward."
+  ],
+  rewrite:{
+    beforeLabel:"Current hook (0–3s)", before:"Product shot on white background.\nVO: “Meet your new skincare routine.”",
+    afterLabel:"Rewritten hook (0–3s)", after:"Before/after close-up on a real customer's skin.\nOn-screen text: “3 weeks, no filter.”",
+    note:"Swaps a studio product shot for a specific, credible result — new pattern for the scroll, not just new words."
+  }
+},
+{
+  id:"pmax-roas",
+  channel:"sem", chanLabel:"Google Ads · PMax",
+  title:"ROAS Sliding Despite Flat Spend",
+  client:"Home goods ecommerce brand — Performance Max",
+  context:"Weekly spend has been locked at $3,000 for a month by client budget policy.",
+  account:{
+    industry:"Ecommerce — home goods, multi-category catalog (240 SKUs)",
+    engagement:"$3,000/wk fixed by client budget policy, PMax-only mandate",
+    tenure:"PMax campaign running 5 months; product feed last updated 3 weeks ago"
+  },
+  headlineMetric:"AOV",
+  trend:[86,85,86,85,84,62],
+  trendBad:"down",
+  metrics:[
+    {acr:"Spend", full:"Weekly ad spend", before:"$3,000", after:"$3,000", bad:null},
+    {acr:"Revenue", full:"Weekly attributed revenue", before:"$18,000", after:"$11,400", bad:true},
+    {acr:"ROAS", full:"Return on Ad Spend", before:"6.0", after:"3.8", bad:true},
+    {acr:"AOV", full:"Average Order Value", before:"$85", after:"$62", bad:true},
+    {acr:"CVR", full:"Conversion Rate", before:"3.2%", after:"3.0%", bad:false},
+    {acr:"Units/Order", full:"Avg. units per order", before:"1.3", after:"1.9", bad:null}
+  ],
+  causes:[
+    {label:"Product mix shift toward lower-AOV SKUs", confirmed:true, why:"CVR barely moved, so traffic quality didn't collapse — but AOV dropped $23. PMax's asset groups have auto-prioritized a $19 candle 3-pack (high CTR, low margin) over the $140 furniture bundle it was favoring three weeks ago. Units per order actually rose from 1.3 to 1.9 in the same window — shoppers aren't buying less, PMax is just showing them the candles instead of the bundle. The timing lines up almost exactly with a feed update three weeks back."},
+    {label:"Traffic quality problem", confirmed:false, why:"CVR held near-flat at 3.0–3.2%. If junk traffic were the cause, conversion rate — not order value — would be the metric that cratered."},
+    {label:"Client-side price change or promo", confirmed:false, why:"Client confirmed no pricing or discount changes went live this period."},
+    {label:"Keyword or targeting drift", confirmed:false, why:"Shopping/PMax spend is feed-driven, not keyword-driven — this failure mode doesn't apply the way it would in a Search campaign."}
+  ],
+  recommend:[
+    "Adjust asset group priority to lift the furniture bundle back into rotation.",
+    "Add a promoted-listing or higher-priority feed label for SKUs above $100 AOV.",
+    "If account policy allows, set a per-asset-group target ROAS floor instead of one blended account-level target.",
+    "Review exactly what changed in the feed update from 3 weeks ago — the timing is too close to be coincidence."
+  ],
+  rewrite:{
+    beforeLabel:"Current feed priority", before:"Asset group priority: unweighted, feed-order default\n(candle 3-pack surfacing first)",
+    afterLabel:"Rewritten feed priority", after:"Custom label \"priority-margin\" boosts the furniture bundle;\ncandle 3-pack capped at 20% of impressions",
+    note:"Same budget, same campaign — just stops the algorithm from optimizing toward the wrong SKU."
+  }
+},
+{
+  id:"sem-is",
+  channel:"sem", chanLabel:"Google Ads",
+  title:"Branded Impression Share Dropped 30 Points",
+  client:"Regional personal injury law firm — brand-defense campaign",
+  context:"CPC on brand terms hasn't moved. Someone new showed up in the auction.",
+  account:{
+    industry:"Local service — regional personal injury law firm, 3 offices",
+    engagement:"Standalone brand-defense campaign, $1,800/wk, separate from non-brand budget",
+    tenure:"Brand campaign has run untouched for 3+ years — first real challenge on record"
+  },
+  headlineMetric:"Search IS",
+  trend:[91,92,91,92,90,61],
+  trendBad:"down",
+  metrics:[
+    {acr:"Search IS", full:"Search Impression Share", before:"92%", after:"61%", bad:true},
+    {acr:"Abs. Top IS", full:"Absolute Top Impression Share", before:"88%", after:"40%", bad:true},
+    {acr:"CPC", full:"Cost Per Click", before:"$2.10", after:"$2.10", bad:null},
+    {acr:"Branded Clicks", full:"Weekly clicks on brand terms", before:"410", after:"260", bad:true},
+    {acr:"Auction Overlap", full:"New entrant's overlap rate on brand terms", before:"0%", after:"64%", bad:true}
+  ],
+  causes:[
+    {label:"Competitor conquesting on branded terms", confirmed:true, why:"Flat CPC rules out a budget cap. Losing Absolute Top IS while CPC holds steady means a new advertiser entered the auction and is winning rank on the firm's own name — a rank-based loss, not a spend-based one. Auction Insights shows a competitor firm that had 0% overlap on these terms last month now appearing on 64% of auctions — a new, direct challenger, not a gradual drift."},
+    {label:"Budget-capped impression loss", confirmed:false, why:"Budget-capped IS loss usually arrives with rising CPCs as the algorithm stretches a limited budget. CPC here hasn't moved at all."},
+    {label:"Ad disapproval or policy issue", confirmed:false, why:"The account shows zero policy flags and the ad is actively serving — it's losing the auction, not being rejected from it."},
+    {label:"Seasonal drop in brand search volume", confirmed:false, why:"Search Console shows total branded query volume flat week over week — the impressions lost were still available, and went to someone else."}
+  ],
+  recommend:[
+    "Raise brand campaign bids, or switch to Target Impression Share set to “absolute top of page.”",
+    "Ship a conquest-resistant RSA that leads with the firm's specific differentiator instead of generic legal copy.",
+    "Set a standing weekly Auction Insights check on brand campaigns — this shouldn't surface a month later.",
+    "Loop in the client — a competitor bidding this aggressively on their name is worth a conversation, not just a bid change."
+  ],
+  rewrite:{
+    beforeLabel:"Current headline", before:"“Personal Injury Lawyers Serving South Florida”",
+    afterLabel:"Rewritten headline", after:"“[Firm Name] — 27 Years, Miami-Based, No Fee Unless We Win”",
+    note:"Generic category copy can't out-compete a challenger on the firm's own name — specific proof points can."
+  }
+},
+{
+  id:"gbp-local",
+  channel:"gbp", chanLabel:"Google Business Profile",
+  title:"Local Pack Visibility Slipped",
+  client:"Multi-location HVAC company — 4 service-area listings",
+  context:"NAP is clean across directories. Nothing structural changed on the listings.",
+  account:{
+    industry:"Local service — multi-location HVAC company, 4 service-area listings",
+    engagement:"GBP + local SEO retainer covering all 4 listings under one scope",
+    tenure:"Listings live 3+ years, previously stable top-3 pack presence"
+  },
+  headlineMetric:"Local Pack Rate",
+  trend:[75,74,75,74,73,52],
+  trendBad:"down",
+  metrics:[
+    {acr:"Local Pack Rate", full:"Share of tracked searches in top-3 pack", before:"74%", after:"52%", bad:true},
+    {acr:"GBP Calls", full:"Weekly calls from listing", before:"96", after:"61", bad:true},
+    {acr:"Reviews (90d)", full:"This client's new reviews", before:"14", after:"15", bad:false},
+    {acr:"Rating", full:"Average listing rating", before:"4.6", after:"4.6", bad:null},
+    {acr:"Competitor Reviews (90d)", full:"Top competitor's new reviews", before:"11", after:"34", bad:true},
+    {acr:"Photo Uploads (90d)", full:"New photos added to listing", before:"3", after:"3", bad:null}
+  ],
+  causes:[
+    {label:"Review velocity stalled while a competitor's accelerated", confirmed:true, why:"Rating and NAP are unchanged, so relevance and proximity signals didn't move — but a top-3 competitor's review count jumped from 11 to 34 in the same window. Prominence is a ranking factor, and their velocity now outpaces this client's. Photo activity and listing completeness stayed identical to last period, which isolates the one variable that actually changed: the competitor's review momentum, not anything on this client's own listing."},
+    {label:"NAP inconsistency across directories", confirmed:false, why:"This period's citation audit shows no new mismatches across the directories checked last month."},
+    {label:"New or spam competitor listing", confirmed:false, why:"No new competing Business Profile appeared in the tracked local pack this period — the same competitors just changed activity level."},
+    {label:"Google algorithm update", confirmed:false, why:"No update was logged in trackers for this window, and category-wide rankings tracked separately for comparable local businesses didn't shift."}
+  ],
+  recommend:[
+    "Launch an automated post-service review request (SMS + email) — there's currently no systematic ask.",
+    "Respond to every unanswered review from the last 90 days.",
+    "Add 2–3 missing service-area pages with location-specific photos this month to reinforce relevance.",
+    "Flag this pattern for the other 3 locations before the same competitor's momentum spreads to them."
+  ],
+  rewrite:{
+    beforeLabel:"Current review ask", before:"None — reviews only arrive when a customer\nthinks to leave one unprompted.",
+    afterLabel:"Rewritten review ask", after:"SMS, sent 2 hours after the service ticket closes:\n“Thanks for choosing [Company] today! Mind leaving\na quick review? Takes 30 seconds: [link]”",
+    note:"Turns review generation from passive luck into a scheduled step in the service workflow."
+  }
+}
+];
+
+let activeCaseId = null;
+let activeStage = "data";
+
+function sparkSVG(trend, bad){
+  const w=100, h=32, pad=4;
+  const min=Math.min(...trend), max=Math.max(...trend);
+  const range = (max-min)||1;
+  const pts = trend.map((v,i)=>{
+    const x = pad + (i/(trend.length-1))*(w-2*pad);
+    const y = h-pad - ((v-min)/range)*(h-2*pad);
+    return [x,y];
+  });
+  const line = pts.map(p=>p.join(",")).join(" ");
+  const color = bad==="up" ? "var(--sig-watch)" : bad==="down" ? "var(--sig-watch)" : "var(--sig-strong)";
+  const last = pts[pts.length-1];
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="32" preserveAspectRatio="none" aria-hidden="true">
+    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${last[0]}" cy="${last[1]}" r="2.6" fill="${color}"/>
+  </svg>`;
+}
+
+function deltaClass(bad){
+  if(bad===true) return "watch";
+  if(bad===false) return "strong";
+  return "typical";
+}
+
+function renderCaseGrid(){
+  const grid = document.getElementById("opt-case-grid");
+  grid.innerHTML = CASES.map(c=>{
+    const m = c.metrics.find(x=>x.acr===c.headlineMetric) || c.metrics[0];
+    return `<button class="case-card" data-case="${c.id}" style="--cat-c:var(--cat-${c.channel})">
+      <div class="case-top">
+        <span class="chan-chip">${c.chanLabel}</span>
+      </div>
+      <p class="case-title font-display">${c.title}</p>
+      <p class="case-client">${c.client}</p>
+      <div class="case-spark">${sparkSVG(c.trend, c.trendBad)}</div>
+      <div class="case-delta"><span class="acr">${m.acr}</span> ${m.before} <span class="arrow">&rarr;</span> ${m.after}</div>
+    </button>`;
+  }).join("");
+  grid.querySelectorAll(".case-card").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      activeCaseId = btn.dataset.case;
+      activeStage = "data";
+      openCase();
+    });
+  });
+}
+
+function openCase(){
+  document.querySelectorAll(".case-card").forEach(b=>b.classList.toggle("active", b.dataset.case===activeCaseId));
+  const c = CASES.find(x=>x.id===activeCaseId);
+  document.getElementById("opt-case-workspace").style.display = "block";
+  document.getElementById("opt-bar-case-title").textContent = c.title + " — " + c.chanLabel;
+  renderStepper();
+  renderStage();
+  document.getElementById("opt-case-workspace").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function renderStepper(){
+  const el = document.getElementById("opt-stepper");
+  const activeIdx = STAGES.indexOf(activeStage);
+  el.innerHTML = STAGES.map((s,i)=>{
+    const state = i===activeIdx ? "active" : (i<activeIdx ? "done" : "");
+    const num = i<activeIdx ? "✓" : (i+1);
+    return `<button class="step-node ${state}" data-stage="${s}">
+      <span class="dot">${num}</span><span class="lbl">${STAGE_LABEL[s]}</span>
+    </button>${i<STAGES.length-1 ? '<span class="step-line"></span>' : ''}`;
+  }).join("");
+  el.querySelectorAll(".step-node").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ activeStage = btn.dataset.stage; renderStepper(); renderStage(); });
+  });
+}
+
+function renderStage(){
+  const c = CASES.find(x=>x.id===activeCaseId);
+  const panel = document.getElementById("opt-stage-panel");
+  const idx = STAGES.indexOf(activeStage);
+  const nextStage = STAGES[idx+1];
+
+  let body = "";
+  if(activeStage==="data"){
+    body = `
+      <div class="stage-head"><h2>Data</h2><p>${c.context}</p></div>
+      <div class="account-snapshot">
+        <div class="field"><span class="lbl">Industry</span><span class="val">${c.account.industry}</span></div>
+        <div class="field"><span class="lbl">Engagement</span><span class="val">${c.account.engagement}</span></div>
+        <div class="field"><span class="lbl">Account tenure</span><span class="val">${c.account.tenure}</span></div>
+      </div>
+      <div class="tbl-scroll">
+        <table class="metrics-table">
+          <thead><tr><th>Metric</th><th>Last period</th><th>This period</th><th>Change</th><th>Trend</th></tr></thead>
+          <tbody>
+            ${c.metrics.map(m=>`<tr>
+              <td><span class="acr">${m.acr}</span><span class="full">${m.full}</span></td>
+              <td class="num">${m.before}</td>
+              <td class="num">${m.after}</td>
+              <td><span class="delta-chip ${deltaClass(m.bad)}">${m.bad===true?"WATCH":m.bad===false?"OK":"—"}</span></td>
+              <td class="spark-cell">${m.acr===c.headlineMetric ? sparkSVG(c.trend, c.trendBad) : ""}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>`;
+  } else if(activeStage==="diagnose"){
+    body = `
+      <div class="stage-head"><h2>Diagnose</h2><p>Four candidate causes, weighed against the data above.</p></div>
+      <div class="cause-list">
+        ${c.causes.map(cs=>`<div class="cause-card ${cs.confirmed?"confirmed":"ruled-out"}">
+          <span class="cause-mark">${cs.confirmed?"✓":"✕"}</span>
+          <div class="cause-body">
+            <div class="cause-title">${cs.label} <span class="cause-status ${cs.confirmed?"confirmed":"ruled-out"}">${cs.confirmed?"Confirmed":"Ruled out"}</span></div>
+            <p class="cause-why">${cs.why}</p>
+          </div>
+        </div>`).join("")}
+      </div>`;
+  } else if(activeStage==="recommend"){
+    body = `
+      <div class="stage-head"><h2>Recommend</h2><p>Actions tied directly to the confirmed cause, not a generic checklist.</p></div>
+      <div class="rec-list">
+        ${c.recommend.map(r=>`<div class="rec-item"><span class="rec-num"></span><span class="rec-text">${r}</span></div>`).join("")}
+      </div>`;
+  } else if(activeStage==="rewrite"){
+    body = `
+      <div class="stage-head"><h2>Rewrite</h2><p>What the fix looks like once it ships.</p></div>
+      <div class="rewrite-grid">
+        <div class="rewrite-col before"><span class="rewrite-lbl">${c.rewrite.beforeLabel}</span><span class="rewrite-copy">${c.rewrite.before}</span></div>
+        <div class="rewrite-col after"><span class="rewrite-lbl">${c.rewrite.afterLabel}</span><span class="rewrite-copy">${c.rewrite.after}</span></div>
+      </div>
+      <p class="rewrite-note">${c.rewrite.note}</p>`;
+  }
+
+  const actions = `<div class="stage-actions">
+      ${nextStage ? `<button class="btn-primary" id="opt-next-stage-btn">Next: ${STAGE_LABEL[nextStage]} &rarr;</button>` : `<button class="btn-secondary" id="opt-restart-stage-btn">Back to Data</button>`}
+    </div>`;
+
+  panel.innerHTML = body + actions;
+
+  const nextBtn = document.getElementById("opt-next-stage-btn");
+  if(nextBtn) nextBtn.addEventListener("click", ()=>{ activeStage = nextStage; renderStepper(); renderStage(); window.scrollTo({top:document.getElementById("opt-case-workspace").offsetTop-20, behavior:"smooth"}); });
+  const restartBtn = document.getElementById("opt-restart-stage-btn");
+  if(restartBtn) restartBtn.addEventListener("click", ()=>{ activeStage = "data"; renderStepper(); renderStage(); window.scrollTo({top:document.getElementById("opt-case-workspace").offsetTop-20, behavior:"smooth"}); });
+}
+
+document.getElementById("opt-change-case-btn").addEventListener("click", ()=>{
+  document.getElementById("opt-case-workspace").style.display = "none";
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+renderCaseGrid();
+
+})();
+</script>
+
+<script>
+(function(){
+
+const KPIS = [
+  {id:"cac", acr:"CAC", name:"Customer Acquisition Cost", format:"currency", higherIsBetter:false, cat:"foundation",
+    goodPhrase:"acquisition got meaningfully more efficient", badPhrase:"acquisition is getting more expensive",
+    recommendation:"Revisit audience targeting and creative fatigue before increasing spend further."},
+  {id:"roas", acr:"ROAS", name:"Return on Ad Spend", format:"ratio", higherIsBetter:true, cat:"foundation",
+    goodPhrase:"revenue return per dollar spent strengthened", badPhrase:"revenue return per dollar spent is weakening",
+    recommendation:"Audit which campaigns or ad sets are dragging down blended return and reallocate budget toward the strongest performers."},
+  {id:"mer", acr:"MER", name:"Marketing Efficiency Ratio", format:"ratio", higherIsBetter:true, cat:"foundation",
+    goodPhrase:"overall marketing efficiency improved at the business level", badPhrase:"blended marketing efficiency is softening",
+    recommendation:"Zoom out from platform-reported ROAS and check whether one channel is quietly dragging down blended efficiency."},
+  {id:"mqlsql", acr:"MQL→SQL", name:"MQL-to-SQL Conversion Rate", format:"percent", higherIsBetter:true, cat:"foundation",
+    goodPhrase:"the leads marketing is generating are higher quality and more sales-ready", badPhrase:"lead quality is slipping even where volume looks fine",
+    recommendation:"Sync with sales on lead-scoring criteria — this usually signals a quality problem, not a volume one."},
+  {id:"cpa", acr:"CPA", name:"Cost Per Acquisition", format:"currency", higherIsBetter:false, cat:"sem",
+    goodPhrase:"each conversion is costing less to win", badPhrase:"each conversion is costing more to win",
+    recommendation:"Refresh ad creative and tighten keyword match types to cut wasted spend."},
+  {id:"ctr", acr:"CTR", name:"Click-Through Rate", format:"percent", higherIsBetter:true, cat:"sem",
+    goodPhrase:"ad relevance and hook strength are resonating with the audience", badPhrase:"ad relevance is softening and clicks are getting harder to earn",
+    recommendation:"Test new headlines and primary hooks before the softness compounds into a Quality Score problem."},
+  {id:"engagement", acr:"Engagement Rate", name:"Engagement Rate", format:"percent", higherIsBetter:true, cat:"ga4",
+    goodPhrase:"traffic landing on-site is sticking around and engaging", badPhrase:"traffic is bouncing rather than engaging",
+    recommendation:"Review landing-page relevance and load speed for the underperforming traffic sources."},
+  {id:"keyevents", acr:"Key Events", name:"Key Events (Conversions)", format:"count", higherIsBetter:true, cat:"ga4",
+    goodPhrase:"the site is converting more of its visitors into leads or customers", badPhrase:"fewer visitors are completing the intended conversion action",
+    recommendation:"Check for a tracking regression first, then review the conversion funnel for new friction."},
+  {id:"localpack", acr:"Local Pack Rate", name:"Local Pack Appearance Rate", format:"percent", higherIsBetter:true, cat:"gbp",
+    goodPhrase:"the business is showing up more often in local map results where nearby customers are searching", badPhrase:"local visibility is fading from the map pack",
+    recommendation:"Audit Google Business Profile completeness, review recency, and check citation consistency."},
+  {id:"openrate", acr:"Open Rate", name:"Email Open Rate", format:"percent", higherIsBetter:true, cat:"email",
+    goodPhrase:"subject lines are earning more opens", badPhrase:"subject lines are losing the inbox battle",
+    recommendation:"Test new subject lines and review sender reputation and deliverability."},
+  {id:"clickrate", acr:"Click Rate", name:"Email Click Rate", format:"percent", higherIsBetter:true, cat:"email",
+    goodPhrase:"the content inside the email is earning more clicks once opened", badPhrase:"opens aren't converting into clicks the way they used to",
+    recommendation:"Revisit email content and CTA placement — an open without a click points at the offer, not the subject line."}
+];
+const KPI_BY_ID = Object.fromEntries(KPIS.map(k => [k.id, k]));
+const GENERIC_STEPS = [
+  "Scale budget toward the channels responsible for this period's wins.",
+  "Document what changed this period so the win is repeatable, not accidental.",
+  "Set next period's targets from this period's trailing baseline rather than last year's number."
+];
+const FLAT_THRESHOLD = 1;
+
+/* --- Randomizer support ---
+   No external AI call is possible here (static, CSP-sandboxed artifact, no network access) —
+   these generators are context-aware templates instead: numeric ranges per KPI, biased by
+   whatever period-framing is currently selected, and note text pulled from a pool matching
+   the row's actual computed direction so nothing contradicts the number. */
+const KPI_RANGES = {
+  cac:        {min:120, max:420, decimals:0},
+  roas:       {min:1.8, max:6.5, decimals:1},
+  mer:        {min:2.5, max:7.5, decimals:1},
+  mqlsql:     {min:8,   max:38,  decimals:0},
+  cpa:        {min:18,  max:130, decimals:0},
+  ctr:        {min:1.2, max:6.5, decimals:1},
+  engagement: {min:35,  max:78,  decimals:0},
+  keyevents:  {min:40,  max:900, decimals:0},
+  localpack:  {min:15,  max:72,  decimals:0},
+  openrate:   {min:14,  max:48,  decimals:0},
+  clickrate:  {min:0.8, max:8.5, decimals:1}
+};
+const FRAMING_BIAS = {
+  "steady growth":  {lo:3,   hi:16},
+  "recovery month": {lo:9,   hi:28},
+  "scaling test":   {lo:-22, hi:32},
+  "mixed signals":  {lo:-18, hi:18},
+  "early days":     {lo:-3,  hi:3}
+};
+const GOOD_NOTES = [
+  "a mid-period promotional push", "a refreshed creative rotation",
+  "budget reallocated toward the top-performing campaign", "a landing page redesign that shipped this period",
+  "seasonal tailwinds", "a new audience segment that's converting well",
+  "tighter keyword match types cutting wasted spend", "an improved offer on the primary landing page"
+];
+const WATCH_NOTES = [
+  "rising CPCs across the account", "ad fatigue on the top-performing creative",
+  "a tracking or tagging issue introduced this period", "increased competitor activity in the category",
+  "a landing page issue introduced during a recent update", "broader seasonal softness in the category",
+  "a bidding strategy change that hasn't stabilized yet", "audience saturation on the core campaign"
+];
+const FLAT_NOTES = [
+  "no major account changes this period", "a quiet period with minimal testing",
+  "holding steady while a bigger test is queued for next period", "budget held flat month over month"
+];
+const CLIENT_NAME_POOL = [
+  "Riverside Dental", "Bayside Auto Group", "LumenWorks", "CoastalCart Outfitters",
+  "Meridian Legal Partners", "BrightPath Tutoring", "Anchor & Oak Furniture", "Vantage Fitness Studios",
+  "Sable Row Consulting", "GreenLeaf Landscaping", "Northstar Home Services", "Pixel & Pine Creative",
+  "Solace Wellness Clinic", "Ferro Metal Works", "Bloom & Barrel Cafe", "TrueNorth Insurance Group",
+  "Cobalt Cloud Systems", "Harbor Lane Realty", "Vivid Optics", "Ember & Ash BBQ"
+];
+const PERIOD_FORMATS = [
+  () => { const m = ["January","February","March","April","May","June","July","August","September","October","November","December"]; return m[Math.floor(Math.random()*12)] + " " + (2025 + Math.floor(Math.random()*2)); },
+  () => { const q = 1 + Math.floor(Math.random()*4); return "Q" + q + " " + (2025 + Math.floor(Math.random()*2)); }
+];
+
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+function roundTo(n, decimals){ const f = Math.pow(10, decimals); return Math.round(n * f) / f; }
+function randomInRange(range){ return roundTo(range.min + Math.random() * (range.max - range.min), range.decimals); }
+function pickFavorablePct(framing){
+  const b = FRAMING_BIAS[framing] || FRAMING_BIAS["mixed signals"];
+  return b.lo + Math.random() * (b.hi - b.lo);
+}
+
+function randomizeRowField(id, field){
+  const kpi = KPI_BY_ID[id];
+  const range = KPI_RANGES[id];
+  if (!rowData[id]) rowData[id] = {thisVal:"", priorVal:"", note:""};
+
+  if (field === "priorVal"){
+    rowData[id].priorVal = String(randomInRange(range));
+    return;
+  }
+
+  if (field === "thisVal"){
+    let prior = parseFloat(rowData[id].priorVal);
+    if (isNaN(prior)){
+      prior = randomInRange(range);
+      rowData[id].priorVal = String(prior);
+    }
+    const framing = document.getElementById("rpt-period-framing").value;
+    const favorable = pickFavorablePct(framing);
+    const pct = kpi.higherIsBetter ? favorable : -favorable;
+    let thisVal = prior * (1 + pct / 100);
+    const floor = Math.max(range.min * 0.3, range.decimals === 0 && range.max > 100 ? 1 : 0.1);
+    const ceiling = range.max * 1.5;
+    thisVal = Math.min(Math.max(thisVal, floor), ceiling);
+    rowData[id].thisVal = String(roundTo(thisVal, range.decimals));
+    return;
+  }
+
+  if (field === "note"){
+    const r = computeRow(id);
+    let poolChoice;
+    if (r.dir === "good") poolChoice = GOOD_NOTES;
+    else if (r.dir === "watch") poolChoice = WATCH_NOTES;
+    else if (r.dir === "flat") poolChoice = FLAT_NOTES;
+    else poolChoice = GOOD_NOTES.concat(WATCH_NOTES, FLAT_NOTES);
+    rowData[id].note = pick(poolChoice);
+  }
+}
+
+let selectedIds = [];
+let rowData = {};
+
+function fmt(val, format){
+  if (val === null || val === undefined || isNaN(val)) return "—";
+  const n = Number(val);
+  if (format === "currency") return "$" + n.toLocaleString(undefined, {maximumFractionDigits: n < 100 ? 2 : 0});
+  if (format === "percent") return n.toFixed(1) + "%";
+  if (format === "ratio") return n.toFixed(1) + "x";
+  return Math.round(n).toLocaleString();
+}
+
+function computeRow(id){
+  const kpi = KPI_BY_ID[id];
+  const d = rowData[id] || {};
+  const thisVal = parseFloat(d.thisVal);
+  const priorVal = parseFloat(d.priorVal);
+  if (isNaN(thisVal) || isNaN(priorVal) || priorVal === 0){
+    return {kpi, thisVal: isNaN(thisVal) ? null : thisVal, priorVal: isNaN(priorVal) ? null : priorVal, pct: null, dir: "pending", note: d.note || ""};
+  }
+  const pct = ((thisVal - priorVal) / Math.abs(priorVal)) * 100;
+  let dir;
+  const favorable = kpi.higherIsBetter ? pct : -pct;
+  if (favorable >= FLAT_THRESHOLD) dir = "good";
+  else if (favorable <= -FLAT_THRESHOLD) dir = "watch";
+  else dir = "flat";
+  return {kpi, thisVal, priorVal, pct, dir, note: d.note || ""};
+}
+
+function renderChips(){
+  const wrap = document.getElementById("rpt-kpi-chips");
+  wrap.innerHTML = "";
+  KPIS.forEach(k => {
+    const chip = document.createElement("button");
+    chip.className = "chip" + (selectedIds.includes(k.id) ? " active" : "");
+    chip.style.setProperty("--cat-c", "var(--cat-" + k.cat + ")");
+    chip.innerHTML = '<span class="dot"></span><span class="font-mono" style="font-weight:700;">' + k.acr + '</span> ' + k.name;
+    chip.addEventListener("click", () => toggleKpi(k.id));
+    wrap.appendChild(chip);
+  });
+}
+
+function toggleKpi(id){
+  const i = selectedIds.indexOf(id);
+  if (i === -1){ selectedIds.push(id); if(!rowData[id]) rowData[id] = {thisVal:"", priorVal:"", note:""}; }
+  else selectedIds.splice(i, 1);
+  renderChips();
+  renderTable();
+  renderOutput();
+}
+
+function renderTable(){
+  const tbody = document.getElementById("rpt-kpi-tbody");
+  tbody.innerHTML = "";
+  if (selectedIds.length === 0){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No KPIs selected yet — pick some above.</td></tr>';
+    return;
+  }
+  selectedIds.forEach(id => {
+    const kpi = KPI_BY_ID[id];
+    const r = computeRow(id);
+    const tr = document.createElement("tr");
+    let pillHtml;
+    if (r.dir === "pending") pillHtml = '<span class="dir-pill pending">enter both values</span>';
+    else {
+      const arrow = r.pct >= 0 ? "▲" : "▼";
+      const label = r.dir === "good" ? "good" : (r.dir === "watch" ? "watch" : "flat");
+      pillHtml = '<span class="dir-pill ' + r.dir + '">' + arrow + ' ' + Math.abs(r.pct).toFixed(1) + '% · ' + label + '</span>';
+    }
+    tr.innerHTML =
+      '<td><div class="kpiname"><span class="acr" style="color:var(--cat-' + kpi.cat + ')">' + kpi.acr + '</span>' + kpi.name + '</div></td>' +
+      '<td><div class="input-with-rand"><input type="number" data-field="thisVal" data-id="' + id + '" value="' + (rowData[id].thisVal ?? "") + '" placeholder="0" /><button type="button" class="rand-btn" data-randfield="thisVal" data-id="' + id + '" title="Randomize" aria-label="Randomize this period value">🎲</button></div></td>' +
+      '<td><div class="input-with-rand"><input type="number" data-field="priorVal" data-id="' + id + '" value="' + (rowData[id].priorVal ?? "") + '" placeholder="0" /><button type="button" class="rand-btn" data-randfield="priorVal" data-id="' + id + '" title="Randomize" aria-label="Randomize prior period value">🎲</button></div></td>' +
+      '<td>' + pillHtml + '</td>' +
+      '<td><div class="input-with-rand"><input type="text" data-field="note" data-id="' + id + '" value="' + (rowData[id].note ?? "").replace(/"/g,"&quot;") + '" placeholder="optional" /><button type="button" class="rand-btn" data-randfield="note" data-id="' + id + '" title="Randomize" aria-label="Randomize context note">🎲</button></div></td>' +
+      '<td><button class="rm-btn" data-rm="' + id + '">Remove</button></td>';
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll("input").forEach(inp => {
+    inp.addEventListener("input", e => {
+      const id = e.target.getAttribute("data-id");
+      const field = e.target.getAttribute("data-field");
+      rowData[id][field] = e.target.value;
+      renderTable();
+      renderOutput();
+    });
+  });
+  tbody.querySelectorAll("[data-rm]").forEach(btn => {
+    btn.addEventListener("click", e => toggleKpi(e.target.getAttribute("data-rm")));
+  });
+  tbody.querySelectorAll("[data-randfield]").forEach(btn => {
+    btn.addEventListener("click", e => {
+      const id = e.currentTarget.getAttribute("data-id");
+      const field = e.currentTarget.getAttribute("data-randfield");
+      randomizeRowField(id, field);
+      renderTable();
+      renderOutput();
+    });
+  });
+}
+
+function buildNarrative(){
+  const client = document.getElementById("rpt-client-name").value.trim() || "the client";
+  const period = document.getElementById("rpt-report-period").value.trim() || "this period";
+  const framing = document.getElementById("rpt-period-framing").value;
+
+  const rows = selectedIds.map(computeRow).filter(r => r.dir !== "pending");
+  const wins = rows.filter(r => r.dir === "good");
+  const watches = rows.filter(r => r.dir === "watch");
+  const flats = rows.filter(r => r.dir === "flat");
+
+  document.getElementById("rpt-stat-tracked").textContent = selectedIds.length;
+  document.getElementById("rpt-stat-wins").textContent = wins.length;
+  document.getElementById("rpt-stat-watch").textContent = watches.length;
+
+  if (rows.length === 0){
+    return "Select KPIs above and enter this-period and prior-period values for at least one to generate a draft narrative.";
+  }
+
+  function sentence(r, good){
+    const verb = r.pct >= 0 ? "climbed to" : "dropped to";
+    const label = good
+      ? (r.kpi.higherIsBetter ? "increase" : "reduction")
+      : (r.kpi.higherIsBetter ? "decline" : "increase");
+    const phrase = good ? r.kpi.goodPhrase : r.kpi.badPhrase;
+    const note = r.note.trim().replace(/\.$/, "");
+    const noteClause = note ? ", noted as driven by " + note.charAt(0).toLowerCase() + note.slice(1) : "";
+    return r.kpi.name + " " + verb + " " + fmt(r.thisVal, r.kpi.format) + " (from " + fmt(r.priorVal, r.kpi.format) + "), a " +
+      Math.abs(r.pct).toFixed(1) + "% " + label + " — " + phrase + noteClause + ".";
+  }
+
+  let biggest = null;
+  [...wins, ...watches].forEach(r => { if (!biggest || Math.abs(r.pct) > Math.abs(biggest.pct)) biggest = r; });
+  if (!biggest && flats.length) biggest = flats[0];
+
+  let out = client + " — " + period + "\n\n";
+  out += "EXECUTIVE SUMMARY\n";
+  if (biggest && biggest.dir !== "flat"){
+    out += period.charAt(0).toUpperCase() + period.slice(1) + " was framed as a " + framing + " for " + client + ". " +
+      "The headline mover was " + biggest.kpi.name + ", which " + (biggest.pct >= 0 ? "climbed to" : "dropped to") + " " +
+      fmt(biggest.thisVal, biggest.kpi.format) + " (from " + fmt(biggest.priorVal, biggest.kpi.format) + "), a " +
+      Math.abs(biggest.pct).toFixed(1) + "% move — " + (biggest.dir === "good" ? biggest.kpi.goodPhrase : biggest.kpi.badPhrase) + ".\n\n";
+  } else {
+    out += period.charAt(0).toUpperCase() + period.slice(1) + " was framed as a " + framing + " for " + client +
+      ". Metrics held roughly steady across the board — nothing moved sharply in either direction.\n\n";
+  }
+
+  out += "WINS\n";
+  out += wins.length ? wins.map(r => "- " + sentence(r, true)).join("\n") : "- No metric moved clearly in the favorable direction this period.";
+  out += "\n\nWATCH-OUTS\n";
+  out += watches.length ? watches.map(r => "- " + sentence(r, false)).join("\n") : "- Nothing flagged as a concern this period.";
+
+  if (flats.length){
+    out += "\n\nHOLDING STEADY\n";
+    out += flats.map(r => "- " + r.kpi.name + " held roughly flat at " + fmt(r.thisVal, r.kpi.format) + " (" + (r.pct >= 0 ? "+" : "") + r.pct.toFixed(1) + "%).").join("\n");
+  }
+
+  let steps;
+  if (watches.length >= 2) steps = watches.slice(0, 3).map(r => r.kpi.recommendation);
+  else if (watches.length === 1) steps = [watches[0].kpi.recommendation, ...GENERIC_STEPS.slice(0, 2)];
+  else steps = GENERIC_STEPS;
+
+  out += "\n\nNEXT STEPS\n";
+  out += steps.map((s, i) => (i + 1) + ". " + s).join("\n");
+
+  return out;
+}
+
+function renderOutput(){
+  document.getElementById("rpt-output-text").value = buildNarrative();
+}
+
+document.getElementById("rpt-client-name").addEventListener("input", renderOutput);
+document.getElementById("rpt-report-period").addEventListener("input", renderOutput);
+document.getElementById("rpt-period-framing").addEventListener("change", renderOutput);
+
+document.getElementById("rpt-rand-client-name").addEventListener("click", () => {
+  document.getElementById("rpt-client-name").value = pick(CLIENT_NAME_POOL);
+  renderOutput();
+});
+document.getElementById("rpt-rand-report-period").addEventListener("click", () => {
+  document.getElementById("rpt-report-period").value = pick(PERIOD_FORMATS)();
+  renderOutput();
+});
+
+document.getElementById("rpt-copy-btn").addEventListener("click", () => {
+  const ta = document.getElementById("rpt-output-text");
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const status = document.getElementById("rpt-copy-status");
+    status.classList.add("show");
+    setTimeout(() => status.classList.remove("show"), 1500);
+  });
+});
+
+renderChips();
+renderTable();
+renderOutput();
+
+})();
+</script>
+<div class="mc-footer">Andrew Alicea &middot; Digital Marketing Specialist &middot; <a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a></div>
+</body>
+</html>
