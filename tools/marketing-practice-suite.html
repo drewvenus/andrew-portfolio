@@ -226,6 +226,10 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 <div class="lock-toast" id="lockToast" role="status" aria-live="polite"></div>
 
 <div class="icon-rail">
+  <button class="icon-btn" id="scroll-top-btn" title="Jump to top">
+    &#8593;
+    <span class="rail-label">Jump to top</span>
+  </button>
   <button class="icon-btn" id="organizer-btn" title="Organizer">
     📋<span class="badge hidden" id="organizer-badge">0</span>
     <span class="rail-label">Organizer — combined plan</span>
@@ -817,6 +821,13 @@ document.getElementById('practice-frame').addEventListener('load', function(){
 });
 document.getElementById('theme-toggle-btn').addEventListener('click', function(){
   applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+});
+document.getElementById('scroll-top-btn').addEventListener('click', function(){
+  window.scrollTo(0, 0);
+  var frame = document.getElementById('practice-frame');
+  if (frame && frame.contentWindow) {
+    try { frame.contentWindow.scrollTo(0, 0); } catch (e) {}
+  }
 });
 applyTheme(currentTheme);
 

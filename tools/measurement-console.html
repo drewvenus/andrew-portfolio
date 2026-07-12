@@ -2827,6 +2827,8 @@ renderOutput();
 if (window.self !== window.top) {
   const topbar = document.querySelector('.mc-topbar');
   if (topbar) topbar.style.display = 'none';
+  const footer = document.querySelector('.mc-footer');
+  if (footer) footer.style.display = 'none';
 }
 broadcastPlan();
 
