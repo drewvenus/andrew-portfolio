@@ -1,3 +1,45 @@
+// Remember scroll position on the home page across visits to case studies / work samples
+if (document.body.id === 'home-page') {
+  (function () {
+    const POS_KEY = 'homeScrollY';
+    const VISITED_KEY = 'homeVisited';
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+
+    const firstVisit = !sessionStorage.getItem(VISITED_KEY);
+    sessionStorage.setItem(VISITED_KEY, '1');
+
+    if (!firstVisit) {
+      const saved = sessionStorage.getItem(POS_KEY);
+      if (saved !== null) {
+        const y = parseInt(saved, 10);
+        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+        const restore = () => {
+          const prevBehavior = document.documentElement.style.scrollBehavior;
+          document.documentElement.style.scrollBehavior = 'auto';
+          window.scrollTo(0, y);
+          document.documentElement.style.scrollBehavior = prevBehavior;
+        };
+        // Layout (images/fonts) can still be settling on first paint, so retry
+        // a few times rather than trusting a single early scrollTo to stick.
+        restore();
+        requestAnimationFrame(restore);
+        window.addEventListener('load', restore);
+        setTimeout(restore, 300);
+      }
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        sessionStorage.setItem(POS_KEY, String(window.scrollY));
+        ticking = false;
+      });
+    }, { passive: true });
+  })();
+}
+
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 
