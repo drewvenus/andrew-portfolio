@@ -419,6 +419,46 @@ footer.site-footer {
 footer.site-footer a { color: var(--ink-soft); }
 footer.site-footer a:hover { color: var(--accent); }
 
+/* ---------- Utility rail (theme toggle + back to top) ---------- */
+.site-utility-rail {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.utility-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.35);
+  transition: border-color .2s ease, color .2s ease, transform .2s ease, opacity .2s ease;
+}
+.utility-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.utility-btn:active { transform: translateY(0) scale(0.96); }
+.back-to-top {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  font-family: var(--mono);
+  font-weight: 700;
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+@media (max-width: 640px) {
+  .site-utility-rail { right: 14px; bottom: 14px; gap: 10px; }
+  .utility-btn { width: 42px; height: 42px; font-size: 1.05rem; }
+}
+
 /* ---------- Back link (subpages) ---------- */
 .back-link {
   display: inline-flex;

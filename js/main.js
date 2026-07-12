@@ -40,6 +40,42 @@ if (document.body.id === 'home-page') {
   })();
 }
 
+// Theme toggle + back-to-top utility rail (home page only)
+if (document.body.id === 'home-page') {
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeToggleIcon = document.getElementById('themeToggleIcon');
+  if (themeToggleBtn && themeToggleIcon) {
+    const THEME_KEY = 'site-theme';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let currentTheme = localStorage.getItem(THEME_KEY) || (prefersDark ? 'dark' : 'light');
+
+    const applyTheme = (theme) => {
+      currentTheme = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+      themeToggleIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+      localStorage.setItem(THEME_KEY, theme);
+    };
+
+    applyTheme(currentTheme);
+    themeToggleBtn.addEventListener('click', () => {
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  const backToTopBtn = document.getElementById('backToTopBtn');
+  if (backToTopBtn) {
+    window.addEventListener('scroll', () => {
+      backToTopBtn.classList.toggle('visible', window.scrollY > 500);
+    }, { passive: true });
+    backToTopBtn.addEventListener('click', () => {
+      const prevBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      document.documentElement.style.scrollBehavior = prevBehavior;
+    });
+  }
+}
+
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 
