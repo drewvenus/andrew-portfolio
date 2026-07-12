@@ -1434,6 +1434,12 @@ function renderIndex(){
   const q = document.getElementById('index-search').value.trim().toLowerCase();
   const cats = activeSet('#index-cat-group .chip');
   const tags = activeSet('#index-tag-group .chip');
+  const results = document.getElementById('index-results');
+  if (!cats.size){
+    document.getElementById('index-count-badge').textContent = '0 of '+KPIS.length;
+    results.innerHTML = '<div class="empty-state">Select a channel above to see its KPIs.</div>';
+    return;
+  }
   const filtered = KPIS.filter(k=>{
     if (cats.size && !cats.has(k.cat)) return false;
     if (tags.size && !k.tags.some(t=>tags.has(t))) return false;
@@ -1441,7 +1447,6 @@ function renderIndex(){
     return true;
   });
   document.getElementById('index-count-badge').textContent = filtered.length+' of '+KPIS.length;
-  const results = document.getElementById('index-results');
   results.innerHTML='';
   if (!filtered.length){ results.innerHTML='<div class="empty-state">No KPIs match those filters. Try clearing a filter or broadening the search.</div>'; return; }
   Object.entries(CATEGORIES).forEach(([key,meta])=>{

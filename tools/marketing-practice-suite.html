@@ -1076,6 +1076,17 @@ document.getElementById('notes-clear-btn').addEventListener('click', function(){
   notesTextarea.focus();
 });
 
+document.getElementById('notes-btn').addEventListener('click', function(){
+  document.getElementById('notes-modal').classList.remove('hidden');
+  notesTextarea.focus();
+});
+document.getElementById('notes-close').addEventListener('click', function(){
+  document.getElementById('notes-modal').classList.add('hidden');
+});
+document.getElementById('notes-modal').addEventListener('click', function(e){
+  if (e.target === this) this.classList.add('hidden');
+});
+
 /* ---------- Minimal zero-dependency .docx export (ZIP + OOXML, no libraries) ---------- */
 var CRC_TABLE = (function(){
   var table = [];
