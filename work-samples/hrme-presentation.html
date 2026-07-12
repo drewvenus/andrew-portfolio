@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Recording Made Easy: Strategy Presentation | Andrew Alicea</title>
+<meta name="description" content="A 24-slide, 90-day growth, content, and AI strategy presentation prepared for the Home Recording Made Easy paid candidate exercise, business review, roadmap, content repurposing example, and an AI transcript-to-content workflow.">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.deck-wrap{ margin-top: 8px; }
+.deck-stage{
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: 460px;
+  display: flex;
+}
+.deck-slide{
+  width: 100%;
+  padding: 44px 48px 60px;
+  display: flex;
+  flex-direction: column;
+}
+.deck-kicker{
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+}
+.deck-title{
+  font-family: var(--serif); font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.15;
+  margin: 0 0 18px; max-width: 34ch;
+}
+.deck-subtitle{
+  font-size: 1.05rem; color: var(--ink-soft); max-width: 56ch; margin: 0 0 6px;
+}
+.deck-lede{ font-size: 1rem; color: var(--ink); max-width: 60ch; margin: 0 0 18px; font-style: italic; }
+.deck-body{ flex: 1; }
+.deck-list{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.deck-list li{
+  position: relative; padding-left: 20px; font-size: 0.94rem; line-height: 1.55; color: var(--ink);
+}
+.deck-list li::before{ content: "›"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+.deck-groups{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 26px; }
+.deck-group-label{
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-soft); margin: 0 0 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.deck-steps{ display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; }
+.deck-step{ background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; }
+.deck-step-n{ font-family: var(--mono); font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+.deck-step-label{ font-family: var(--serif); font-size: 1.05rem; margin: 4px 0 6px; }
+.deck-step-desc{ font-size: 0.85rem; color: var(--ink-soft); line-height: 1.5; }
+.deck-figure{ margin: 16px 0 0; }
+.deck-figure img{ max-width: 100%; max-height: 220px; border-radius: 8px; border: 1px solid var(--rule); display: block; }
+.deck-figure figcaption{ font-size: 0.75rem; color: var(--ink-soft); margin-top: 6px; }
+.deck-table{ width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.deck-table th, .deck-table td{ padding: 8px 12px; border-bottom: 1px solid var(--rule-soft); text-align: left; }
+.deck-table th.num, .deck-table td.num{ text-align: right; font-family: var(--mono); }
+.deck-footer{
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: auto; padding-top: 18px; font-family: var(--mono); font-size: 0.72rem;
+  color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.deck-slide.cover, .deck-slide.divider{
+  align-items: center; justify-content: center; text-align: center; padding: 60px 40px;
+}
+.deck-slide.divider .deck-num{
+  font-family: var(--mono); font-size: 3.2rem; font-weight: 700; color: var(--accent-soft);
+  -webkit-text-stroke: 1px var(--accent); color: transparent; margin-bottom: 6px;
+}
+.deck-slide.cover .deck-title, .deck-slide.divider .deck-title{ max-width: 20ch; margin: 0 auto 14px; }
+.deck-slide.cover .deck-subtitle, .deck-slide.divider .deck-subtitle{ margin: 0 auto; }
+.deck-slide.cover .deck-byline{ margin-top: 26px; font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft); }
+
+.deck-nav{
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--card) 88%, transparent); backdrop-filter: blur(4px);
+  color: var(--ink); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; transition: background .2s ease, border-color .2s ease, transform .15s ease, color .2s ease;
+  z-index: 2;
+}
+.deck-nav:hover{ border-color: var(--accent); color: var(--accent); transform: translateY(-50%) scale(1.08); }
+.deck-nav.prev{ left: 14px; }
+.deck-nav.next{ right: 14px; }
+.deck-count{
+  position: absolute; bottom: 14px; right: 14px; font-family: var(--mono); font-size: 0.76rem;
+  color: var(--ink); background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid var(--rule); border-radius: 20px; padding: 4px 12px; z-index: 2;
+}
+.deck-thumbs{
+  display: flex; gap: 8px; overflow-x: auto; padding: 16px 2px 6px;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.deck-thumbs::-webkit-scrollbar{ display: none; }
+.deck-thumb{
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; border: 2px solid transparent;
+  background: var(--paper-raised); color: var(--ink-soft); font-family: var(--mono); font-size: 0.78rem;
+  cursor: pointer; scroll-snap-align: start; opacity: 0.7; transition: opacity .2s ease, border-color .2s ease, transform .2s ease;
+}
+.deck-thumb:hover{ opacity: 1; transform: translateY(-2px); }
+.deck-thumb.active{ opacity: 1; border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.deck-cta{
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin: 28px 0; padding: 20px 24px; background: var(--accent-soft); border: 1px solid var(--rule); border-radius: 12px;
+}
+.deck-cta p{ margin: 0; font-size: 0.95rem; }
+@media (max-width: 640px){
+  .deck-stage{ min-height: 560px; }
+  .deck-slide{ padding: 32px 22px 46px; }
+  .deck-nav{ width: 38px; height: 38px; font-size: 0.95rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html">Andrew Alicea</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work-samples">Work Samples</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="ledger-page" style="max-width: var(--max-narrow); margin: 0 auto; padding: 56px 24px 96px;">
+  <a class="back-link" href="../index.html#work-samples">← Back to work samples</a>
+
+  <p class="eyebrow">Work Sample · Pitch Deck</p>
+  <h1>Home Recording Made Easy, Strategy Presentation</h1>
+  <p class="lede" style="margin-bottom:28px;">The 24-slide deck built to present the audit findings as a 90-day growth, content, and AI strategy, business review, phased roadmap, a live content-repurposing example, and the transcript-to-content workflow proposed to build first.</p>
+
+  <div class="disclaimer">Prepared for a paid candidate exercise pitching a prospective client. Shown here as a work sample demonstrating strategy and presentation skill, alongside the <a href="../case-studies/hrme-audit.html">full written audit</a> it's built from.</div>
+
+  <div class="deck-cta">
+    <p><strong>Want the underlying findings?</strong> The full page-by-page audit, technical SEO pass, and prioritized recommendations live in the case study.</p>
+    <a class="btn btn-primary" href="../case-studies/hrme-audit.html">View full case study →</a>
+  </div>
+
+  <div class="deck-wrap">
+    <div class="deck-stage">
+      <button class="deck-nav prev" aria-label="Previous slide">&#8592;</button>
+      <div class="deck-slide" id="deckSlide"></div>
+      <button class="deck-nav next" aria-label="Next slide">&#8594;</button>
+      <span class="deck-count"><span class="current">1</span> / 24</span>
+    </div>
+    <div class="deck-thumbs" id="deckThumbs"></div>
+  </div>
+
+  <div class="deck-cta">
+    <p><strong>That's the deck.</strong> Curious how the findings translate into fixes?</p>
+    <a class="btn btn-primary" href="../case-studies/hrme-audit.html">View full case study →</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>Andrew Alicea · Digital Marketing Specialist</span>
+    <span><a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a> · (786) 258-7123</span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function(){
+"use strict";
+
+var SLIDES = [
+  {type:'cover', kicker:'Paid Candidate Exercise · Presentation', title:'Home Recording Made Easy', subtitle:'A 90-Day Growth, Content & AI Strategy', byline:'Andrew Alicea'},
+  {kicker:"Where We're Headed", title:'Agenda', footer:'Overview', page:'01', items:[
+    '01 — Business Review — audit findings across web, SEO, and social',
+    '02 — Your First 90 Days — the roadmap, week by week',
+    '03 — Content Repurposing — a live example with Carv Audio’s "Forge"',
+    '04 — AI Workflow — the transcript-to-content engine I’d build first'
+  ]},
+  {type:'divider', num:'01', title:'Business Review', subtitle:'Website, SEO, and social media audit — strengths, opportunities, and the one I’d chase first'},
+  {kicker:'The Business', title:'Business Snapshot', footer:'Part 1 — Business Review', page:'02', groups:[
+    {label:null, items:[
+      'Founded by David, a professional mixing/mastering engineer',
+      '20,000+ students · 81,000+ YouTube subscribers · 9M+ views',
+      'Full ladder: free YouTube → paid courses → 1-on-1 coaching → pro mixing/mastering',
+      'Competitive advantage: single trusted instructor with a verifiable 20-year track record — mentored under an engineer who worked with the Rolling Stones and Whitney Houston'
+    ]},
+    {label:'Target Customers', items:[
+      'Beginner/hobbyist musicians overwhelmed by conflicting info',
+      'Aspiring audio engineers who can’t afford formal school',
+      'Self-producing singer-songwriters',
+      'Plateaued intermediate home-studio owners (1-3 yrs)',
+      'Analog musicians moving to DAW-based workflows'
+    ]}
+  ]},
+  {kicker:'Website & SEO Audit', title:'What I Found on the Website', footer:'Part 1 — Business Review', page:'03', items:[
+    'Meta descriptions all exceed the 50-character recommendation site-wide',
+    'Free-training funnel isn’t nested under /courses — add it for topical relevance; no-index the raw redirect page',
+    'Nav/URL mismatch: /services shown as "Coaching," /about-us unlabeled — highest ranking impact fix on the list',
+    'No dedicated Contact Us page exists',
+    'Header menu goes transparent/unreadable on several interior pages; mobile needs work'
+  ], image:{src:'../assets/img/work/hrme-presentation/serp-screenshot.png', caption:'Google search result for homerecordingmadeeasy.com, meta descriptions run long sitewide.'}},
+  {kicker:'Social Audit', title:'Social Media Snapshot', footer:'Part 1 — Business Review', page:'04', table:[
+    ['Platform','Followers','Posts / Videos'],
+    ['YouTube','81.2K','1.3K'],
+    ['Instagram','974','1,021'],
+    ['TikTok','529','335'],
+    ['Facebook','Unknown','N/A']
+  ]},
+  {kicker:'SWOT Summary', title:'Strengths & Opportunities', footer:'Part 1 — Business Review', page:'05', groups:[
+    {label:'Strengths', items:[
+      'Authority: 20K+ students, 81K+ subs, 20-yr founder track record — hard to replicate',
+      'Monetization ladder: free → courses → coaching → pro mixing/mastering',
+      'Tracking foundation: GA4, GTM, and Meta Pixel already confirmed sitewide'
+    ]},
+    {label:'Opportunities', items:[
+      'Structured data: zero schema live — low-competition play as search shifts to AI answers',
+      'Short-form video: huge long-form back catalog, ready to repurpose',
+      'Cheaper gear: grows the exact beginner audience this brand already leads with'
+    ]}
+  ]},
+  {kicker:'My Recommendation', title:'If I Could Only Pick One', footer:'Part 1 — Business Review', page:'06',
+    lede:'Repurpose the long-form catalog into short-form content, publish consistently, let the algorithm tell us what’s working, then scale the winners.',
+    items:[
+      'Fastest feedback loop of the three opportunities, results show up in weeks, not months',
+      'Uses an existing asset: 1,300+ long-form videos already sitting in the catalog',
+      'No new production needed, just a repurposing workflow (see Part 4: AI Workflow)'
+    ]},
+  {type:'divider', num:'02', title:'Your First 90 Days', subtitle:'A phased roadmap: audit & foundation, then launch & optimize, then scale & report'},
+  {kicker:'The Framework', title:'90 Days at a Glance', footer:'Part 2 — Your First 90 Days', page:'07', groups:[
+    {label:'Days 1-30 — Foundation', items:['Full audit → fix tracking → plan content calendar']},
+    {label:'Days 31-60 — Launch & Optimize', items:['Go live → schema rollout → A/B testing begins']},
+    {label:'Days 61-90 — Scale & Report', items:['2nd audit → double down on winners → final report + handoff']}
+  ]},
+  {kicker:'Foundation', title:'Days 1-30: Foundation', footer:'Part 2 — Your First 90 Days', page:'08', items:[
+    'Week 1 — full site audit → implement & test fixes → verify tracking tags → install Hotjar/Clarity',
+    'Week 2 — full social audit (IG, FB, TikTok, YouTube, X) → standardize profiles → start building the AI short-form workflow',
+    'Week 3 — market + keyword research vs. existing company data → data-driven SEO changes → first KPI report vs. baseline',
+    'Week 4 — produce the full 90-day content library across 5 channels (~450 pieces) so publishing starts Day 31 with zero gap'
+  ]},
+  {kicker:'Launch & Optimize', title:'Days 31-60: Launch & Optimize', footer:'Part 2 — Your First 90 Days', page:'09', items:[
+    'Week 1 — go live across all 5 channels; run AI workflow on the newest episode same-week; confirm conversion events firing in production',
+    'Week 2 — schema rollout (Course, PodcastEpisode, FAQPage) now that real content exists to attach it to; light community management',
+    'Week 3 — 45-day report vs. baseline; A/B testing begins now that traffic volume is meaningful (coupon placement, checkout copy)',
+    'Week 4 — reallocate effort to top performers; begin backlink/partnership outreach on a technically sound site'
+  ]},
+  {kicker:'Scale & Report', title:'Days 61-90: Scale, Report & Handoff', footer:'Part 2 — Your First 90 Days', page:'10', items:[
+    'Week 1 — 60-day cumulative report; begin planning next quarter’s content calendar (Days 91-180) a month ahead',
+    'Week 2 — second technical/UX audit pass; first real Hotjar/Clarity session review now that sample size exists',
+    'Week 3 — implement UX fixes; begin drafting the 90-day final report a week early',
+    'Week 4 — deliver final report + roadmap; finalize next calendar with zero publishing gap; full handoff documentation'
+  ]},
+  {kicker:'Measurement', title:'KPI Reporting Cadence', footer:'Part 2 — Your First 90 Days', page:'11', items:[
+    'Weekly, starting Day 31: publishing performance, conversion events, follower growth per platform',
+    'Day 45 (midpoint): full report vs. pre-audit baseline, organic traffic, conversion rate, engagement rate',
+    'Day 60: cumulative report across website + funnel + all 5 social channels',
+    'Day 90: final report, before/after KPIs, full change log, prioritized roadmap for Days 91-180'
+  ]},
+  {kicker:'The KPI Set', title:'What I’d Actually Be Tracking', footer:'Part 2 — Your First 90 Days', page:'12', groups:[
+    {label:'North Star — Cross-Channel', items:[
+      'CAC: total marketing spend ÷ new customers acquired',
+      'LTV: predicted revenue per student across the full ladder (courses → coaching → mixing/mastering)',
+      'LTV : CAC: the return generated per dollar spent acquiring a customer, the health check for the whole engine',
+      'MER: total revenue ÷ total marketing spend, blended across every channel'
+    ]},
+    {label:'Tracking Health — GA4 + GTM', items:[
+      'Data Layer Completeness: required variables present & correctly typed (Week 1 deliverable)',
+      'Duplicate/Ghost Rate: % of events firing more than once per action',
+      'DDA Credit: GA4’s data-driven attribution across touchpoints, not just last-click',
+      'Revenue/User: purchase revenue tied directly to the course/coaching/mixing funnel'
+    ]}
+  ]},
+  {kicker:'The KPI Set', title:'SEO & Organic Social KPIs', footer:'Part 2 — Your First 90 Days', page:'13', groups:[
+    {label:'SEO', items:[
+      'Visibility Score: weighted keyword rankings across our priority search terms',
+      'DA / Referring Domains: tracks whether Day 52-58 backlink outreach is landing',
+      'Organic CVR: organic sessions → free-training funnel conversions',
+      'Core Web Vitals: LCP / INP / CLS, ties to the mobile & header-menu fixes'
+    ]},
+    {label:'Organic Social', items:[
+      '★ Completion / View-Through Rate: priority, the direct signal for which short-form clips to scale',
+      'Engagement Rate: likes + comments + shares + saves ÷ reach',
+      'Reach & Impressions: top-of-funnel awareness',
+      'Follower Growth Rate: per platform, off a low IG/FB/TikTok baseline'
+    ]}
+  ]},
+  {kicker:'Scope Discipline', title:'What I’m Leaving Out, On Purpose', footer:'Part 2 — Your First 90 Days', page:'14', items:[
+    'GBP / Local, not applicable. HRME is 100% online/national with no physical location to optimize for Maps or local search.',
+    'Paid Search & Paid Social (CPA, Impression Share, ROAS, CPM, Hook Rate), no ad budget in this 90-day plan; tracking (GA4/GTM/Pixel) is already built to switch these on the moment paid spend is approved.',
+    'Email & SMS, no lifecycle program exists yet beyond the free-training opt-in; a strong candidate to scope for Days 91-180.'
+  ]},
+  {type:'divider', num:'03', title:'Content Repurposing', subtitle:'One brief, adapted natively across email and five social platforms — Carv Audio "Forge"'},
+  {kicker:'The Brief', title:'Carv Audio "Forge", One Story, Every Channel', footer:'Part 3 — Content Repurposing', page:'15', items:[
+    'The brief: sponsored early-access review of Carv Audio’s "Forge" (transformer + tube saturation plugin), releasing mid-July',
+    'The core hook: it behaves like real hardware, subtle until you stack it across a whole mix',
+    'The deliverable: 1 promotional email + 3 Facebook + 3 Instagram + 3 YouTube Shorts + 3 TikTok, each written natively for its platform',
+    'Every piece ties back to the same hook, and discloses the sponsorship clearly and honestly'
+  ]},
+  {kicker:'In Practice', title:'Native, Not Copy-Pasted', footer:'Part 3 — Content Repurposing', page:'16', groups:[
+    {label:'Email', items:['Long-form, personal narrative, "I’ve been running it on everything from drum bus to master bus for the last week"']},
+    {label:'Instagram Carousel', items:['3 slides: Nickel = brighter / Iron = middle / Steel = warmer, darker']},
+    {label:'YouTube Short', items:['Opens on "Still trying to understand EQ as a beginner?", targets a real common search term']},
+    {label:'TikTok', items:['"Guess which one is the plugin", hardware vs. Forge duet challenge, built for comments/shares']}
+  ]},
+  {type:'divider', num:'04', title:'AI Workflow', subtitle:'The transcript-to-content engine I’d build first, and how it avoids hallucination'},
+  {kicker:'The System', title:'Transcript-to-Content Pipeline', footer:'Part 4 — AI Workflow', page:'17', steps:[
+    {n:1, label:'Transcribe', desc:'Every new YouTube/podcast episode auto-transcribed'},
+    {n:2, label:'Generate', desc:'Coded prompts turn the transcript into email, 5+ clips, and FAQ, grounded only in what was said'},
+    {n:3, label:'Review', desc:'Human review + light edit for voice and accuracy'},
+    {n:4, label:'Publish', desc:'Scheduled and published across the content calendar'}
+  ]},
+  {kicker:'The Rationale', title:'Why I’d Build This First', footer:'Part 4 — AI Workflow', page:'18', items:[
+    'Same effort, more output: one recording session becomes an email, 5+ clips, and an FAQ',
+    'Zero hallucination risk: every output is grounded only in the transcript, nothing invented',
+    'Plays to David’s strength: he keeps doing what he already does well on camera; the system does the repurposing',
+    'Already scheduled: this is the workflow being built in Week 2 of the 90-day plan, live by Day 14'
+  ]},
+  {type:'cover', title:'Thank You', subtitle:'Happy to answer any questions.'}
+];
+
+function slideInnerHTML(s){
+  var kicker = s.kicker ? '<p class="deck-kicker">'+s.kicker+'</p>' : '';
+  var subtitle = s.subtitle ? '<p class="deck-subtitle">'+s.subtitle+'</p>' : '';
+  var lede = s.lede ? '<p class="deck-lede">'+s.lede+'</p>' : '';
+  var footer = (s.footer || s.page) ? '<div class="deck-footer"><span>'+(s.footer||'')+'</span><span>'+(s.page||'')+'</span></div>' : '';
+
+  if (s.type === 'cover'){
+    return '<div class="deck-slide cover">'+kicker+
+      '<h2 class="deck-title" style="font-size:clamp(1.8rem,4vw,2.6rem);">'+s.title+'</h2>'+subtitle+
+      (s.byline ? '<p class="deck-byline">'+s.byline+'</p>' : '')+'</div>';
+  }
+  if (s.type === 'divider'){
+    return '<div class="deck-slide divider"><div class="deck-num">'+s.num+'</div>'+
+      '<h2 class="deck-title" style="font-size:clamp(1.6rem,3.4vw,2.2rem);">'+s.title+'</h2>'+subtitle+'</div>';
+  }
+
+  var body = '';
+  if (s.items){
+    body = '<ul class="deck-list">'+s.items.map(function(i){ return '<li>'+i+'</li>'; }).join('')+'</ul>';
+    if (s.image){
+      body += '<figure class="deck-figure"><img src="'+s.image.src+'" alt="'+s.image.caption+'"><figcaption>'+s.image.caption+'</figcaption></figure>';
+    }
+  } else if (s.groups){
+    body = '<div class="deck-groups">'+s.groups.map(function(g){
+      return '<div class="deck-group">'+(g.label ? '<p class="deck-group-label">'+g.label+'</p>' : '')+
+        '<ul class="deck-list">'+g.items.map(function(i){ return '<li>'+i+'</li>'; }).join('')+'</ul></div>';
+    }).join('')+'</div>';
+  } else if (s.steps){
+    body = '<div class="deck-steps">'+s.steps.map(function(st){
+      return '<div class="deck-step"><div class="deck-step-n">'+st.n+'</div><div class="deck-step-label">'+st.label+'</div><div class="deck-step-desc">'+st.desc+'</div></div>';
+    }).join('')+'</div>';
+  } else if (s.table){
+    var rows = s.table;
+    var head = rows[0];
+    var body_rows = rows.slice(1);
+    body = '<table class="deck-table"><thead><tr>'+head.map(function(h,i){ return '<th'+(i>0?' class="num"':'')+'>'+h+'</th>'; }).join('')+'</tr></thead><tbody>'+
+      body_rows.map(function(r){ return '<tr>'+r.map(function(c,i){ return '<td'+(i>0?' class="num"':'')+'>'+c+'</td>'; }).join('')+'</tr>'; }).join('')+
+      '</tbody></table>';
+  }
+
+  return '<div class="deck-slide">'+kicker+'<h2 class="deck-title">'+s.title+'</h2>'+lede+'<div class="deck-body">'+body+'</div>'+footer+'</div>';
+}
+
+var thumbsWrap = document.getElementById('deckThumbs');
+SLIDES.forEach(function(s, i){
+  var btn = document.createElement('button');
+  btn.className = 'deck-thumb' + (i === 0 ? ' active' : '');
+  btn.type = 'button';
+  btn.textContent = String(i + 1);
+  btn.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+  thumbsWrap.appendChild(btn);
+});
+
+var thumbs = Array.from(thumbsWrap.querySelectorAll('.deck-thumb'));
+var stage = document.getElementById('deckSlide');
+var counter = document.querySelector('.deck-count .current');
+var prevBtn = document.querySelector('.deck-nav.prev');
+var nextBtn = document.querySelector('.deck-nav.next');
+var index = 0;
+
+function show(i){
+  index = (i + SLIDES.length) % SLIDES.length;
+  stage.innerHTML = slideInnerHTML(SLIDES[index]);
+  thumbs.forEach(function(t){ t.classList.remove('active'); });
+  thumbs[index].classList.add('active');
+  counter.textContent = index + 1;
+  thumbs[index].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
+
+thumbs.forEach(function(t, i){ t.addEventListener('click', function(){ show(i); }); });
+prevBtn.addEventListener('click', function(){ show(index - 1); });
+nextBtn.addEventListener('click', function(){ show(index + 1); });
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowLeft') show(index - 1);
+  if (e.key === 'ArrowRight') show(index + 1);
+});
+
+show(0);
+})();
+</script>
+</body>
+</html>
