@@ -593,6 +593,47 @@ a.carousel-item { text-decoration: none; color: inherit; display: block; }
 .carousel-btn:disabled { opacity: 0.32; cursor: default; }
 .carousel-btn:disabled:hover { transform: none; border-color: var(--rule); color: var(--ink); }
 
+/* ---------- Single-slide carousel (Work Samples) ---------- */
+.carousel-single .carousel-track {
+  display: block;
+  overflow: visible;
+  padding: 0;
+  scroll-snap-type: none;
+}
+.carousel-single .carousel-item {
+  display: none;
+  width: 100%;
+}
+.carousel-single .carousel-item.active {
+  display: block;
+  animation: carousel-fade .32s ease;
+}
+@keyframes carousel-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.carousel-single .carousel-item img {
+  width: 100%;
+  height: clamp(260px, 42vw, 460px);
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: var(--card);
+}
+.carousel-single .carousel-item .cap {
+  padding: 18px 22px 22px;
+}
+.carousel-single .carousel-item .cap b {
+  font-size: 1.15rem;
+  margin-bottom: 5px;
+}
+.carousel-single .carousel-item .cap span {
+  font-size: 0.85rem;
+}
+.carousel-single .carousel-item .cap-link {
+  font-size: 0.82rem;
+  margin-top: 8px;
+}
+
 /* ---------- Contact card ---------- */
 .contact-card {
   position: relative;

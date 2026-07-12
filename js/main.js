@@ -76,8 +76,32 @@ if (revealEls.length && 'IntersectionObserver' in window) {
   revealEls.forEach(el => el.classList.add('in-view'));
 }
 
+// Single-slide carousels (one item visible at a time, e.g. Work Samples)
+document.querySelectorAll('.carousel-wrap.carousel-single').forEach(wrap => {
+  const track = wrap.querySelector('.carousel-track');
+  const slides = track ? Array.from(track.querySelectorAll('.carousel-item')) : [];
+  const counter = wrap.querySelector('.carousel-counter');
+  const prevBtn = wrap.querySelector('.carousel-btn.prev');
+  const nextBtn = wrap.querySelector('.carousel-btn.next');
+  if (!slides.length) return;
+
+  let index = 0;
+  const show = (i) => {
+    index = (i + slides.length) % slides.length;
+    slides.forEach(s => s.classList.remove('active'));
+    slides[index].classList.add('active');
+    if (counter) counter.textContent = `${index + 1} / ${slides.length}`;
+  };
+
+  prevBtn && prevBtn.addEventListener('click', () => show(index - 1));
+  nextBtn && nextBtn.addEventListener('click', () => show(index + 1));
+
+  show(0);
+});
+
 // Carousels
 document.querySelectorAll('.carousel-wrap').forEach(wrap => {
+  if (wrap.classList.contains('carousel-single')) return;
   const track = wrap.querySelector('.carousel-track');
   const prevBtn = wrap.querySelector('.carousel-btn.prev');
   const nextBtn = wrap.querySelector('.carousel-btn.next');
