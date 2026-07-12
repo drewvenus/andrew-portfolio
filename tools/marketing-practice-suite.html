@@ -194,7 +194,7 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 .notes-textarea:focus{outline:2px solid var(--focus); outline-offset:1px;}
 .notes-foot{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; flex-wrap:wrap;}
 .notes-save-status{font-size:0.78rem; color:var(--ink-muted);}
-.notes-foot-actions{display:flex; gap:10px; align-items:center; margin-left:auto;}
+.notes-foot-actions{display:flex; gap:10px; align-items:center; margin-left:auto; flex-wrap:wrap;}
 .notes-clear-btn{font-family:inherit; font-size:0.8125rem; color:var(--ink-muted); background:none; border:1px solid var(--rule); border-radius:7px; padding:8px 14px; cursor:pointer;}
 .notes-clear-btn:hover{color:#B0472E; border-color:#B0472E;}
 .notes-docx-btn{display:inline-block; font-family:inherit; font-size:0.8125rem; font-weight:600; color:#fff; background:var(--accent); border:none; border-radius:7px; padding:8px 16px; cursor:pointer; text-decoration:none;}
@@ -202,9 +202,15 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 
 @media (max-width:640px){
   .viewer-frame-wrap iframe{height:70vh;}
-  .icon-rail{right:10px;}
+  .icon-rail{right:8px; gap:8px;}
+  .icon-btn{width:40px; height:40px; font-size:1.1rem;}
+  .icon-btn .badge{width:16px; height:16px; min-width:16px; font-size:0.62rem; top:-4px; right:-4px;}
+  .theme-toggle-btn{width:40px; height:26px; font-size:0.9rem;}
   .icon-btn .rail-label{display:none;}
   .stat-row{gap:20px;}
+  .masthead-inner{padding-right:52px;}
+  .wrap{padding-right:52px;}
+  .practice-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>

@@ -156,6 +156,7 @@
 /* ============ The Readout (scoped) ============ */
 @media (prefers-reduced-motion: reduce){ #panel-readout *{transition:none !important; animation:none !important;} }
 #panel-readout .layout-grid{display:grid; grid-template-columns:1.6fr 1fr; gap:28px; align-items:start; padding-top:8px;}
+#panel-readout .col-left, #panel-readout .col-right{min-width:0;}
 @media (max-width:980px){ #panel-readout .layout-grid{grid-template-columns:1fr;} #panel-readout .output-col{position:static !important;} }
 #panel-readout .output-col{position:sticky; top:20px;}
 #panel-readout .stat b.good{color:var(--sig-strong);}
