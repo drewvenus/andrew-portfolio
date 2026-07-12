@@ -1341,6 +1341,37 @@ function toggleSelect(key, forceState){
   if (next) state.selected.add(key); else state.selected.delete(key);
   updateSelIndicator();
   renderCurrentTab();
+  broadcastPlan();
+}
+
+// ---------------- suite integration (Organizer/Doctor sync) ----------------
+function planGoalBucket(tags){
+  tags = tags || [];
+  if (tags.indexOf('dataquality')>-1) return 'dataquality';
+  if (tags.indexOf('retention')>-1) return 'retention';
+  if (tags.indexOf('awareness')>-1 || tags.indexOf('brand')>-1) return 'awareness,brand';
+  if (tags.indexOf('leadgen')>-1) return 'leadgen,conversion';
+  if (tags.indexOf('efficiency')>-1 || tags.indexOf('conversion')>-1) return 'efficiency,conversion';
+  return null;
+}
+function broadcastPlan(){
+  if (window.parent === window) return;
+  const items = Array.from(state.selected).map(key => {
+    const k = findKPI(key);
+    if (!k) return null;
+    return {
+      label: k.acr + ' — ' + k.name,
+      note: (CATEGORIES[k.cat] ? CATEGORIES[k.cat].short : k.cat) + ' KPI',
+      goal: planGoalBucket(k.tags)
+    };
+  }).filter(Boolean);
+  window.parent.postMessage({
+    type: 'practice-plan-sync',
+    practice: 'measurement',
+    practiceName: 'Measurement Console',
+    color: '--p-measurement',
+    items: items
+  }, '*');
 }
 function updateSelIndicator(){
   const n = state.selected.size;
@@ -2787,6 +2818,12 @@ document.getElementById("rpt-copy-btn").addEventListener("click", () => {
 renderChips();
 renderTable();
 renderOutput();
+
+if (window.self !== window.top) {
+  const topbar = document.querySelector('.mc-topbar');
+  if (topbar) topbar.style.display = 'none';
+}
+broadcastPlan();
 
 })();
 </script>

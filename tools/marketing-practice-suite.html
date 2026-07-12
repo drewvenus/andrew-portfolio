@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Marketing Practice Suite | Andrew Alicea</title>
-<meta name="description" content="Six full marketing practice consoles built as one suite: Measurement, Conversion, Findability, Growth, Content, and Strategic Foundation. The Measurement Console is live and open to explore; the rest are previewed here ahead of public release.">
+<meta name="description" content="Six full marketing practice consoles built as one suite: Measurement, Conversion, Findability, Growth, Content, and Strategic Foundation. The Measurement Console is live and embedded below, with a combined plan Organizer, a goal-contradiction Doctor, a full glossary, and a notes scratchpad. The other five consoles are previewed here ahead of public release.">
 <style>
 @media (prefers-color-scheme: dark){
   :root{
@@ -44,7 +44,7 @@ body{
 :focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
 @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
 
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px 96px;}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px 96px;}
 
 .mc-topbar{
   display:flex; align-items:center; justify-content:space-between; gap:16px;
@@ -55,7 +55,7 @@ body{
 .mc-topbar .mc-brand{ font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.05rem; }
 
 .masthead{padding:52px 24px 32px; border-bottom:1px solid var(--rule);}
-.masthead-inner{max-width:1160px;margin:0 auto;}
+.masthead-inner{max-width:1240px;margin:0 auto;}
 .eyebrow{font-family:ui-monospace,'SF Mono',monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-muted); margin:0 0 14px;}
 h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:clamp(2rem,4vw,2.75rem); line-height:1.08; margin:0 0 14px; text-wrap:balance; max-width:24ch;}
 .dek{font-size:1.0625rem; color:var(--ink-muted); max-width:74ch; margin:0 0 20px;}
@@ -71,12 +71,13 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
   display:flex; flex-direction:column; gap:10px; text-decoration:none; cursor:pointer;
 }
 .practice-card .pname{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-weight:600; font-size:1.25rem; color:var(--card-c);}
-.practice-card .pdesc{font-size:0.875rem; color:var(--ink-muted); line-height:1.5;}
+.practice-card .pdesc{font-size:0.875rem; color:var(--ink-muted); line-height:1.5; margin:0;}
 .practice-card .pstats{font-family:ui-monospace,monospace; font-size:0.76rem; color:var(--ink-muted); display:flex; gap:14px; margin-top:auto; padding-top:6px; border-top:1px dashed var(--rule);}
 .practice-card .pgo{font-size:0.78rem; font-weight:600; color:var(--card-c);}
 
-.practice-card.live:hover{border-color:var(--card-c); transform:translateY(-4px); box-shadow:0 14px 28px -16px color-mix(in srgb, var(--card-c) 45%, transparent);}
 .practice-card.live{transition:border-color .2s ease, transform .25s ease, box-shadow .25s ease;}
+.practice-card.live:hover{border-color:var(--card-c); transform:translateY(-4px); box-shadow:0 14px 28px -16px color-mix(in srgb, var(--card-c) 45%, transparent);}
+.practice-card.live.active{outline:2px solid var(--card-c); outline-offset:-1px; background:var(--surface-2);}
 
 .practice-card.locked{opacity:0.6; cursor:not-allowed;}
 .practice-card.locked:hover, .practice-card.locked:focus-visible{opacity:0.85; border-color:var(--rule);}
@@ -85,13 +86,29 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 }
 .practice-card.locked .pgo{color:var(--ink-muted);}
 
-.lock-toast{
-  position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
-  background:var(--ink); color:var(--bg); font-size:0.875rem; padding:12px 20px; border-radius:8px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.3); opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
-  z-index:100; max-width:90vw; text-align:center;
+.wl-form .field-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+.wl-form input[type="email"]{
+  flex:1; min-width:180px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink);
+  border-radius:6px; padding:11px 14px; font-size:0.95rem; font-family:inherit;
 }
-.lock-toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+.wl-form input[type="email"]:focus{outline:2px solid var(--focus); outline-offset:2px;}
+.wl-form button{
+  font-family:inherit; font-size:0.9rem; font-weight:600; padding:11px 18px; border-radius:6px; border:none;
+  background:var(--accent); color:#fff; cursor:pointer; white-space:nowrap;
+}
+.wl-form button:hover{opacity:0.9;}
+.wl-thanks{font-size:0.9rem; color:var(--ink); margin:0;}
+.wl-privacy{font-size:0.76rem; color:var(--ink-muted); margin:14px 0 0;}
+
+.viewer-toolbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:36px 0 12px; padding-bottom:10px; border-bottom:1px solid var(--rule);}
+.viewer-toolbar .now-viewing{font-size:0.9375rem;}
+.viewer-toolbar .now-viewing b{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;}
+.viewer-back-btn{font-family:inherit; font-size:0.8125rem; font-weight:600; color:var(--ink); background:none; border:1px solid var(--rule); border-radius:7px; padding:7px 14px; cursor:pointer;}
+.viewer-back-btn:hover{border-color:var(--accent); color:var(--accent);}
+
+.viewer-frame-wrap{border:1px solid var(--rule); border-radius:10px; overflow:hidden; background:var(--surface);}
+.viewer-frame-wrap iframe{width:100%; height:82vh; border:none; display:block; background:var(--surface);}
+.viewer-empty{padding:80px 24px; text-align:center; color:var(--ink-muted); font-size:0.9375rem; background:var(--surface); border:1px solid var(--rule); border-radius:10px; margin-top:36px;}
 
 .mc-footer{
   padding:28px 24px; border-top:1px solid var(--rule); text-align:center;
@@ -100,7 +117,74 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 .mc-footer a{ color:var(--ink-muted); text-decoration:underline; text-underline-offset:2px; }
 .mc-footer a:hover{ color:var(--accent); }
 
+/* Icon rail */
+.icon-rail{position:fixed; top:50%; right:18px; transform:translateY(-50%); display:flex; flex-direction:column; gap:12px; z-index:50;}
+.icon-btn{position:relative; width:52px; height:52px; border-radius:50%; background:var(--ink); color:var(--bg); border:2px solid var(--bg); display:flex; align-items:center; justify-content:center; font-size:1.4rem; cursor:pointer; box-shadow:0 2px 12px rgba(0,0,0,0.35), 0 0 0 1px var(--rule);}
+.icon-btn:hover{background:var(--focus); color:var(--bg);}
+.icon-btn .badge{position:absolute; top:-6px; right:-6px; background:var(--focus); color:var(--bg); font-family:ui-monospace,monospace; font-size:0.68rem; font-weight:700; min-width:18px; height:18px; border-radius:100px; display:flex; align-items:center; justify-content:center; padding:0 4px; border:2px solid var(--bg);}
+.icon-btn .badge.hidden{display:none;}
+.icon-btn .rail-label{position:absolute; right:64px; top:50%; transform:translateY(-50%); background:var(--ink); color:var(--bg); font-size:0.72rem; padding:4px 10px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; box-shadow:0 2px 8px rgba(0,0,0,0.25);}
+.icon-btn:hover .rail-label{opacity:1;}
+.theme-toggle-btn{position:relative; width:52px; height:36px; border-radius:100px; background:var(--ink); color:var(--bg); border:2px solid var(--bg); display:flex; align-items:center; justify-content:center; font-size:1.05rem; cursor:pointer; box-shadow:0 2px 12px rgba(0,0,0,0.35), 0 0 0 1px var(--rule);}
+.theme-toggle-btn:hover{background:var(--focus);}
+
+/* Modal */
+.modal-overlay{position:fixed; inset:0; background:rgba(20,20,20,0.55); display:flex; align-items:center; justify-content:center; padding:20px; z-index:100;}
+.modal-overlay.hidden{display:none;}
+.modal-box{background:var(--surface); border:1px solid var(--rule); border-radius:12px; padding:26px 28px; max-width:700px; width:100%; max-height:82vh; overflow-y:auto;}
+.modal-head{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:6px;}
+.modal-head h3{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-size:1.3rem; font-weight:600; margin:0;}
+.modal-close{flex:0 0 auto; background:none; border:none; color:var(--ink-muted); font-size:1.3rem; line-height:1; cursor:pointer; padding:2px 6px;}
+.modal-close:hover{color:var(--ink);}
+.modal-sub{font-size:0.85rem; color:var(--ink-muted); margin:0 0 18px;}
+.help-body h4{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif; font-size:1rem; font-weight:600; margin:20px 0 6px;}
+.help-body h4:first-child{margin-top:0;}
+.help-body p{font-size:0.9rem; line-height:1.6; margin:0 0 4px;}
+
+/* Organizer */
+.org-empty{padding:40px 20px; text-align:center; color:var(--ink-muted); font-size:0.9rem;}
+.org-item{display:flex; align-items:flex-start; gap:12px; background:var(--surface-2); border:1px solid var(--rule); border-left:3px solid var(--item-c,var(--accent)); border-radius:8px; padding:10px 14px; margin-bottom:8px;}
+.org-item .meta{display:flex; flex-direction:column; gap:2px; flex:1; min-width:0;}
+.org-item .practag{font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--item-c,var(--accent)); font-weight:700;}
+.org-item .lbl{font-size:0.9rem; font-weight:600;}
+.org-item .note{font-size:0.8rem; color:var(--ink-muted);}
+
+/* Doctor */
+.doctor-goal-row{display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap;}
+.doctor-goal-row label{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-muted); font-weight:600;}
+.doctor-goal-row select{flex:1; min-width:220px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink); border-radius:7px; padding:10px 12px; font-size:0.9375rem; font-family:inherit;}
+.doctor-summary{font-size:0.95rem; line-height:1.6; background:var(--surface-2); border:1px solid var(--rule); border-radius:8px; padding:14px 16px; margin-bottom:16px; border-left:4px solid var(--rule);}
+.doctor-summary.ok{border-left-color:var(--p-growth);}
+.doctor-summary.warn{border-left-color:#B0472E;}
+
+/* Glossary */
+.glossary-controls{display:flex; gap:12px; align-items:center; margin-bottom:14px; flex-wrap:wrap;}
+.glossary-controls input[type="search"]{flex:1; min-width:200px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink); border-radius:7px; padding:10px 14px; font-size:0.9375rem; font-family:inherit;}
+.glossary-chips{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:16px;}
+.glossary-chip{border:1px solid var(--rule); background:var(--surface-2); color:var(--ink); border-radius:100px; padding:5px 12px; font-size:0.78rem; cursor:pointer; font-family:inherit;}
+.glossary-chip.active{background:var(--focus); border-color:var(--focus); color:var(--bg);}
+.glossary-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; max-height:48vh; overflow-y:auto; padding-right:4px;}
+.glossary-card{background:var(--surface-2); border:1px solid var(--rule); border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:4px;}
+.glossary-card .gterm{font-family:ui-monospace,monospace; font-weight:700; color:var(--focus);}
+.glossary-card .gfull{font-size:0.82rem; font-style:italic; color:var(--ink-muted);}
+.glossary-card .gdef{font-size:0.84rem; margin-top:2px;}
+.glossary-count{font-size:0.78rem; color:var(--ink-muted); margin-bottom:10px;}
+
+/* Notes */
+.notes-textarea{width:100%; min-height:320px; background:var(--surface-2); border:1px solid var(--rule); color:var(--ink); border-radius:8px; padding:14px 16px; font-family:ui-monospace,'SF Mono',monospace; font-size:0.86rem; line-height:1.6; resize:vertical;}
+.notes-textarea:focus{outline:2px solid var(--focus); outline-offset:1px;}
+.notes-foot{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; flex-wrap:wrap;}
+.notes-save-status{font-size:0.78rem; color:var(--ink-muted);}
+.notes-foot-actions{display:flex; gap:10px; align-items:center; margin-left:auto;}
+.notes-clear-btn{font-family:inherit; font-size:0.8125rem; color:var(--ink-muted); background:none; border:1px solid var(--rule); border-radius:7px; padding:8px 14px; cursor:pointer;}
+.notes-clear-btn:hover{color:#B0472E; border-color:#B0472E;}
+.notes-docx-btn{display:inline-block; font-family:inherit; font-size:0.8125rem; font-weight:600; color:#fff; background:var(--accent); border:none; border-radius:7px; padding:8px 16px; cursor:pointer; text-decoration:none;}
+.notes-docx-btn:hover{filter:brightness(1.12);}
+
 @media (max-width:640px){
+  .viewer-frame-wrap iframe{height:70vh;}
+  .icon-rail{right:10px;}
+  .icon-btn .rail-label{display:none;}
   .stat-row{gap:20px;}
 }
 </style>
@@ -115,90 +199,1041 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
   <div class="masthead-inner">
     <p class="eyebrow">Measurement · Conversion · Findability · Growth · Content · Strategic Foundation — six practices, one suite</p>
     <h1 class="title">The Marketing Practice Suite</h1>
-    <p class="dek">One home for six full practice consoles, each with its own reference index, diagnostics, client plan, workbench, and readout. The Measurement Console is live below — the rest are still being prepared for public release, so they're previewed here but not open to interact with yet.</p>
+    <p class="dek">One home for six full practice consoles, each with its own reference index, diagnostics, client plan, workbench, and readout. The Measurement Console is embedded and fully interactive below — the rest are still being prepared for public release. Click any locked console to join the waitlist and get notified the moment it opens. The icon rail on the right works across the whole page: a combined plan Organizer, a goal-contradiction Doctor, a full glossary, and a notes scratchpad.</p>
     <div class="stat-row">
       <div class="stat"><b>6</b><span>Practices</span></div>
       <div class="stat"><b>37</b><span>Tools</span></div>
-      <div class="stat"><b>275</b><span>Reference items</span></div>
+      <div class="stat"><b>336</b><span>Reference items</span></div>
     </div>
 
-    <div class="practice-grid" id="practice-grid">
-      <a class="practice-card live" style="--card-c:var(--p-measurement);" href="measurement-console.html">
-        <span class="pname">Measurement Console</span>
-        <p class="pdesc">KPI reference, benchmark fit, diagnostics with worked cases across every channel, client measurement plans, ad copy workbench, and results readout.</p>
-        <div class="pstats"><span>75 KPIs</span><span>6 tools</span></div>
-        <span class="pgo">Open console &rarr;</span>
-      </a>
-
-      <button class="practice-card locked" type="button" style="--card-c:var(--p-cro);" title="Not available for public use right now." aria-disabled="true" data-name="Conversion Console">
-        <span class="plock" aria-hidden="true">&#128274;</span>
-        <span class="pname">Conversion Console</span>
-        <p class="pdesc">Conversion heuristics across seven surfaces, symptom diagnostics, A/B test designer, client plan, variant copy workbench, and results readout.</p>
-        <div class="pstats"><span>57 heuristics</span><span>6 tools</span></div>
-        <span class="pgo">Not available for public use right now</span>
-      </button>
-
-      <button class="practice-card locked" type="button" style="--card-c:var(--p-findability);" title="Not available for public use right now." aria-disabled="true" data-name="Findability Console">
-        <span class="plock" aria-hidden="true">&#128274;</span>
-        <span class="pname">Findability Console</span>
-        <p class="pdesc">SEO, AEO, schema, and site-architecture heuristics, symptom diagnostics, JSON-LD schema builder, architecture mapper, client plan, pSEO workbench, and E-E-A-T readout.</p>
-        <div class="pstats"><span>38 heuristics</span><span>7 tools</span></div>
-        <span class="pgo">Not available for public use right now</span>
-      </button>
-
-      <button class="practice-card locked" type="button" style="--card-c:var(--p-growth);" title="Not available for public use right now." aria-disabled="true" data-name="Growth Console">
-        <span class="plock" aria-hidden="true">&#128274;</span>
-        <span class="pname">Growth Console</span>
-        <p class="pdesc">Launch, pricing, referral, free-tool, and churn heuristics, symptom diagnostics, a five-type bet modeler, client plan, lifecycle copy workbench, and program health readout.</p>
-        <div class="pstats"><span>47 heuristics</span><span>6 tools</span></div>
-        <span class="pgo">Not available for public use right now</span>
-      </button>
-
-      <button class="practice-card locked" type="button" style="--card-c:var(--p-content);" title="Not available for public use right now." aria-disabled="true" data-name="Content Console">
-        <span class="plock" aria-hidden="true">&#128274;</span>
-        <span class="pname">Content Console</span>
-        <p class="pdesc">Strategy, production, editing, humanizing, and page-copy heuristics, symptom diagnostics, a computed copy sweep auditor, client plan, multi-channel and long-form copy workbench, and Searchable/Shareable readout.</p>
-        <div class="pstats"><span>30 heuristics</span><span>6 tools</span></div>
-        <span class="pgo">Not available for public use right now</span>
-      </button>
-
-      <button class="practice-card locked" type="button" style="--card-c:var(--p-foundation);" title="Not available for public use right now." aria-disabled="true" data-name="Strategic Foundation Console">
-        <span class="plock" aria-hidden="true">&#128274;</span>
-        <span class="pname">Strategic Foundation Console</span>
-        <p class="pdesc">Context &amp; audience, positioning &amp; GTM, and brand identity heuristics, symptom diagnostics, a persona/positioning/JTBD builder, client plan, battlecard and engagement-brief workbench, and ICP validation readout.</p>
-        <div class="pstats"><span>28 heuristics</span><span>6 tools</span></div>
-        <span class="pgo">Not available for public use right now</span>
-      </button>
-    </div>
+    <div class="practice-grid" id="practice-grid"></div>
   </div>
 </div>
 
-<div class="wrap" style="padding-top:24px;">
-  <p style="font-size:0.9rem; color:var(--ink-muted);">Only the Measurement Console is open for public interaction right now. The other five practices are fully built but still being prepared before I open them up here — reach out if you'd like an early look.</p>
+<div class="wrap">
+  <div class="viewer-toolbar" id="viewer-toolbar" style="display:none;">
+    <button class="viewer-back-btn" id="viewer-back-btn">&#8592; All practices</button>
+    <span class="now-viewing">Viewing: <b id="now-viewing-name"></b></span>
+  </div>
+  <div id="viewer-empty" class="viewer-empty">Select the Measurement Console above to open it — the other five practices are previewed but not yet open to the public.</div>
+  <div class="viewer-frame-wrap" id="viewer-frame-wrap" style="display:none;">
+    <iframe id="practice-frame" title="Practice console"></iframe>
+  </div>
 </div>
 
 <div class="mc-footer">Andrew Alicea &middot; Digital Marketing Specialist &middot; <a href="mailto:andrewalicea21@gmail.com">andrewalicea21@gmail.com</a></div>
 
 <div class="lock-toast" id="lockToast" role="status" aria-live="polite"></div>
 
+<div class="icon-rail">
+  <button class="icon-btn" id="organizer-btn" title="Organizer">
+    📋<span class="badge hidden" id="organizer-badge">0</span>
+    <span class="rail-label">Organizer — combined plan</span>
+  </button>
+  <button class="icon-btn" id="doctor-btn" title="Doctor">
+    🩺<span class="badge hidden" id="doctor-badge">0</span>
+    <span class="rail-label">Doctor — contradiction check</span>
+  </button>
+  <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle light/dark mode">
+    <span id="theme-toggle-icon">🌙</span>
+  </button>
+  <button class="icon-btn" id="glossary-btn" title="Glossary">
+    📚
+    <span class="rail-label">Glossary — all terms</span>
+  </button>
+  <button class="icon-btn" id="notes-btn" title="Notes">
+    🗒️
+    <span class="rail-label">Notes — scratchpad</span>
+  </button>
+  <button class="icon-btn" id="help-btn" title="Help">
+    ❓
+    <span class="rail-label">Help — how this suite works</span>
+  </button>
+</div>
+
+<div class="modal-overlay hidden" id="organizer-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Organizer — combined plan</h3>
+      <button class="modal-close" id="organizer-close" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">Every KPI you've added to the Measurement Console's Plan tab, in one list. Updates live as you use the console — open it, add KPIs to the Plan, and they appear here.</p>
+    <div id="organizer-list"></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="doctor-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Doctor — contradiction check</h3>
+      <button class="modal-close" id="doctor-close" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">Set the stated campaign goal for this engagement. The Doctor flags anything already added to the Measurement Console's Plan whose own focus doesn't match it.</p>
+    <div class="doctor-goal-row">
+      <label>Campaign goal</label>
+      <select id="doctor-goal-select">
+        <option value="">Not set</option>
+        <option value="awareness,brand">Build brand awareness</option>
+        <option value="leadgen,conversion">Generate leads / pipeline</option>
+        <option value="efficiency,conversion">Grow revenue / sales efficiently</option>
+        <option value="retention">Improve retention / loyalty</option>
+        <option value="dataquality">Strengthen measurement / data foundation</option>
+      </select>
+    </div>
+    <div id="doctor-output"></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="glossary-modal">
+  <div class="modal-box" style="max-width:820px;">
+    <div class="modal-head">
+      <h3>Glossary — every term across the suite</h3>
+      <button class="modal-close" id="glossary-close" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">Search or filter by practice. Covers all six practices for reference, even the ones not yet open to interact with.</p>
+    <div class="glossary-controls">
+      <input type="search" id="glossary-search" placeholder="Search terms or definitions…" />
+    </div>
+    <div class="glossary-chips" id="glossary-chip-group"></div>
+    <p class="glossary-count" id="glossary-count">0 terms</p>
+    <div class="glossary-grid" id="glossary-grid"></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="notes-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Notes</h3>
+      <button class="modal-close" id="notes-close" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">A scratchpad for this engagement — client context, open questions, anything worth keeping handy while you work. Saved automatically in this browser.</p>
+    <textarea class="notes-textarea" id="notes-textarea" placeholder="Start typing…"></textarea>
+    <div class="notes-foot">
+      <span class="notes-save-status" id="notes-save-status"></span>
+      <div class="notes-foot-actions">
+        <button class="notes-clear-btn" id="notes-undo-btn" title="Undo">↺ Undo</button>
+        <button class="notes-clear-btn" id="notes-redo-btn" title="Redo">↻ Redo</button>
+        <button class="notes-clear-btn" id="notes-copy-btn">Copy</button>
+        <button class="notes-clear-btn" id="notes-clear-btn">Clear notes</button>
+        <a class="notes-docx-btn" id="notes-docx-btn" download="suite-notes.docx" rel="noopener" href="#">Save</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="help-modal">
+  <div class="modal-box" style="max-width:640px;">
+    <div class="modal-head">
+      <h3>Help — how this suite works</h3>
+      <button class="modal-close" id="help-close" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">A quick tour of the suite, plus a few things that aren't obvious at a glance.</p>
+    <div class="help-body">
+      <h4>The Measurement Console</h4>
+      <p>Pick <b>Measurement Console</b> from the grid above to open it below. It has six tabs: <b>Index</b> (KPI reference), <b>Fit</b> (client-fit matcher), <b>Diagnostics</b> (root-cause diagnosis with worked case files), <b>Plan</b> (client measurement plan), <b>Workbench</b> (ad copy + keywords), and <b>Readout</b> (results narrative). Selections carry across every tab.</p>
+
+      <h4>The other five consoles</h4>
+      <p>Conversion, Findability, Growth, Content, and Strategic Foundation are fully built but not yet open for public interaction — click any of them to join the waitlist and get an email the moment it launches. Their terminology is still searchable in the Glossary below.</p>
+
+      <h4>Getting back to the hub</h4>
+      <p>Use the <b>← All practices</b> button in the toolbar above the console to close it and return to the practice grid.</p>
+
+      <h4>The icon rail</h4>
+      <p>
+        📋 <b>Organizer</b> — every KPI you've added to the Measurement Console's Plan tab, in one list.<br/>
+        🩺 <b>Doctor</b> — set a campaign goal and it flags any KPI in your plan that pulls toward a different goal.<br/>
+        🌙/☀️ — toggle light/dark for the whole page, including the embedded console.<br/>
+        📚 <b>Glossary</b> — every term across all six practices, searchable and filterable.<br/>
+        🗒️ <b>Notes</b> — a scratchpad for this engagement, auto-saved in this browser. Save writes a real .docx (via a native file-save dialog where your browser supports it), Copy copies everything to your clipboard, and Undo/Redo step back and forward through your edits.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="waitlist-modal">
+  <div class="modal-box" style="max-width:460px;">
+    <div class="modal-head">
+      <h3>Get notified: <span id="waitlist-console-name">this console</span></h3>
+      <button class="modal-close" id="waitlist-close" aria-label="Close">×</button>
+    </div>
+    <p class="modal-sub">This practice console is fully built but not open for public use yet. Join the list and I'll email you the moment it's available.</p>
+
+    <!--
+      MAILCHIMP SETUP — replace before going live:
+      1. Use the SAME Audience as subscribe.html (one master list for the
+         whole site).
+      2. In Mailchimp: Audience > Signup forms > Form builder, add a
+         hidden "Groups" field, create an Interest Category (e.g. named
+         "Signup Source") with an option "Suite Waitlist" (and, if useful,
+         another option "KPI Cheat Sheet" to tag the subscribe.html form
+         the same way). Mailchimp will show the interest category/option
+         as a checkbox with a name like "group[123456][2]" — copy that
+         exact name/value into the hidden checkbox below, replacing
+         GROUP_ID and INTEREST_ID.
+      3. Replace YOUR_MAILCHIMP_ACTION_URL and the b_XXXX hidden field
+         below with the real values from Audience > Signup forms >
+         Embedded forms > Classic (same URL/field as subscribe.html,
+         since it's the same Audience).
+    -->
+    <form action="YOUR_MAILCHIMP_ACTION_URL" method="post" class="wl-form" target="_blank" novalidate id="waitlist-form">
+      <input type="hidden" id="waitlist-source-field" name="SOURCE" value="">
+      <div class="field-row">
+        <input type="email" name="EMAIL" placeholder="you@email.com" required>
+        <button type="submit" class="btn btn-primary">Notify Me</button>
+      </div>
+      <!-- Interest group checkbox — tags this signup as "Suite Waitlist" rather than the cheat-sheet signup. Always checked, hidden from view. -->
+      <input type="checkbox" name="group[GROUP_ID][INTEREST_ID]" value="1" checked style="position:absolute; left:-5000px;" aria-hidden="true" tabindex="-1">
+      <!-- Mailchimp bot-field honeypot, do not remove -->
+      <div style="position:absolute; left:-5000px;" aria-hidden="true">
+        <input type="text" name="b_YOUR_U_YOUR_ID" tabindex="-1" value="">
+      </div>
+    </form>
+    <p class="wl-thanks" id="waitlist-thanks" hidden>Thanks — check your inbox to confirm, and I'll let you know the moment this opens up.</p>
+    <p class="wl-privacy">No spam. Occasional notes on marketing measurement. Unsubscribe anytime.</p>
+  </div>
+</div>
+
 <script>
+var GLOSSARY_DATA = [
+{term:'CAC',full:'Customer Acquisition Cost',def:'Total sales & marketing spend divided by the number of new customers acquired in a period.',source:'measurement'},
+{term:'LTV / CLV',full:'Customer Lifetime Value',def:'Predicted net revenue or profit a customer generates over the full relationship with the business.',source:'measurement'},
+{term:'LTV:CAC',full:'LTV-to-CAC Ratio',def:'LTV divided by CAC — the return generated per dollar spent acquiring a customer.',source:'measurement'},
+{term:'ROAS',full:'Return on Ad Spend',def:'Revenue generated per dollar of ad spend, across all paid channels combined.',source:'measurement'},
+{term:'MER',full:'Marketing Efficiency Ratio',def:'Total revenue divided by total marketing spend across all channels — the blended, platform-agnostic version of ROAS.',source:'measurement'},
+{term:'ROI',full:'Marketing Return on Investment',def:'(Revenue attributable to marketing − marketing cost) ÷ marketing cost, expressed as a percentage.',source:'measurement'},
+{term:'Payback Period',full:'CAC Payback Period',def:'Number of months needed for a customer\'s gross margin to repay the cost of acquiring them.',source:'measurement'},
+{term:'MQL→SQL',full:'MQL-to-SQL Conversion Rate',def:'Percentage of Marketing Qualified Leads that convert to Sales Qualified Leads.',source:'measurement'},
+{term:'Pipeline Velocity',full:'Pipeline Value & Velocity',def:'Total dollar value of marketing-sourced or -influenced opportunities, and the speed they move through funnel stages.',source:'measurement'},
+{term:'CTR',full:'Click-Through Rate (Search)',def:'Clicks divided by impressions on a search ad.',source:'measurement'},
+{term:'CPC',full:'Cost Per Click',def:'Average amount paid per click on a search ad.',source:'measurement'},
+{term:'CPA',full:'Cost Per Acquisition',def:'Ad spend divided by number of conversions.',source:'measurement'},
+{term:'CVR',full:'Conversion Rate (Search)',def:'Conversions divided by clicks.',source:'measurement'},
+{term:'QS',full:'Quality Score',def:'Google\'s 1–10 diagnostic of ad relevance, expected CTR, and landing-page experience.',source:'measurement'},
+{term:'Search IS',full:'Search Impression Share',def:'Impressions received divided by total eligible impressions available to the campaign.',source:'measurement'},
+{term:'Abs. Top IS',full:'Search Absolute Top Impression Share',def:'Percentage of impressions shown in the very first ad position on the page.',source:'measurement'},
+{term:'CPM',full:'Cost Per Mille (Display/YouTube)',def:'Cost per 1,000 impressions.',source:'measurement'},
+{term:'CPC (Link)',full:'Cost Per Link Click',def:'Cost per click to an external destination, distinct from \'all clicks\' which includes likes and comments.',source:'measurement'},
+{term:'CTR (Link)',full:'Link Click-Through Rate',def:'Link clicks divided by impressions.',source:'measurement'},
+{term:'Frequency',full:'Frequency',def:'Average number of times a unique user has seen the ad within the reporting window.',source:'measurement'},
+{term:'CPR',full:'Cost Per Result',def:'Cost per the campaign\'s chosen optimization event — purchase, lead, install, etc.',source:'measurement'},
+{term:'Ad Rankings',full:'Quality / Engagement / Conversion Ranking',def:'Meta\'s three relative diagnostics comparing an ad to competitors targeting the same audience.',source:'measurement'},
+{term:'Hook Rate',full:'Hook Rate (3-Second Video Views)',def:'Percentage of viewers who watch at least 3 seconds of a video ad.',source:'measurement'},
+{term:'Fire Rate',full:'Tag Firing Success Rate',def:'Percentage of intended tag fires that execute without error, verified via preview/debug mode or a QA tool.',source:'measurement'},
+{term:'Data Layer Completeness',full:'Data Layer Completeness',def:'Percentage of required dataLayer variables present and correctly typed across page and event types.',source:'measurement'},
+{term:'Publish Error Rate',full:'Container Publish Error Rate',def:'Frequency of GTM container versions published with tag or trigger misconfigurations that later require rollback.',source:'measurement'},
+{term:'Consent Coverage',full:'Consent Mode Coverage',def:'Percentage of sessions where consent state is correctly signaled before tags fire, for regions under GDPR/CCPA.',source:'measurement'},
+{term:'Duplicate Rate',full:'Duplicate / Ghost Tracking Rate',def:'Percentage of events fired more than once per user action due to redundant tags.',source:'measurement'},
+{term:'Engagement Rate',full:'Engagement Rate (Organic)',def:'Likes, comments, shares, and saves divided by reach or follower count.',source:'measurement'},
+{term:'Reach',full:'Reach',def:'Number of unique accounts that saw a post.',source:'measurement'},
+{term:'Impressions',full:'Impressions',def:'Total number of times content displayed, including repeat views by the same account.',source:'measurement'},
+{term:'Follower Growth',full:'Follower Growth Rate',def:'Net new followers divided by starting follower count over a period.',source:'measurement'},
+{term:'SOV',full:'Share of Voice (Social)',def:'Brand\'s mentions or engagement volume as a percentage of total category conversation.',source:'measurement'},
+{term:'Completion Rate',full:'Video Completion / View-Through Rate',def:'Percentage of viewers who watch a video to completion or a set threshold (e.g., 75%).',source:'measurement'},
+{term:'Amplification',full:'Amplification Rate',def:'Shares divided by total reach or followers.',source:'measurement'},
+{term:'Organic Traffic',full:'Organic Traffic',def:'Sessions arriving via unpaid search engine results.',source:'measurement'},
+{term:'Visibility',full:'Keyword Rankings / Visibility Score',def:'Tracked position for target keywords, often aggregated into a weighted visibility index across a keyword set.',source:'measurement'},
+{term:'Organic CTR',full:'Organic CTR (SERP)',def:'Clicks divided by impressions in Search Console, by query or page.',source:'measurement'},
+{term:'DA / DR',full:'Domain Authority / Domain Rating',def:'Third-party composite score (Moz/Ahrefs) predicting ranking strength, driven largely by backlink profile.',source:'measurement'},
+{term:'Ref. Domains',full:'Referring Domains / Backlinks',def:'Count of unique external domains, and total links, pointing to the site.',source:'measurement'},
+{term:'Organic CVR',full:'Organic Conversion Rate',def:'Conversions from organic-search sessions divided by organic sessions.',source:'measurement'},
+{term:'CWV',full:'Core Web Vitals (LCP / INP / CLS)',def:'Google\'s page-experience metrics: Largest Contentful Paint (load speed), Interaction to Next Paint (responsiveness), Cumulative Layout Shift (visual stability).',source:'measurement'},
+{term:'Index Coverage',full:'Index Coverage / Crawl Error Rate',def:'Percentage of submitted URLs successfully indexed vs. excluded or errored, per Search Console.',source:'measurement'},
+{term:'GBP Views',full:'GBP Total Views (Search + Maps)',def:'Number of times the business profile was viewed on Google Search and Maps combined.',source:'measurement'},
+{term:'Directions',full:'Direction Requests',def:'Number of users who tapped Directions from the Google Business Profile listing.',source:'measurement'},
+{term:'Call Clicks',full:'Call Clicks',def:'Number of phone calls initiated directly from the GBP listing.',source:'measurement'},
+{term:'Website Clicks',full:'Website Clicks (from GBP)',def:'Number of clicks to the business website originating from the profile.',source:'measurement'},
+{term:'Reviews',full:'Review Rating & Volume',def:'Average star rating and total count of Google reviews.',source:'measurement'},
+{term:'Local Pack Rank',full:'Local Pack (Map Pack) Ranking',def:'Position within Google\'s top-3 local results shown for a given search-plus-location query.',source:'measurement'},
+{term:'Open Rate',full:'Open Rate',def:'Percentage of delivered emails opened, tracked via pixel.',source:'measurement'},
+{term:'CTOR',full:'Click-to-Open Rate',def:'Clicks divided by opens — isolates content and CTA performance from subject-line/deliverability performance.',source:'measurement'},
+{term:'RPE',full:'Revenue Per Email',def:'Revenue generated divided by emails sent or delivered.',source:'measurement'},
+{term:'List Growth',full:'List Growth Rate',def:'Net new subscribers divided by total list size over a period.',source:'measurement'},
+{term:'Unsub Rate',full:'Unsubscribe Rate',def:'Unsubscribes divided by delivered emails.',source:'measurement'},
+{term:'Inbox Placement',full:'Deliverability / Inbox Placement Rate',def:'Percentage of sent emails that land in the inbox — not spam — across major providers.',source:'measurement'},
+{term:'Bounce Rate',full:'Bounce Rate (Hard / Soft)',def:'Percentage of sends that fail to deliver — hard (permanent, e.g. invalid address) vs. soft (temporary, e.g. mailbox full).',source:'measurement'},
+{term:'Opt-In Rate',full:'Opt-In Rate',def:'Percentage of eligible contacts — site visitors, checkout customers — who subscribe to SMS.',source:'measurement'},
+{term:'Delivery Rate',full:'Delivery Rate',def:'Percentage of sent messages successfully delivered to carrier and handset.',source:'measurement'},
+{term:'RPM',full:'Revenue Per Message',def:'Revenue generated divided by messages sent.',source:'measurement'},
+{term:'Opt-Out Rate',full:'Opt-Out Rate',def:'STOP replies divided by delivered messages.',source:'measurement'},
+{term:'Response Rate',full:'Response Rate (Conversational SMS)',def:'Percentage of recipients who reply to a two-way message, distinct from STOP replies.',source:'measurement'},
+{term:'CRO',full:'Conversion Rate Optimization',def:'The practice of improving the percentage of visitors who complete a desired action on a page or in a flow.',source:'cro'},
+{term:'CTA',full:'Call to Action',def:'The specific instruction or button prompting a visitor to take the next step (e.g., "Start Free Trial").',source:'cro'},
+{term:'ICE',full:'Impact, Confidence, Ease',def:'A prioritization score averaging how much a fix would move the metric, how sure you are it will work, and how cheap it is to build.',source:'cro'},
+{term:'A/B Test',full:'A/B Test (Split Test)',def:'An experiment comparing two versions of something to see which performs better, with traffic split between them.',source:'cro'},
+{term:'MVT',full:'Multivariate Test',def:'A test that varies multiple elements at once and measures every combination, requiring far more traffic than a simple A/B test.',source:'cro'},
+{term:'MDE',full:'Minimum Detectable Effect',def:'The smallest lift a test is designed to reliably detect; smaller MDEs require larger sample sizes.',source:'cro'},
+{term:'Guardrail Metric',full:'Guardrail Metric',def:'A secondary metric that must not get worse during a test, even if the primary metric improves.',source:'cro'},
+{term:'Statistical Significance',full:'Statistical Significance',def:'The threshold (commonly p<0.05) at which a test result is unlikely to be due to random chance.',source:'cro'},
+{term:'p-value',full:'Probability Value',def:'The probability of seeing a result at least this extreme if there were actually no real difference between variants.',source:'cro'},
+{term:'Funnel',full:'Marketing/Conversion Funnel',def:'The sequence of steps a visitor moves through from first touch to conversion, each step losing some percentage of visitors.',source:'cro'},
+{term:'Exit-Intent',full:'Exit-Intent Trigger',def:'A trigger that detects when a visitor\'s cursor movement suggests they are about to leave the page or tab.',source:'cro'},
+{term:'SEO',full:'Search Engine Optimization',def:'Improving a site\'s visibility in organic (unpaid) search engine results.',source:'findability'},
+{term:'AEO',full:'Answer Engine Optimization',def:'Optimizing content to be cited as a source by AI systems like ChatGPT, Perplexity, and Claude, rather than to rank in traditional search.',source:'findability'},
+{term:'SERP',full:'Search Engine Results Page',def:'The page of results returned by a search engine for a given query.',source:'findability'},
+{term:'E-E-A-T',full:'Experience, Expertise, Authoritativeness, Trustworthiness',def:'Google\'s framework for assessing content quality and credibility, increasingly used to judge AI-citation-worthiness too.',source:'findability'},
+{term:'Core Web Vitals',full:'Core Web Vitals (CWV)',def:'Google\'s three page-experience metrics: LCP, INP, and CLS.',source:'findability'},
+{term:'LCP',full:'Largest Contentful Paint',def:'How long it takes for the largest visible element on a page to render.',source:'findability'},
+{term:'INP',full:'Interaction to Next Paint',def:'How responsive a page feels when a user interacts with it, measured end-to-end.',source:'findability'},
+{term:'CLS',full:'Cumulative Layout Shift',def:'How much visible content unexpectedly shifts position while a page loads.',source:'findability'},
+{term:'JSON-LD',full:'JavaScript Object Notation for Linked Data',def:'A JSON-based format for embedding structured data (schema.org markup) in a webpage.',source:'findability'},
+{term:'Schema Markup',full:'Schema.org Structured Data',def:'Structured data added to a page\'s code that explicitly tells search engines and AI systems what the content is (an Article, Product, FAQ, etc.).',source:'findability'},
+{term:'Canonical URL',full:'Canonical URL',def:'The single, preferred version of a URL that should be indexed when duplicate or near-duplicate pages exist.',source:'findability'},
+{term:'Crawl Budget',full:'Crawl Budget',def:'The number of pages a search engine will crawl on a site within a given time period.',source:'findability'},
+{term:'Backlink',full:'Backlink (Inbound Link)',def:'A link from another website pointing to yours, treated as a vote of authority by search engines.',source:'findability'},
+{term:'Robots.txt',full:'Robots Exclusion File',def:'A file at a site\'s root that tells crawlers (including AI bots like GPTBot) which pages they may or may not access.',source:'findability'},
+{term:'Sitemap',full:'XML Sitemap',def:'A file listing a site\'s indexable URLs, submitted to search engines to aid discovery.',source:'findability'},
+{term:'pSEO',full:'Programmatic SEO',def:'Building large numbers of search-optimized pages from a template and a data set, rather than writing each individually.',source:'findability'},
+{term:'Hub-and-Spoke',full:'Hub-and-Spoke Site Structure',def:'A site structure where one pillar "hub" page links to and from a cluster of related "spoke" pages on narrower subtopics.',source:'findability'},
+{term:'Orphan Page',full:'Orphan Page',def:'An indexed page with no inbound internal links pointing to it, making it hard for both users and crawlers to find.',source:'findability'},
+{term:'MRR',full:'Monthly Recurring Revenue',def:'Predictable subscription revenue normalized to a monthly basis.',source:'growth'},
+{term:'ARR',full:'Annual Recurring Revenue',def:'MRR multiplied by 12; the annualized run rate of subscription revenue.',source:'growth'},
+{term:'K-factor',full:'Virality Coefficient',def:'The number of new users each existing user brings in on average; a K-factor above 1 means viral, self-sustaining growth.',source:'growth'},
+{term:'Dunning',full:'Dunning (Payment Recovery)',def:'The automated process of retrying failed payments and emailing customers to update billing information before involuntary cancellation.',source:'growth'},
+{term:'Churn',full:'Churn Rate',def:'The rate at which customers cancel or stop paying over a given period.',source:'growth'},
+{term:'ORB Model',full:'Owned, Rented, Borrowed Channel Model',def:'A framework for categorizing launch channels by how much control and reach you have over them.',source:'growth'},
+{term:'Van Westendorp',full:'Van Westendorp Price Sensitivity Meter',def:'A four-question survey method for finding an acceptable price range from customer responses.',source:'growth'},
+{term:'Freemium',full:'Freemium Pricing Model',def:'A pricing model offering a free tier alongside paid tiers, using the free product itself as the acquisition channel.',source:'growth'},
+{term:'Save Offer',full:'Save Offer',def:'An incentive presented during a cancellation flow intended to convince the customer to stay.',source:'growth'},
+{term:'Pillar Content',full:'Pillar Content',def:'A comprehensive, authoritative page covering a broad topic, around which narrower supporting content is built and linked.',source:'content'},
+{term:'Topic Cluster',full:'Topic Cluster',def:'A group of related content pieces that all link to and support a central pillar page.',source:'content'},
+{term:'Buyer Stage',full:'Buyer Stage',def:'Where a piece of content\'s reader sits in their purchase journey — awareness, consideration, or decision.',source:'content'},
+{term:'Content Brief',full:'Content Brief',def:'A single-page spec for a piece of content: goal, audience, keyword, outline, and proof points, written before drafting begins.',source:'content'},
+{term:'AI-Tell',full:'AI Tell (AI Writing Pattern)',def:'A word, phrase, or structural pattern (e.g., "delve into," uniform paragraph structure) that signals AI-generated writing.',source:'content'},
+{term:'Seven Sweeps',full:'Seven Sweeps Editing Framework',def:'A copy-editing framework of seven sequential passes: Clarity, Voice & Tone, So What, Prove It, Specificity, Heightened Emotion, and Zero Risk.',source:'content'},
+{term:'Searchable Content',full:'Searchable Content',def:'Content built around topics with existing search demand, judged by rankings and organic conversions over time.',source:'content'},
+{term:'Shareable Content',full:'Shareable Content',def:'Content built around a distribution hook rather than search volume, judged by shares, links, and reach in its first weeks.',source:'content'},
+{term:'ICP',full:'Ideal Customer Profile',def:'A description of the type of company or customer most likely to buy, succeed with, and stay with a product.',source:'foundation'},
+{term:'JTBD',full:'Jobs to Be Done',def:'A framework describing what a customer is really trying to accomplish, independent of any specific product.',source:'foundation'},
+{term:'TAM',full:'Total Addressable Market',def:'The total revenue opportunity if a product captured 100% of its potential market.',source:'foundation'},
+{term:'SAM',full:'Serviceable Addressable Market',def:'The portion of the TAM a product can realistically reach given its current business model and channels.',source:'foundation'},
+{term:'SOM',full:'Serviceable Obtainable Market',def:'The portion of the SAM realistically capturable in the near term given competition and resources.',source:'foundation'},
+{term:'Battlecard',full:'Competitive Battlecard',def:'A one-page competitive reference for sales teams: competitor overview, strengths, weaknesses, and talk tracks.',source:'foundation'},
+{term:'Positioning Statement',full:'Positioning Statement',def:'A structured statement (target customer, category, key benefit, and differentiation) defining how a product is framed against alternatives.',source:'foundation'},
+{term:'Firmographics',full:'Firmographics',def:'Company-level attributes used to define an ICP: size, industry, revenue, geography.',source:'foundation'},
+{term:'Technographics',full:'Technographics',def:'The tools and technology stack a target company already uses, used to assess fit and integration needs.',source:'foundation'},
+{term:'Psychographics',full:'Psychographics',def:'Attitudinal and behavioral traits of a target buyer: risk tolerance, motivation, pain level.',source:'foundation'},
+{term:'Economic Buyer',full:'Economic Buyer',def:'The stakeholder with budget authority to approve a purchase.',source:'foundation'},
+{term:'Technical Buyer',full:'Technical Buyer',def:'The stakeholder who evaluates a product\'s technical fit, security, and integration requirements.',source:'foundation'},
+{term:'Champion',full:'Champion (Internal Advocate)',def:'An internal stakeholder who advocates for a product inside their own organization, without final purchase authority.',source:'foundation'},
+{term:'Anti-Persona',full:'Anti-Persona',def:'A description of who a product is deliberately NOT for, used to keep messaging and targeting focused.',source:'foundation'},
+{term:'Win/Loss Analysis',full:'Win/Loss Analysis',def:'A structured review of closed sales opportunities to identify why deals were won or lost.',source:'foundation'},
+{term:'KPI',full:'Key Performance Indicator',def:'A metric chosen to track progress toward a specific goal.',source:'general'},
+{term:'Benchmark',full:'Benchmark',def:'A reference value (often an industry range) used to judge whether a metric is healthy.',source:'general'},
+{term:'CPL',full:'Cost Per Lead',def:'The cost to generate one lead.',source:'general'},
+{term:'MQL',full:'Marketing Qualified Lead',def:'A lead judged by marketing criteria to be sales-ready enough to hand off.',source:'general'},
+{term:'SQL',full:'Sales Qualified Lead',def:'A lead that sales has vetted and accepted as a real opportunity.',source:'general'},
+{term:'NPS',full:'Net Promoter Score',def:'A loyalty metric based on how likely customers are to recommend a product, scored -100 to 100.',source:'general'},
+{term:'CSAT',full:'Customer Satisfaction Score',def:'A metric measuring how satisfied customers are with a specific interaction or experience.',source:'general'},
+{term:'GDPR',full:'General Data Protection Regulation',def:'EU privacy law governing how personal data is collected, stored, and used.',source:'general'},
+{term:'SSO',full:'Single Sign-On',def:'Authentication that lets a user log in once via one identity provider to access multiple services.',source:'general'},
+{term:'Engaged Sessions',full:'Engaged Sessions',def:'Sessions lasting 10+ seconds, containing a key event, or with 2+ pageviews — GA4\'s engagement threshold.',source:'measurement'},
+{term:'Avg. Engagement Time',full:'Average Engagement Time',def:'Average time a session was actively in focus (not merely open) per active user.',source:'measurement'},
+{term:'Key Events',full:'Key Events (Conversions)',def:'GA4\'s term for events explicitly marked as conversions — purchase, lead-form submit, sign-up, etc.',source:'measurement'},
+{term:'Sessions/User',full:'Sessions per User',def:'Average number of sessions per user within a period.',source:'measurement'},
+{term:'DDA',full:'Data-Driven Attribution Credit',def:'GA4\'s default model, which algorithmically distributes conversion credit across touchpoints using observed conversion paths.',source:'measurement'},
+{term:'Revenue/User',full:'Purchase Revenue per User',def:'Total or per-user transactional revenue tracked via ecommerce events.',source:'measurement'},
+{term:'Value Proposition Clarity',full:'PG1',def:'Can a visitor understand what this is and why they should care within 5 seconds, in their own language?',source:'cro'},
+{term:'Headline Effectiveness',full:'PG2',def:'Does the headline communicate the core value prop and match the traffic source\'s messaging?',source:'cro'},
+{term:'CTA Placement & Copy',full:'PG3',def:'One clear primary action, visible without scrolling, button copy states value not just action.',source:'cro'},
+{term:'Visual Hierarchy & Scannability',full:'PG4',def:'Can someone scanning (not reading) get the main message? Enough white space?',source:'cro'},
+{term:'Trust Signals & Social Proof',full:'PG5',def:'Recognizable logos, attributed testimonials with photos, case-study numbers near CTAs.',source:'cro'},
+{term:'Objection Handling',full:'PG6',def:'Are price/value, "will this work for me," and implementation difficulty addressed on-page?',source:'cro'},
+{term:'Friction Points',full:'PG7',def:'Field count, unclear next steps, mobile experience, load time.',source:'cro'},
+{term:'Field Count Ceiling',full:'FM1',def:'Total field count on the form.',source:'cro'},
+{term:'Required vs. Optional Justification',full:'FM2',def:'Does each required field have a proven downstream use?',source:'cro'},
+{term:'High-Friction Fields',full:'FM3',def:'Presence of phone, company size, or address on a top-of-funnel form.',source:'cro'},
+{term:'Error Recovery',full:'FM4',def:'Validation timing and error copy.',source:'cro'},
+{term:'CTA Copy',full:'FM5',def:'Submit button text.',source:'cro'},
+{term:'Flow Type Fit',full:'SU1',def:'Does the flow pattern match the product (B2B trial, B2C app, waitlist, e-commerce)?',source:'cro'},
+{term:'Minimum Viable Fields at Signup',full:'SU2',def:'What\'s collected before account creation.',source:'cro'},
+{term:'SSO Options',full:'SU3',def:'Are Google/Microsoft/GitHub/LinkedIn auth offered alongside email?',source:'cro'},
+{term:'Credit Card at Trial',full:'SU4',def:'Is a card required to start a free trial?',source:'cro'},
+{term:'Post-Submit Experience',full:'SU5',def:'What happens immediately after signup — verification, success state, next step.',source:'cro'},
+{term:'Time-to-Value',full:'OB1',def:'Number of steps between signup and experiencing core value.',source:'cro'},
+{term:'Define the Aha Moment',full:'OB2',def:'Is there a documented action that correlates with retention?',source:'cro'},
+{term:'One Goal Per Session',full:'OB3',def:'How many outcomes is the first session asking the user to achieve?',source:'cro'},
+{term:'Onboarding Checklist Pattern',full:'OB4',def:'Presence and structure of a setup checklist.',source:'cro'},
+{term:'Empty States as Opportunities',full:'OB5',def:'What a new user sees in an area before they’ve added data.',source:'cro'},
+{term:'Stalled User Re-engagement',full:'OB6',def:'Is there a defined "stalled" threshold and a recovery sequence?',source:'cro'},
+{term:'Purpose-Trigger Match',full:'PU1',def:'Does the trigger type match the purpose (exit-intent for saves, scroll-depth for content, click for lead magnets)?',source:'cro'},
+{term:'Frequency Capping',full:'PU2',def:'Session and cooldown rules.',source:'cro'},
+{term:'Complete Copy Set',full:'PU3',def:'Headline, subhead, CTA, and decline text all present.',source:'cro'},
+{term:'Compliance',full:'PU4',def:'GDPR consent language and Google\'s intrusive interstitials policy (mobile SEO penalty risk).',source:'cro'},
+{term:'Multiple Popup Conflict Rules',full:'PU5',def:'If more than one popup can fire, are there rules for which wins?',source:'cro'},
+{term:'Value Before Ask',full:'PW1',def:'Does the paywall appear after the user\'s aha moment, not before?',source:'cro'},
+{term:'Escape Hatch Required',full:'PW2',def:'Is there always a clear "Not now" / "Continue free" path?',source:'cro'},
+{term:'Trigger Point Design',full:'PW3',def:'Which trigger type is this — feature gate, usage limit, trial expiration, or time-based?',source:'cro'},
+{term:'Anti-Pattern Avoidance',full:'PW4',def:'Hidden close buttons, guilt-trip copy, confusing plan selection, blocking critical flows.',source:'cro'},
+{term:'Trial Expiration Sequencing',full:'PW5',def:'Are there staged warnings before a trial ends?',source:'cro'},
+{term:'Hypothesis Structure',full:'AB1',def:'Does the test have a structured hypothesis, not just "let’s see what happens"?',source:'cro'},
+{term:'Test One Thing',full:'AB2',def:'How many variables does this test change at once?',source:'cro'},
+{term:'Pre-Determined Sample Size',full:'AB3',def:'Was sample size calculated before launch, or is the team "peeking" until it looks significant?',source:'cro'},
+{term:'Primary / Secondary / Guardrail Metrics',full:'AB4',def:'Are all three defined before the test starts?',source:'cro'},
+{term:'Homepage-Specific Framework',full:'PG8',def:'Does the homepage handle both cold visitors needing positioning and warm visitors ready to convert?',source:'cro'},
+{term:'Landing Page Message Match',full:'PG9',def:'Does the landing page match the traffic source’s exact promise, with a single CTA?',source:'cro'},
+{term:'Pricing Page Plan Clarity',full:'PG10',def:'Is there a clear plan comparison with one recommended tier called out?',source:'cro'},
+{term:'Feature Page Use-Case Bridge',full:'PG11',def:'Does the feature page connect the feature to a concrete use case and outcome, not just a spec description?',source:'cro'},
+{term:'Blog Post Contextual CTA',full:'PG12',def:'Do blog posts include CTAs matched to the specific topic, placed at natural stopping points?',source:'cro'},
+{term:'Demo Request Field Fit',full:'FM6',def:'Is a phone number required, and is there a “what’s your biggest challenge” qualifying question?',source:'cro'},
+{term:'Lead Capture Value Framing',full:'FM7',def:'Is the value proposition restated directly above the form, and is the content gated appropriately?',source:'cro'},
+{term:'Contact Form Routing',full:'FM8',def:'Is there a department/topic routing option, and are alternative contact methods shown?',source:'cro'},
+{term:'B2B SaaS Trial Pattern',full:'SU6',def:'Does the flow go email/SSO → name+company → onboarding, without front-loading extra fields?',source:'cro'},
+{term:'B2C App Pattern',full:'SU7',def:'Does the flow lead with social/Apple auth or email, then straight into the product experience?',source:'cro'},
+{term:'Waitlist / Early Access Pattern',full:'SU8',def:'Is the ask limited to email, with an optional role/use-case question?',source:'cro'},
+{term:'E-commerce Guest Checkout',full:'SU9',def:'Is guest checkout the default, with account creation offered post-purchase or via one-click social auth?',source:'cro'},
+{term:'Ecommerce Popup Sequence',full:'PU6',def:'Is there a first-purchase discount entry/scroll popup plus a bigger exit-intent offer plus cart-abandonment recovery?',source:'cro'},
+{term:'B2B SaaS Popup Sequence',full:'PU7',def:'Are click-triggered demo/lead-magnet popups paired with a scroll-based newsletter ask and an exit-intent trial reminder?',source:'cro'},
+{term:'Content / Media Popup Sequence',full:'PU8',def:'Does a scroll-based newsletter popup appear after genuine engagement, with a page-count-based ask for repeat visitors?',source:'cro'},
+{term:'Lead Generation Popup Sequence',full:'PU9',def:'Is there a time-delayed general list-building popup plus a click-triggered specific lead magnet plus a final exit-intent capture?',source:'cro'},
+{term:'Test Type Selection',full:'AB5',def:'Is the test type (A/B, A/B/n, MVT, Split URL) matched to available traffic and change complexity?',source:'cro'},
+{term:'Traffic Allocation Fit',full:'AB6',def:'Is the split (50/50, 90/10, ramping) matched to the risk level of the change?',source:'cro'},
+{term:'Design Mistake Avoidance',full:'AB7',def:'Is the test changing a single meaningful variable, bold enough to detect, true to the hypothesis?',source:'cro'},
+{term:'Analysis Mistake Avoidance',full:'AB8',def:'Are confidence intervals checked, not just point estimates, with no segment cherry-picking?',source:'cro'},
+{term:'Crawlability & Indexation',full:'TS2',def:'Are priority pages actually crawlable and indexed — no conflicting noindex, valid robots.txt?',source:'findability'},
+{term:'AI Crawler Access',full:'TS3',def:'Does robots.txt allow GPTBot, PerplexityBot, ClaudeBot, and Google-Extended?',source:'findability'},
+{term:'Migration Safety',full:'TS4',def:'Is there a complete 301 redirect map for every URL that changed?',source:'findability'},
+{term:'XML Sitemap Hygiene',full:'TS5',def:'Does the sitemap contain only indexable pages?',source:'findability'},
+{term:'Title & Meta Uniqueness',full:'OP1',def:'Does every priority page have a unique, keyword-relevant title and meta description?',source:'findability'},
+{term:'Heading Structure',full:'OP2',def:'Single H1 per page, logical H2/H3 hierarchy.',source:'findability'},
+{term:'URL Construction',full:'OP3',def:'Short, human-readable, hyphenated, one primary keyword, no stuffing.',source:'findability'},
+{term:'Keyword Cannibalization',full:'OP4',def:'Do multiple pages target the same primary keyword?',source:'findability'},
+{term:'Internal Anchor Text',full:'OP5',def:'Are internal links using descriptive, partial-match anchor text?',source:'findability'},
+{term:'Experience Signals',full:'CE1',def:'First-person evidence, dated examples, case studies with real numbers.',source:'findability'},
+{term:'Expertise Signals',full:'CE2',def:'Author bio with credentials, citations to primary or peer-reviewed sources.',source:'findability'},
+{term:'Authoritativeness Signals',full:'CE3',def:'Backlinks from authority domains, schema.org markup, entity connections.',source:'findability'},
+{term:'Trustworthiness Signals',full:'CE4',def:'HTTPS, visible contact info, transparent corrections policy, factual density.',source:'findability'},
+{term:'Thin & Duplicate Content',full:'CE5',def:'Does each page provide unique value versus templated filler?',source:'findability'},
+{term:'Industry E-E-A-T Threshold',full:'CE6',def:'Does content meet the minimum composite score for its industry (Healthcare/Finance/Legal need 85+; SaaS needs 70+)?',source:'findability'},
+{term:'Bot Access Pre-Flight',full:'AE1',def:'Same check as Technical SEO’s AI crawler access, framed as the AEO-specific first gate.',source:'findability'},
+{term:'Fact-First Lede',full:'AE2',def:'Are verifiable claims placed in the first 200 words?',source:'findability'},
+{term:'Extractable Content Blocks',full:'AE3',def:'Presence of definition blocks, numbered steps, tables, FAQ, attributed stats, expert quotes, summary boxes.',source:'findability'},
+{term:'Citation Density',full:'AE4',def:'Number of verifiable, sourced claims per 1000 words.',source:'findability'},
+{term:'Citation Tracking',full:'AE5',def:'Is there a ledger tracking which pages get cited by which LLM, for which query?',source:'findability'},
+{term:'Avoid AEO Anti-Patterns',full:'AE6',def:'Keyword stuffing for AI, unreviewed AI-generated content, citation farms, schema spam.',source:'findability'},
+{term:'Schema Type Match',full:'SC1',def:'Does the schema type match the actual page content (Product only on pages that sell a product, etc.)?',source:'findability'},
+{term:'Required Fields Complete',full:'SC2',def:'@context, name, image (absolute URL), and type-specific required fields present.',source:'findability'},
+{term:'FAQPage on Q&A Content',full:'SC3',def:'Does any page with Q&A-format content have FAQPage schema?',source:'findability'},
+{term:'Server-Side Injection',full:'SC4',def:'Is schema injected via GTM (client-side) or server-side/inline?',source:'findability'},
+{term:'Date Field Sanity',full:'SC5',def:'datePublished/dateModified present, valid ISO 8601, and dateModified not older than datePublished.',source:'findability'},
+{term:'Video Schema',full:'SC6',def:'Does a page with embedded video have VideoObject schema, including thumbnail, duration, and upload date?',source:'findability'},
+{term:'Category / Hub Page Schema',full:'SC7',def:'Does a category or hub page have CollectionPage schema with BreadcrumbList?',source:'findability'},
+{term:'Homepage Organization + WebSite Schema',full:'SC8',def:'Does the homepage have Organization schema (with sameAs links) and WebSite schema with a SearchAction?',source:'findability'},
+{term:'Crawl Depth',full:'SA1',def:'Are priority pages reachable within 3 clicks of the homepage?',source:'findability'},
+{term:'Orphan Pages',full:'SA2',def:'Do any indexed pages have zero inbound internal links?',source:'findability'},
+{term:'Hub-and-Spoke Silo Structure',full:'SA3',def:'Does each core topic have one pillar hub page linking to all its spoke content, with spokes linking back?',source:'findability'},
+{term:'Breadcrumbs',full:'SA4',def:'Does every non-homepage page have crawlable breadcrumbs?',source:'findability'},
+{term:'Navigation Discipline',full:'SA5',def:'Primary nav has 5-8 items, each linking to a page worth ranking.',source:'findability'},
+{term:'Navigation Zone Discipline',full:'SA6',def:'Are primary nav, breadcrumbs, footer, and contextual in-content links each doing their distinct equity-flow job?',source:'findability'},
+{term:'Anchor Text Discipline',full:'SA7',def:'Do internal links mostly use partial-match, topic-relevant anchor text rather than generic phrases?',source:'findability'},
+{term:'Linking Priority Stack',full:'SA8',def:'Is link-building effort focused on in-content and hub-page links first, before navigation, footer, or sidebar?',source:'findability'},
+{term:'ORB Channel Coverage',full:'LA1',def:'Does the launch plan cover Owned, Rented, AND Borrowed channels?',source:'growth'},
+{term:'Phased Launch Sequencing',full:'LA2',def:'Is there a pre-launch (2-6 weeks), launch day, and post-launch (30 days) plan — not just a single day?',source:'growth'},
+{term:'Launch Readiness Gate',full:'LA3',def:'Is there a readiness score gating the launch date?',source:'growth'},
+{term:'Borrowed-Channel Lead Time',full:'LA4',def:'Has partner/Product Hunt/newsletter outreach started weeks before launch day?',source:'growth'},
+{term:'Post-Launch Momentum',full:'LA5',def:'Is there a 30-day post-launch content plan (comparison pages, case studies, roundup email, retargeting)?',source:'growth'},
+{term:'Pricing-Change-as-Launch',full:'LA6',def:'Is a pricing or packaging change being treated as its own launch moment?',source:'growth'},
+{term:'Value Metric Before Price Point',full:'PR1',def:'Is the value metric (per-seat/usage/feature/flat/outcome) locked in before any price point discussion?',source:'growth'},
+{term:'Three-Tier Anchoring',full:'PR2',def:'Does pricing use a Good/Better/Best three-tier structure with the middle tier pushed as default?',source:'growth'},
+{term:'Underpricing Signal',full:'PR3',def:'Is trial-to-paid conversion above 40%?',source:'growth'},
+{term:'All-Customers-On-Middle-Tier',full:'PR4',def:'Are all customers clustered on the middle tier with none on top?',source:'growth'},
+{term:'Price Increase Communication',full:'PR5',def:'For a planned increase, is there 60-90 days notice, a stated reason, and a path (lock-in or window) offered?',source:'growth'},
+{term:'Pricing Page Objection Coverage',full:'PR6',def:'Does the pricing page FAQ address cancellation, limits, refunds, data security, and upgrade/downgrade?',source:'growth'},
+{term:'Trigger Moment Timing',full:'RF1',def:'Is the referral ask triggered after an aha moment or milestone, not at signup?',source:'growth'},
+{term:'Single- vs Double-Sided Incentive Fit',full:'RF2',def:'Does the incentive structure match the current referral rate (double-sided if <1%, single-sided if >5%)?',source:'growth'},
+{term:'Reward Sizing',full:'RF3',def:'Is the reward at least 10% of first month’s value (credit), or capped at 30% of first payment (cash)?',source:'growth'},
+{term:'Share Friction',full:'RF4',def:'Is there a pre-filled, editable share message and a personal referral link (not a generic code)?',source:'growth'},
+{term:'Reward Delivery Speed',full:'RF5',def:'Is the referrer notified immediately when a referral converts, not at month-end?',source:'growth'},
+{term:'Affiliate Partner Kit',full:'RF6',def:'For affiliate programs, do partners have tracking links, swipe copy, and approved assets before recruitment?',source:'growth'},
+{term:'Value Before Gate',full:'FT1',def:'Is the core result shown before any email gate?',source:'growth'},
+{term:'Keyword Validation Before Build',full:'FT2',def:'Has search volume for "free [tool]" been checked before committing engineering time?',source:'growth'},
+{term:'Minimal Input Friction',full:'FT3',def:'Does the tool require 3 or fewer inputs to produce an initial result?',source:'growth'},
+{term:'Shareable Output Design',full:'FT4',def:'Does the tool produce a unique results URL, a "share your score" action, or an embeddable badge?',source:'growth'},
+{term:'Link-Magnet Depth',full:'FT5',def:'Does the tool have enough depth to be genuinely link-worthy, not a single input/output utility?',source:'growth'},
+{term:'Maintenance Ownership',full:'FT6',def:'Is there a named owner responsible for the tool after launch?',source:'growth'},
+{term:'Cancel Flow Exists',full:'CH1',def:'Is cancellation an actual flow (exit survey → save offer → confirmation), or instant/support-only?',source:'growth'},
+{term:'Required Single-Question Exit Survey',full:'CH2',def:'Is there exactly one required multiple-choice reason question before the save offer shows?',source:'growth'},
+{term:'Reason-Matched Save Offers',full:'CH3',def:'Does each exit reason map to a specific offer type, not one generic discount for everyone?',source:'growth'},
+{term:'Dunning Retry Schedule',full:'CH4',def:'Does a failed payment trigger a smart retry schedule instead of immediate or no retry?',source:'growth'},
+{term:'Dunning Email Sequence',full:'CH5',def:'Is there a 5-email dunning sequence with escalating but non-shaming tone?',source:'growth'},
+{term:'Post-Cancel Win-Back Window',full:'CH6',def:'Is there a 7-day re-engagement email and a 30-day win-back email after cancellation?',source:'growth'},
+{term:'Value Metric Selection',full:'PR7',def:'Does the value metric answer what makes a customer pay more, scale with their success, stay easy to understand, and resist gaming?',source:'growth'},
+{term:'Van Westendorp Price Sensitivity',full:'PR8',def:'Has price sensitivity been researched with the four-question method against 30+ respondents?',source:'growth'},
+{term:'Competitor Benchmarking Process',full:'PR9',def:'Has direct-competitor pricing been recorded with what’s included at each price point, not just the headline number?',source:'growth'},
+{term:'Price Increase Strategy Selection',full:'PR10',def:'Is the increase strategy (new-customers-only, grandfather+delayed, tied-to-value, plan-restructure, uniform) matched to risk tolerance?',source:'growth'},
+{term:'Annual / Monthly Toggle Design',full:'PR11',def:'Does the pricing page highlight annual pricing with explicit savings shown, without hiding the monthly price?',source:'growth'},
+{term:'Pricing Scorecard Audit',full:'PR12',def:'Has existing pricing been benchmarked against conversion rate, expansion rate, and time-since-last-change?',source:'growth'},
+{term:'Reward Type Fit',full:'RF7',def:'Does the reward type (credit/discount/cash/feature-unlock/status/charity) match the product model and audience?',source:'growth'},
+{term:'Referral vs. Affiliate Decision',full:'RF8',def:'Does the program match customer referrals (B2C/prosumer/SMB) vs. affiliates (B2B, high-LTV, recruited)?',source:'growth'},
+{term:'Tiered Reward Gamification',full:'RF9',def:'Are there up to 3 reward tiers that scale meaningfully, not just marginally, from 1 to 10+ referrals?',source:'growth'},
+{term:'Optimization Lever Diagnosis',full:'RF10',def:'When referral performance is weak, has the specific broken stage (awareness/share rate/conversion/reward friction) been diagnosed first?',source:'growth'},
+{term:'Tool Type Fit',full:'FT7',def:'Does the tool type (Calculator/Generator/Checker/Grader/Converter/Template/Interactive Viz) match available build effort and audience need?',source:'growth'},
+{term:'SEO Landing Page Structure',full:'FT8',def:'Does the tool’s landing page follow the documented structure (H1, subhead, tool above the fold, how-it-works, why-audience-uses-it, FAQ)?',source:'growth'},
+{term:'Progressive Profiling',full:'FT9',def:'Is additional visitor data collected across multiple sessions rather than all at once in a single form?',source:'growth'},
+{term:'Product Hunt Preparation Timeline',full:'LA7',def:'Has PH-specific prep (assets, hunter relationships, launch-day engagement plan) started weeks before the listing goes live?',source:'growth'},
+{term:'Post-Launch Silence Detection',full:'LA8',def:'Has momentum content actually been published in the 30 days after launch, or did activity stop at launch day?',source:'growth'},
+{term:'Voluntary vs. Involuntary Churn Split',full:'CH7',def:'Is churn tracked and reported as two distinct numbers, not one blended rate?',source:'growth'},
+{term:'Churn Rate Red Flag Threshold',full:'CH8',def:'Is monthly churn being tracked against the >5% red-flag threshold that signals company-level contraction risk?',source:'growth'},
+{term:'Searchable vs Shareable Classification',full:'ST1',def:'Has each topic been classified as searchable, shareable, both, or neither?',source:'content'},
+{term:'Content Pillar Structure',full:'ST2',def:'Are there 3-5 defined pillars with subtopic clusters connecting to the product?',source:'content'},
+{term:'Topic Cluster Buyer-Stage Coherence',full:'ST3',def:'Do clustered topics share a coherent buyer stage, not just lexical similarity?',source:'content'},
+{term:'ICP Dilution Check',full:'ST4',def:'Does content speak to one clear audience, or try to cover too many?',source:'content'},
+{term:'Competitive Gap Analysis',full:'ST5',def:'Has competitor content coverage been mapped against your own to find gaps?',source:'content'},
+{term:'Existing Content Performance Audit',full:'ST6',def:'Has current content been audited for what’s already working before planning new pieces?',source:'content'},
+{term:'Competitive Content Analysis',full:'PD1',def:'Have the top 5-10 ranking pieces for the target keyword been reviewed for angle and gaps?',source:'content'},
+{term:'Search Intent Match',full:'PD2',def:'Does the content format match the actual SERP intent pattern (informational/commercial/navigational/discovery)?',source:'content'},
+{term:'Source Citation Discipline',full:'PD3',def:'Does every claim cite a specific, named source rather than "studies show"?',source:'content'},
+{term:'Content Brief Completeness',full:'PD4',def:'Is there a completed brief (keyword, audience, angle, H2 structure, sources, gaps) before drafting starts?',source:'content'},
+{term:'Outline-First Discipline',full:'PD5',def:'Is there a header skeleton (hook-worthy H1, 4-7 logical H2s) built before prose?',source:'content'},
+{term:'Pre-Publish Quality Gates',full:'PD6',def:'Does the draft pass the mechanical gates (keyword naturalness, sourced claims, readability≥70, word count)?',source:'content'},
+{term:'Clarity Sweep Discipline',full:'ED1',def:'Is every sentence immediately understandable with no unclear pronoun references?',source:'content'},
+{term:'So-What Bridge Check',full:'ED2',def:'Does every feature claim connect to a benefit via a "which means..." bridge?',source:'content'},
+{term:'Prove-It Evidence Check',full:'ED3',def:'Is every claim backed by a testimonial, stat, case reference, or third-party validation?',source:'content'},
+{term:'Specificity Upgrade Check',full:'ED4',def:'Have vague words ("improve," "many," "fast") been replaced with numbers or named examples?',source:'content'},
+{term:'Zero-Risk CTA Check',full:'ED5',def:'Are objections addressed and risk reducers (guarantee, free trial, cancel anytime) present near every CTA?',source:'content'},
+{term:'Iterative Sweep Re-Verification',full:'ED6',def:'After each editing pass, is the piece re-checked against the earlier sweeps it might have disrupted?',source:'content'},
+{term:'AI Filler Word Density',full:'HU1',def:'How often do words like "delve," "leverage," "crucial," "furthermore" appear?',source:'content'},
+{term:'Hedging Chain Detection',full:'HU2',def:'Does the piece hedge in nearly every sentence ("it’s important to note that")?',source:'content'},
+{term:'Em-Dash Overuse',full:'HU3',def:'Does an em-dash appear in every other paragraph?',source:'content'},
+{term:'Uniform Paragraph Structure',full:'HU4',def:'Does every paragraph follow the same statement→explanation→example→bridge pattern?',source:'content'},
+{term:'Specificity Gap',full:'HU5',def:'Are there 5+ vague claims ("many companies," "studies show") with zero data or attribution?',source:'content'},
+{term:'Voice Injection Readiness',full:'HU6',def:'Is there a real brand voice example to extract patterns from before injecting personality?',source:'content'},
+{term:'Headline Formula Fit',full:'PC1',def:'Does the headline use a proven formula and score well on specificity?',source:'content'},
+{term:'CTA Strength',full:'PC2',def:'Does the CTA use an action-outcome formula instead of a weak generic verb?',source:'content'},
+{term:'Page-Specific Structure Fit',full:'PC3',def:'Does the page follow the right structure for its type (homepage/landing/pricing/feature/about)?',source:'content'},
+{term:'Customer Language Mirroring',full:'PC4',def:'Does the copy use words customers actually use, not internal company language?',source:'content'},
+{term:'One-Idea-Per-Section Discipline',full:'PC5',def:'Does each section advance exactly one argument in a logical flow down the page?',source:'content'},
+{term:'Objection Handling Section Presence',full:'PC6',def:'Does the page address real objections (price, fit, implementation) before the final CTA?',source:'content'},
+{term:'ICP Definition Completeness',full:'CA1',def:'Does the ICP define firmographic, behavioral, and psychographic traits, not just company size or industry?',source:'foundation'},
+{term:'Buyer vs User Distinction',full:'CA2',def:'Are the economic buyer, champion, and end user identified separately when they differ?',source:'foundation'},
+{term:'Jobs-to-be-Done Clarity',full:'CA3',def:'Is the core JTBD stated in the customer’s own words, not the product’s feature language?',source:'foundation'},
+{term:'Four Forces Mapping',full:'CA4',def:'Have push, pull, anxiety, and habit all been identified for this buying decision?',source:'foundation'},
+{term:'Trigger Event Identification',full:'CA5',def:'Is there a specific, observable event that starts the buyer’s search?',source:'foundation'},
+{term:'Competitive Alternative Awareness',full:'CA6',def:'Does the research include "do nothing" and adjacent tools as real alternatives, not just direct competitors?',source:'foundation'},
+{term:'Voice-of-Customer Sourcing',full:'CA7',def:'Is persona language drawn from real interviews, reviews, or support tickets, not assumption?',source:'foundation'},
+{term:'Market Sizing Realism',full:'CA8',def:'Is TAM/SAM/SOM grounded in a bottom-up calculation, not a top-down guess?',source:'foundation'},
+{term:'Buying Committee Mapping (B2B)',full:'CA9',def:'For multi-stakeholder sales, are all committee roles (champion, blocker, budget holder) mapped?',source:'foundation'},
+{term:'Segment Prioritization',full:'CA10',def:'When multiple ICP segments exist, has one been prioritized as primary rather than splitting GTM effort evenly?',source:'foundation'},
+{term:'Category Choice Clarity',full:'PG1',def:'Has a deliberate choice been made between competing in an existing category vs creating a new one?',source:'foundation'},
+{term:'Positioning Statement Completeness',full:'PG2',def:'Does it cover For [target], who [need], [product] is a [category] that [benefit], unlike [alternative], we [differentiator]?',source:'foundation'},
+{term:'Differentiation Defensibility',full:'PG3',def:'Is the claimed differentiator something competitors genuinely can’t easily copy or claim too?',source:'foundation'},
+{term:'Proof Point Mapping',full:'PG4',def:'Does every positioning claim have a specific proof point behind it?',source:'foundation'},
+{term:'GTM Motion Fit',full:'PG5',def:'Does the chosen GTM motion (PLG / sales-led / marketing-led) match the actual buying behavior of the ICP?',source:'foundation'},
+{term:'Channel-Market Fit',full:'PG6',def:'Are the chosen distribution channels where this specific audience actually spends attention?',source:'foundation'},
+{term:'Pricing-Positioning Alignment',full:'PG7',def:'Does the pricing model reinforce the positioning, or contradict it?',source:'foundation'},
+{term:'Messaging Hierarchy',full:'PG8',def:'Is there a clear hierarchy from one-line positioning down to full narrative, or does every asset restate the same paragraph?',source:'foundation'},
+{term:'Launch Readiness Cross-Check',full:'PG9',def:'Before GTM launch, has positioning been sanity-checked against sales/support teams who’ll field real objections?',source:'foundation'},
+{term:'Brand Archetype Clarity',full:'BI1',def:'Has a deliberate brand personality/archetype been chosen, or does voice drift asset to asset?',source:'foundation'},
+{term:'Voice Consistency Check',full:'BI2',def:'Does a real style guide exist defining tone attributes with do/don’t examples?',source:'foundation'},
+{term:'Visual-Verbal Alignment',full:'BI3',def:'Does the verbal brand (voice, tone) match what the visual brand (design, color) signals?',source:'foundation'},
+{term:'Name/Tagline Distinctiveness',full:'BI4',def:'Is the name or tagline actually ownable and distinct, or generic enough to fit any competitor?',source:'foundation'},
+{term:'Brand Promise Delivery Check',full:'BI5',def:'Is there a gap between what the brand promises and what the product/service actually delivers day to day?',source:'foundation'},
+{term:'Internal Brand Alignment',full:'BI6',def:'Do internal teams (sales, support, product) actually understand and repeat the same brand story, or does it only live in a deck?',source:'foundation'},
+{term:'Rebrand Trigger Discipline',full:'BI7',def:'Is a rebrand being driven by a real strategic shift (repositioning, M&A, pivot) rather than internal fatigue with the old look?',source:'foundation'},
+{term:'Category Convention Awareness',full:'BI8',def:'Does the brand know which visual/verbal conventions of its category it’s deliberately keeping vs breaking?',source:'foundation'},
+{term:'Trademark/Domain Availability Check',full:'BI9',def:'Has the name been checked for trademark conflicts and domain availability before commitment?',source:'foundation'}
+];
+
 (function(){
-  var toast = document.getElementById('lockToast');
-  var hideTimer = null;
+"use strict";
 
-  function showToast(name){
-    toast.textContent = name + ' — Not available for public use right now.';
-    toast.classList.add('show');
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+var PRACTICES = [
+  {key:'measurement', name:'Measurement Console', c:'--p-measurement', desc:'KPI reference, benchmark fit, diagnostics with worked cases across every channel, client measurement plans, ad copy workbench, and results readout.', stats:'75 KPIs · 6 tools', locked:false, src:'measurement-console.html'},
+  {key:'cro', name:'Conversion Console', c:'--p-cro', desc:'Conversion heuristics across seven surfaces, symptom diagnostics, A/B test designer, client plan, variant copy workbench, and results readout.', stats:'57 heuristics · 6 tools', locked:true},
+  {key:'findability', name:'Findability Console', c:'--p-findability', desc:'SEO, AEO, schema, and site-architecture heuristics, symptom diagnostics, JSON-LD schema builder, architecture mapper, client plan, pSEO workbench, and E-E-A-T readout.', stats:'38 heuristics · 7 tools', locked:true},
+  {key:'growth', name:'Growth Console', c:'--p-growth', desc:'Launch, pricing, referral, free-tool, and churn heuristics, symptom diagnostics, a five-type bet modeler, client plan, lifecycle copy workbench, and program health readout.', stats:'47 heuristics · 6 tools', locked:true},
+  {key:'content', name:'Content Console', c:'--p-content', desc:'Strategy, production, editing, humanizing, and page-copy heuristics, symptom diagnostics, a computed copy sweep auditor, client plan, multi-channel and long-form copy workbench, and Searchable/Shareable readout.', stats:'30 heuristics · 6 tools', locked:true},
+  {key:'foundation', name:'Strategic Foundation Console', c:'--p-foundation', desc:'Context & audience, positioning & GTM, and brand identity heuristics, symptom diagnostics, a persona/positioning/JTBD builder, client plan, battlecard and engagement-brief workbench, and ICP validation readout.', stats:'28 heuristics · 6 tools', locked:true}
+];
+
+function openWaitlistModal(name){
+  document.getElementById('waitlist-console-name').textContent = name;
+  document.getElementById('waitlist-source-field').value = name;
+  document.getElementById('waitlist-form').hidden = false;
+  document.getElementById('waitlist-thanks').hidden = true;
+  document.getElementById('waitlist-form').reset();
+  document.getElementById('waitlist-modal').classList.remove('hidden');
+}
+
+var grid = document.getElementById('practice-grid');
+PRACTICES.forEach(function(p){
+  var card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'practice-card ' + (p.locked ? 'locked' : 'live');
+  card.style.setProperty('--card-c', 'var(' + p.c + ')');
+  card.setAttribute('data-key', p.key);
+  if (p.locked) {
+    card.setAttribute('title', 'Join the waitlist to get notified when this launches.');
+    card.setAttribute('aria-disabled', 'true');
   }
+  card.innerHTML =
+    (p.locked ? '<span class="plock" aria-hidden="true">🔒</span>' : '') +
+    '<span class="pname">' + p.name + '</span>' +
+    '<p class="pdesc">' + p.desc + '</p>' +
+    '<div class="pstats"><span>' + p.stats + '</span><span class="pgo">' + (p.locked ? 'Notify me →' : 'Open console →') + '</span></div>';
+  card.addEventListener('click', function(){
+    if (p.locked) { openWaitlistModal(p.name); return; }
+    openPractice(p);
+  });
+  grid.appendChild(card);
+});
 
-  document.querySelectorAll('.practice-card.locked').forEach(function(card){
-    card.addEventListener('click', function(e){
-      e.preventDefault();
-      showToast(card.getAttribute('data-name'));
+function openPractice(p){
+  document.querySelectorAll('.practice-card').forEach(function(c){
+    c.classList.toggle('active', c.getAttribute('data-key') === p.key);
+  });
+  var frame = document.getElementById('practice-frame');
+  frame.src = p.src;
+  document.getElementById('viewer-empty').style.display = 'none';
+  document.getElementById('viewer-frame-wrap').style.display = '';
+  document.getElementById('viewer-toolbar').style.display = 'flex';
+  document.getElementById('now-viewing-name').textContent = p.name;
+  document.getElementById('viewer-frame-wrap').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function returnToHub(){
+  document.querySelectorAll('.practice-card').forEach(function(c){ c.classList.remove('active'); });
+  var frame = document.getElementById('practice-frame');
+  frame.src = 'about:blank';
+  document.getElementById('viewer-frame-wrap').style.display = 'none';
+  document.getElementById('viewer-toolbar').style.display = 'none';
+  document.getElementById('viewer-empty').style.display = '';
+  document.getElementById('practice-grid').scrollIntoView({behavior:'smooth', block:'start'});
+}
+document.getElementById('viewer-back-btn').addEventListener('click', returnToHub);
+
+/* ---------- Theme toggle ---------- */
+var currentTheme = document.documentElement.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+function applyTheme(theme){
+  currentTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-toggle-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+  var frame = document.getElementById('practice-frame');
+  if (frame && frame.contentDocument && frame.contentDocument.documentElement){
+    frame.contentDocument.documentElement.setAttribute('data-theme', theme);
+  }
+}
+document.getElementById('practice-frame').addEventListener('load', function(){
+  var doc = this.contentDocument;
+  if (doc && doc.documentElement) doc.documentElement.setAttribute('data-theme', currentTheme);
+});
+document.getElementById('theme-toggle-btn').addEventListener('click', function(){
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+});
+applyTheme(currentTheme);
+
+/* ---------- Organizer + Doctor ---------- */
+var GOAL_LABELS = {
+  'awareness,brand': 'Build brand awareness',
+  'leadgen,conversion': 'Generate leads / pipeline',
+  'efficiency,conversion': 'Grow revenue / sales efficiently',
+  'retention': 'Improve retention / loyalty',
+  'dataquality': 'Strengthen measurement / data foundation'
+};
+var organizerData = {};
+
+window.addEventListener('message', function(e){
+  var d = e.data;
+  if (!d || d.type !== 'practice-plan-sync') return;
+  organizerData[d.practice] = {practiceName: d.practiceName, color: d.color, items: d.items || []};
+  refreshBadges();
+});
+
+function allSyncedItems(){
+  var out = [];
+  Object.keys(organizerData).forEach(function(key){
+    var p = organizerData[key];
+    p.items.forEach(function(it){
+      out.push({practice:key, practiceName:p.practiceName, color:p.color, label:it.label, note:it.note, goal:it.goal});
     });
   });
+  return out;
+}
+
+function refreshBadges(){
+  var items = allSyncedItems();
+  var orgBadge = document.getElementById('organizer-badge');
+  orgBadge.textContent = items.length;
+  orgBadge.classList.toggle('hidden', items.length === 0);
+
+  var goal = document.getElementById('doctor-goal-select').value;
+  var docBadge = document.getElementById('doctor-badge');
+  if (!goal){ docBadge.classList.add('hidden'); }
+  else {
+    var mismatched = items.filter(function(it){ return it.goal && it.goal !== goal; });
+    docBadge.textContent = mismatched.length;
+    docBadge.classList.toggle('hidden', mismatched.length === 0);
+  }
+}
+
+function renderOrganizer(){
+  var items = allSyncedItems();
+  items.sort(function(a,b){ return a.label.localeCompare(b.label); });
+  var wrap = document.getElementById('organizer-list');
+  if (!items.length){
+    wrap.innerHTML = '<div class="org-empty">Nothing added yet. Open the Measurement Console above, add KPIs to its Plan tab (use the + Plan button on any card), and they’ll appear here automatically.</div>';
+    return;
+  }
+  wrap.innerHTML = items.map(function(it){
+    return '<div class="org-item" style="--item-c:var(' + it.color + ')">' +
+      '<div class="meta"><span class="practag">' + it.practiceName + '</span><span class="lbl">' + it.label + '</span>' +
+      (it.note ? '<span class="note">' + it.note + '</span>' : '') + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderDoctor(){
+  var goal = document.getElementById('doctor-goal-select').value;
+  var out = document.getElementById('doctor-output');
+  var items = allSyncedItems();
+  if (!goal){
+    out.innerHTML = '<div class="doctor-summary">Set a campaign goal above to check your plan for contradictions.</div>';
+    return;
+  }
+  var checkable = items.filter(function(it){ return it.goal; });
+  var mismatched = checkable.filter(function(it){ return it.goal !== goal; });
+  var summaryClass = mismatched.length ? 'warn' : 'ok';
+  var summary = mismatched.length === 0
+    ? '<div class="doctor-summary ' + summaryClass + '">Every goal-taggable KPI in your plan (' + checkable.length + ' of ' + items.length + ') matches “' + GOAL_LABELS[goal] + '.” No contradictions found.' + (items.length > checkable.length ? ' (' + (items.length - checkable.length) + ' KPI(s) have no clear goal affinity and were not checked.)' : '') + '</div>'
+    : '<div class="doctor-summary ' + summaryClass + '">Campaign goal is set to “' + GOAL_LABELS[goal] + '.” ' + mismatched.length + ' of ' + checkable.length + ' goal-taggable KPIs in your plan pull toward a different goal — worth a second look before this plan ships.</div>';
+
+  var byGoal = {};
+  mismatched.forEach(function(it){
+    byGoal[it.goal] = byGoal[it.goal] || [];
+    byGoal[it.goal].push(it);
+  });
+  var lists = Object.keys(byGoal).map(function(g){
+    var rows = byGoal[g].map(function(it){
+      return '<div class="org-item" style="--item-c:var(' + it.color + ')">' +
+        '<div class="meta"><span class="practag">' + it.practiceName + '</span><span class="lbl">' + it.label + '</span></div>' +
+      '</div>';
+    }).join('');
+    return '<p class="modal-sub" style="margin:14px 0 6px;"><strong>Tagged toward “' + GOAL_LABELS[g] + '”</strong> instead:</p>' + rows;
+  }).join('');
+
+  out.innerHTML = summary + lists;
+}
+
+document.getElementById('organizer-btn').addEventListener('click', function(){
+  renderOrganizer();
+  document.getElementById('organizer-modal').classList.remove('hidden');
+});
+document.getElementById('organizer-close').addEventListener('click', function(){
+  document.getElementById('organizer-modal').classList.add('hidden');
+});
+document.getElementById('organizer-modal').addEventListener('click', function(e){
+  if (e.target === this) this.classList.add('hidden');
+});
+
+document.getElementById('doctor-btn').addEventListener('click', function(){
+  renderDoctor();
+  document.getElementById('doctor-modal').classList.remove('hidden');
+});
+document.getElementById('doctor-close').addEventListener('click', function(){
+  document.getElementById('doctor-modal').classList.add('hidden');
+});
+document.getElementById('doctor-modal').addEventListener('click', function(e){
+  if (e.target === this) this.classList.add('hidden');
+});
+document.getElementById('doctor-goal-select').addEventListener('change', function(){
+  refreshBadges();
+  renderDoctor();
+});
+
+/* ---------- Glossary ---------- */
+var SOURCE_LABELS = {measurement:'Measurement', cro:'Conversion', findability:'Findability', growth:'Growth', content:'Content', foundation:'Strategic Foundation', general:'General'};
+var glossaryActiveSources = new Set();
+
+function renderGlossaryChips(){
+  var group = document.getElementById('glossary-chip-group');
+  if (group.children.length) return;
+  var sources = Array.from(new Set(GLOSSARY_DATA.map(function(e){ return e.source; })));
+  sources.sort();
+  sources.forEach(function(s){
+    var chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'glossary-chip'; chip.textContent = SOURCE_LABELS[s] || s;
+    chip.setAttribute('data-source', s);
+    chip.addEventListener('click', function(){
+      if (glossaryActiveSources.has(s)) glossaryActiveSources.delete(s); else glossaryActiveSources.add(s);
+      chip.classList.toggle('active');
+      renderGlossaryList();
+    });
+    group.appendChild(chip);
+  });
+}
+
+function renderGlossaryList(){
+  var q = document.getElementById('glossary-search').value.trim().toLowerCase();
+  var filtered = GLOSSARY_DATA.filter(function(e){
+    if (glossaryActiveSources.size && !glossaryActiveSources.has(e.source)) return false;
+    if (!q) return true;
+    var hay = (e.term + ' ' + e.full + ' ' + e.def).toLowerCase();
+    return hay.indexOf(q) > -1;
+  });
+  document.getElementById('glossary-count').textContent = filtered.length + ' of ' + GLOSSARY_DATA.length + ' terms';
+  var grid2 = document.getElementById('glossary-grid');
+  grid2.innerHTML = filtered.map(function(e){
+    return '<div class="glossary-card"><span class="gterm">' + e.term + '</span><span class="gfull">' + e.full + '</span><span class="gdef">' + e.def + '</span></div>';
+  }).join('') || '<div class="glossary-count">No terms match those filters.</div>';
+}
+
+document.getElementById('glossary-btn').addEventListener('click', function(){
+  renderGlossaryChips();
+  renderGlossaryList();
+  document.getElementById('glossary-modal').classList.remove('hidden');
+});
+document.getElementById('glossary-close').addEventListener('click', function(){
+  document.getElementById('glossary-modal').classList.add('hidden');
+});
+document.getElementById('glossary-modal').addEventListener('click', function(e){
+  if (e.target === this) this.classList.add('hidden');
+});
+document.getElementById('glossary-search').addEventListener('input', renderGlossaryList);
+
+/* ---------- Notes ---------- */
+var NOTES_KEY = 'marketing-suite-notes';
+var notesTextarea = document.getElementById('notes-textarea');
+var notesSaveStatus = document.getElementById('notes-save-status');
+var notesSaveTimer = null;
+
+try{
+  var savedNotes = localStorage.getItem(NOTES_KEY);
+  if (savedNotes) notesTextarea.value = savedNotes;
+}catch(e){}
+
+function flashStatus(msg){
+  notesSaveStatus.textContent = msg;
+  setTimeout(function(){ notesSaveStatus.textContent = ''; }, 1500);
+}
+function persistNotes(){
+  try{ localStorage.setItem(NOTES_KEY, notesTextarea.value); }catch(e){}
+}
+
+var notesHistory = [notesTextarea.value];
+var notesHistoryIndex = 0;
+var notesHistoryTimer = null;
+var notesRestoringHistory = false;
+function pushHistoryNow(){
+  if (notesTextarea.value === notesHistory[notesHistoryIndex]) return;
+  notesHistory = notesHistory.slice(0, notesHistoryIndex + 1);
+  notesHistory.push(notesTextarea.value);
+  notesHistoryIndex = notesHistory.length - 1;
+}
+
+notesTextarea.addEventListener('input', function(){
+  notesSaveStatus.textContent = '';
+  if (!notesRestoringHistory){
+    clearTimeout(notesHistoryTimer);
+    notesHistoryTimer = setTimeout(pushHistoryNow, 500);
+  }
+  clearTimeout(notesSaveTimer);
+  notesSaveTimer = setTimeout(function(){
+    persistNotes();
+    flashStatus('Saved');
+  }, 400);
+});
+
+document.getElementById('notes-undo-btn').addEventListener('click', function(){
+  clearTimeout(notesHistoryTimer);
+  pushHistoryNow();
+  if (notesHistoryIndex === 0) return;
+  notesHistoryIndex--;
+  notesRestoringHistory = true;
+  notesTextarea.value = notesHistory[notesHistoryIndex];
+  notesRestoringHistory = false;
+  persistNotes();
+  notesTextarea.focus();
+});
+document.getElementById('notes-redo-btn').addEventListener('click', function(){
+  if (notesHistoryIndex >= notesHistory.length - 1) return;
+  notesHistoryIndex++;
+  notesRestoringHistory = true;
+  notesTextarea.value = notesHistory[notesHistoryIndex];
+  notesRestoringHistory = false;
+  persistNotes();
+  notesTextarea.focus();
+});
+
+document.getElementById('notes-copy-btn').addEventListener('click', function(){
+  notesTextarea.focus();
+  notesTextarea.select();
+  notesTextarea.setSelectionRange(0, notesTextarea.value.length);
+  var done = function(){ flashStatus('Copied'); };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(notesTextarea.value).then(done, function(){
+      try{ document.execCommand('copy'); }catch(e){}
+      done();
+    });
+  } else {
+    try{ document.execCommand('copy'); }catch(e){}
+    done();
+  }
+});
+
+document.getElementById('notes-clear-btn').addEventListener('click', function(){
+  notesTextarea.value = '';
+  pushHistoryNow();
+  try{ localStorage.removeItem(NOTES_KEY); }catch(e){}
+  notesTextarea.focus();
+});
+
+/* ---------- Minimal zero-dependency .docx export (ZIP + OOXML, no libraries) ---------- */
+var CRC_TABLE = (function(){
+  var table = [];
+  for (var n=0;n<256;n++){
+    var c = n;
+    for (var k=0;k<8;k++){ c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); }
+    table[n] = c >>> 0;
+  }
+  return table;
+})();
+function crc32(bytes){
+  var crc = 0xFFFFFFFF;
+  for (var i=0;i<bytes.length;i++){ crc = CRC_TABLE[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8); }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function u16(n){ return [n & 0xFF, (n >>> 8) & 0xFF]; }
+function u32(n){ return [n & 0xFF, (n >>> 8) & 0xFF, (n >>> 16) & 0xFF, (n >>> 24) & 0xFF]; }
+function concatBytes(arrays){
+  var total = 0;
+  arrays.forEach(function(a){ total += a.length; });
+  var result = new Uint8Array(total);
+  var off = 0;
+  arrays.forEach(function(a){ result.set(a, off); off += a.length; });
+  return result;
+}
+function makeZip(files){
+  var localParts = [], centralParts = [], offset = 0;
+  files.forEach(function(f){
+    var nameBytes = new TextEncoder().encode(f.name);
+    var data = f.data;
+    var crc = crc32(data);
+    var size = data.length;
+    var localHeader = new Uint8Array([].concat(
+      [0x50,0x4B,0x03,0x04], u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(crc), u32(size), u32(size), u16(nameBytes.length), u16(0)
+    ));
+    var localEntry = concatBytes([localHeader, nameBytes, data]);
+    localParts.push(localEntry);
+    var centralHeader = new Uint8Array([].concat(
+      [0x50,0x4B,0x01,0x02], u16(20), u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(crc), u32(size), u32(size), u16(nameBytes.length), u16(0), u16(0),
+      u16(0), u16(0), u32(0), u32(offset)
+    ));
+    centralParts.push(concatBytes([centralHeader, nameBytes]));
+    offset += localEntry.length;
+  });
+  var localBytes = concatBytes(localParts);
+  var centralBytes = concatBytes(centralParts);
+  var eocd = new Uint8Array([].concat(
+    [0x50,0x4B,0x05,0x06], u16(0), u16(0), u16(files.length), u16(files.length),
+    u32(centralBytes.length), u32(localBytes.length), u16(0)
+  ));
+  return concatBytes([localBytes, centralBytes, eocd]);
+}
+function docxEscape(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function notesTextToDocumentXml(text){
+  var lines = text.split(/\r?\n/);
+  if (lines.length === 0) lines = [''];
+  var paras = lines.map(function(line){
+    var t = docxEscape(line);
+    return t === '' ? '<w:p/>' : '<w:p><w:r><w:t xml:space="preserve">' + t + '</w:t></w:r></w:p>';
+  }).join('');
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' +
+    paras +
+    '<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr>' +
+    '</w:body></w:document>';
+}
+var notesDocxLink = document.getElementById('notes-docx-btn');
+function buildNotesDocxBlob(){
+  var enc = new TextEncoder();
+  var contentTypesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+  var rootRelsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+  var docRelsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>';
+  var documentXml = notesTextToDocumentXml(notesTextarea.value || '');
+  var files = [
+    {name:'[Content_Types].xml', data: enc.encode(contentTypesXml)},
+    {name:'_rels/.rels', data: enc.encode(rootRelsXml)},
+    {name:'word/document.xml', data: enc.encode(documentXml)},
+    {name:'word/_rels/document.xml.rels', data: enc.encode(docRelsXml)}
+  ];
+  var zipBytes = makeZip(files);
+  return new Blob([zipBytes], {type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+function triggerBlobDownload(blob, filename){
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+}
+
+notesDocxLink.addEventListener('click', function(e){
+  e.preventDefault();
+  var suggestedName = 'suite-notes-' + new Date().toISOString().slice(0,10) + '.docx';
+  var blob = buildNotesDocxBlob();
+  if (typeof window.showSaveFilePicker === 'function'){
+    window.showSaveFilePicker({
+      suggestedName: suggestedName,
+      types: [{description:'Word Document', accept:{'application/vnd.openxmlformats-officedocument.wordprocessingml.document':['.docx']}}]
+    }).then(function(handle){
+      return handle.createWritable().then(function(w){ return w.write(blob).then(function(){ return w.close(); }); });
+    }).then(function(){
+      flashStatus('Saved');
+    }).catch(function(err){
+      if (err && err.name === 'AbortError') return;
+      triggerBlobDownload(blob, suggestedName);
+      flashStatus('Saved');
+    });
+  } else {
+    triggerBlobDownload(blob, suggestedName);
+    flashStatus('Saved');
+  }
+});
+
+/* ---------- Help ---------- */
+document.getElementById('help-btn').addEventListener('click', function(){
+  document.getElementById('help-modal').classList.remove('hidden');
+});
+document.getElementById('help-close').addEventListener('click', function(){
+  document.getElementById('help-modal').classList.add('hidden');
+});
+document.getElementById('help-modal').addEventListener('click', function(e){
+  if (e.target === this) this.classList.add('hidden');
+});
+
+/* ---------- Waitlist ---------- */
+document.getElementById('waitlist-close').addEventListener('click', function(){
+  document.getElementById('waitlist-modal').classList.add('hidden');
+});
+document.getElementById('waitlist-modal').addEventListener('click', function(e){
+  if (e.target === this) this.classList.add('hidden');
+});
+document.getElementById('waitlist-form').addEventListener('submit', function(e){
+  var form = e.target;
+  // No Mailchimp audience is wired up yet (see the setup comment above the
+  // form) — fall back to a mailto so waitlist signups aren't silently lost.
+  // Swap this block out once YOUR_MAILCHIMP_ACTION_URL is replaced with a
+  // real embedded-form URL; at that point the form's normal POST (with
+  // target="_blank") will handle submission and this handler can just
+  // show the thanks message instead of building a mailto link.
+  if (form.getAttribute('action') === 'YOUR_MAILCHIMP_ACTION_URL') {
+    e.preventDefault();
+    var email = form.querySelector('[name="EMAIL"]').value;
+    var consoleName = document.getElementById('waitlist-console-name').textContent;
+    var subject = 'Waitlist: ' + consoleName;
+    var body = 'Please notify me when the ' + consoleName + ' opens up.\n\nEmail: ' + email;
+    window.location.href = 'mailto:andrewalicea21@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+  form.hidden = true;
+  document.getElementById('waitlist-thanks').hidden = false;
+});
+
 })();
 </script>
 
