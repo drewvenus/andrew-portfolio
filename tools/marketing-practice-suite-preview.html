@@ -10,8 +10,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Marketing Practice Suite | Andrew Alicea</title>
-<meta name="description" content="Seven full marketing practice consoles built as one suite: Measurement, Conversion, Findability, Growth, Content, Strategic Foundation, and Paid Media. The Measurement Console is live and embedded below, with a combined plan Organizer, a goal-contradiction Doctor, a full glossary, and a notes scratchpad. The other six consoles are previewed here ahead of public release.">
+<meta name="robots" content="noindex, nofollow">
+<title>The Marketing Practice Suite (Private Preview) | Andrew Alicea</title>
+<meta name="description" content="Private preview build of the Marketing Practice Suite — all seven console cards unlocked for reference. Not linked publicly.">
 <style>
 @media (prefers-color-scheme: dark){
   :root{
@@ -143,6 +144,12 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 .mc-footer a{ color:var(--ink-muted); text-decoration:underline; text-underline-offset:2px; }
 .mc-footer a:hover{ color:var(--accent); }
 
+.preview-banner{
+  background:#4A2E10; color:#F2D9A8; text-align:center; font-size:0.82rem; font-weight:600;
+  padding:8px 16px; letter-spacing:0.02em;
+}
+.viewer-notready{padding:80px 24px; text-align:center; color:var(--ink-muted); font-size:0.9375rem; background:var(--surface); border:1px solid var(--rule); border-radius:10px; margin-top:36px;}
+
 /* Icon rail */
 .icon-rail{position:fixed; top:50%; right:18px; transform:translateY(-50%); display:flex; flex-direction:column; gap:12px; z-index:50;}
 .icon-btn{position:relative; width:52px; height:52px; border-radius:50%; background:var(--ink); color:var(--bg); border:2px solid var(--bg); display:flex; align-items:center; justify-content:center; font-size:1.4rem; cursor:pointer; box-shadow:0 2px 12px rgba(0,0,0,0.35), 0 0 0 1px var(--rule);}
@@ -226,6 +233,7 @@ h1.title{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,seri
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTT9CKDD"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<div class="preview-banner">PRIVATE PREVIEW — not linked publicly. All consoles unlocked for reference; only Measurement Console has a full interactive build.</div>
 <div class="mc-topbar">
   <a class="mc-brand" href="../index.html">Home</a>
   <div class="mc-topbar-right">
@@ -245,7 +253,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="masthead-inner">
     <p class="eyebrow">Measurement · Conversion · Findability · Growth · Content · Strategic Foundation · Paid Media — seven practices, one suite</p>
     <h1 class="title">The Marketing Practice Suite</h1>
-    <p class="dek">One home for seven full practice consoles, each with its own reference index, diagnostics, client plan, workbench, and readout. The Measurement Console is embedded and fully interactive below — the rest are still being prepared for public release. Click any locked console to join the waitlist and get notified the moment it opens. The icon rail on the right works across the whole page: a combined plan Organizer, a goal-contradiction Doctor, a full glossary, and a notes scratchpad.</p>
+    <p class="dek">One home for seven full practice consoles, each with its own reference index, diagnostics, client plan, workbench, and readout. The Measurement Console is embedded and fully interactive below — the other six are unlocked here for reference but don't yet have a built interactive console behind them. The icon rail on the right works across the whole page: a combined plan Organizer, a goal-contradiction Doctor, a full glossary, and a notes scratchpad.</p>
     <div class="stat-row">
       <div class="stat"><b>7</b><span>Practices</span></div>
       <div class="stat"><b>43</b><span>Tools</span></div>
@@ -261,7 +269,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button class="viewer-back-btn" id="viewer-back-btn">&#8592; All practices</button>
     <span class="now-viewing">Viewing: <b id="now-viewing-name"></b></span>
   </div>
-  <div id="viewer-empty" class="viewer-empty">Select the Measurement Console above to open it — the other six practices are previewed but not yet open to the public.</div>
+  <div id="viewer-empty" class="viewer-empty">Select any console above. Measurement Console opens its full interactive build; the other six show a placeholder since their consoles aren't built yet.</div>
+  <div id="viewer-notready" class="viewer-notready" style="display:none;"></div>
   <div class="viewer-frame-wrap" id="viewer-frame-wrap" style="display:none;">
     <iframe id="practice-frame" title="Practice console"></iframe>
   </div>
@@ -383,7 +392,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>Pick <b>Measurement Console</b> from the grid above to open it below. It has six tabs: <b>Index</b> (KPI reference), <b>Fit</b> (client-fit matcher), <b>Diagnostics</b> (root-cause diagnosis with worked case files), <b>Plan</b> (client measurement plan), <b>Workbench</b> (ad copy + keywords), and <b>Readout</b> (results narrative). Selections carry across every tab.</p>
 
       <h4>The other six consoles</h4>
-      <p>Conversion, Findability, Growth, Content, Strategic Foundation, and Paid Media are fully built but not yet open for public interaction — click any of them to join the waitlist and get an email the moment it launches. Their terminology is still searchable in the Glossary below.</p>
+      <p>Conversion, Findability, Growth, Content, Strategic Foundation, and Paid Media are unlocked on this preview page, but their interactive builds don't exist yet — clicking one shows a placeholder instead of a waitlist. Their terminology is already searchable in the Glossary below.</p>
 
       <h4>Getting back to the hub</h4>
       <p>Use the <b>← All practices</b> button in the toolbar above the console to close it and return to the practice grid.</p>
@@ -852,12 +861,12 @@ document.querySelectorAll('.icon-rail .icon-btn, .icon-rail .theme-toggle-btn').
 
 var PRACTICES = [
   {key:'measurement', name:'Measurement Console', c:'--p-measurement', desc:'KPI reference, benchmark fit, diagnostics with worked cases across every channel, client measurement plans, ad copy workbench, and results readout.', stats:'75 KPIs · 6 tools', locked:false, src:'measurement-console.html'},
-  {key:'cro', name:'Conversion Console', c:'--p-cro', desc:'Conversion heuristics across seven surfaces, symptom diagnostics, A/B test designer, client plan, variant copy workbench, and results readout.', stats:'57 heuristics · 6 tools', locked:true},
-  {key:'findability', name:'Findability Console', c:'--p-findability', desc:'SEO, AEO, schema, and site-architecture heuristics, symptom diagnostics, JSON-LD schema builder, architecture mapper, client plan, pSEO workbench, and E-E-A-T readout.', stats:'38 heuristics · 7 tools', locked:true},
-  {key:'growth', name:'Growth Console', c:'--p-growth', desc:'Launch, pricing, referral, free-tool, and churn heuristics, symptom diagnostics, a five-type bet modeler, client plan, lifecycle copy workbench, and program health readout.', stats:'47 heuristics · 6 tools', locked:true},
-  {key:'content', name:'Content Console', c:'--p-content', desc:'Strategy, production, editing, humanizing, and page-copy heuristics, symptom diagnostics, a computed copy sweep auditor, client plan, multi-channel and long-form copy workbench, and Searchable/Shareable readout.', stats:'30 heuristics · 6 tools', locked:true},
-  {key:'foundation', name:'Strategic Foundation Console', c:'--p-foundation', desc:'Context & audience, positioning & GTM, and brand identity heuristics, symptom diagnostics, a persona/positioning/JTBD builder, client plan, battlecard and engagement-brief workbench, and ICP validation readout.', stats:'28 heuristics · 6 tools', locked:true},
-  {key:'paidmedia', name:'Paid Media Console', c:'--p-paidmedia', desc:'Search, paid social, display/retargeting, and shopping heuristics, symptom diagnostics, a bid & budget pacing calculator, client media plan, RSA and paid-social copy workbench, and spend-efficiency readout.', stats:'40 heuristics · 6 tools', locked:true}
+  {key:'cro', name:'Conversion Console', c:'--p-cro', desc:'Conversion heuristics across seven surfaces, symptom diagnostics, A/B test designer, client plan, variant copy workbench, and results readout.', stats:'57 heuristics · 6 tools', locked:false},
+  {key:'findability', name:'Findability Console', c:'--p-findability', desc:'SEO, AEO, schema, and site-architecture heuristics, symptom diagnostics, JSON-LD schema builder, architecture mapper, client plan, pSEO workbench, and E-E-A-T readout.', stats:'38 heuristics · 7 tools', locked:false},
+  {key:'growth', name:'Growth Console', c:'--p-growth', desc:'Launch, pricing, referral, free-tool, and churn heuristics, symptom diagnostics, a five-type bet modeler, client plan, lifecycle copy workbench, and program health readout.', stats:'47 heuristics · 6 tools', locked:false},
+  {key:'content', name:'Content Console', c:'--p-content', desc:'Strategy, production, editing, humanizing, and page-copy heuristics, symptom diagnostics, a computed copy sweep auditor, client plan, multi-channel and long-form copy workbench, and Searchable/Shareable readout.', stats:'30 heuristics · 6 tools', locked:false},
+  {key:'foundation', name:'Strategic Foundation Console', c:'--p-foundation', desc:'Context & audience, positioning & GTM, and brand identity heuristics, symptom diagnostics, a persona/positioning/JTBD builder, client plan, battlecard and engagement-brief workbench, and ICP validation readout.', stats:'28 heuristics · 6 tools', locked:false},
+  {key:'paidmedia', name:'Paid Media Console', c:'--p-paidmedia', desc:'Search, paid social, display/retargeting, and shopping heuristics, symptom diagnostics, a bid & budget pacing calculator, client media plan, RSA and paid-social copy workbench, and spend-efficiency readout.', stats:'40 heuristics · 6 tools', locked:false}
 ];
 
 function openWaitlistModal(name){
@@ -900,19 +909,28 @@ function openPractice(p){
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'console_opened', entry_point: 'suite', practice_key: p.key });
   }
-  var frame = document.getElementById('practice-frame');
-  frame.src = p.src;
   document.getElementById('viewer-empty').style.display = 'none';
-  document.getElementById('viewer-frame-wrap').style.display = '';
   document.getElementById('viewer-toolbar').style.display = 'flex';
   document.getElementById('now-viewing-name').textContent = p.name;
-  document.getElementById('viewer-frame-wrap').scrollIntoView({behavior:'smooth', block:'start'});
+  if (p.src) {
+    var frame = document.getElementById('practice-frame');
+    frame.src = p.src;
+    document.getElementById('viewer-notready').style.display = 'none';
+    document.getElementById('viewer-frame-wrap').style.display = '';
+  } else {
+    document.getElementById('viewer-frame-wrap').style.display = 'none';
+    var notready = document.getElementById('viewer-notready');
+    notready.textContent = p.name + ' — card content and glossary terms are built, but the interactive console itself isn\'t built yet. Only Measurement Console has a working build right now.';
+    notready.style.display = '';
+  }
+  document.getElementById('viewer-toolbar').scrollIntoView({behavior:'smooth', block:'start'});
 }
 function returnToHub(){
   document.querySelectorAll('.practice-card').forEach(function(c){ c.classList.remove('active'); });
   var frame = document.getElementById('practice-frame');
   frame.src = 'about:blank';
   document.getElementById('viewer-frame-wrap').style.display = 'none';
+  document.getElementById('viewer-notready').style.display = 'none';
   document.getElementById('viewer-toolbar').style.display = 'none';
   document.getElementById('viewer-empty').style.display = '';
   document.getElementById('practice-grid').scrollIntoView({behavior:'smooth', block:'start'});
