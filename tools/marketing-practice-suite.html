@@ -801,6 +801,15 @@ if (mcNavToggle && mcNavLinks) {
   });
 }
 
+// Analytics: fire a dataLayer event whenever any icon-rail button is used,
+// without touching each button's own functional click handler.
+document.querySelectorAll('.icon-rail .icon-btn, .icon-rail .theme-toggle-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'icon_click', icon_name: btn.getAttribute('title') || btn.id });
+  });
+});
+
 var PRACTICES = [
   {key:'measurement', name:'Measurement Console', c:'--p-measurement', desc:'KPI reference, benchmark fit, diagnostics with worked cases across every channel, client measurement plans, ad copy workbench, and results readout.', stats:'75 KPIs · 6 tools', locked:false, src:'measurement-console.html'},
   {key:'cro', name:'Conversion Console', c:'--p-cro', desc:'Conversion heuristics across seven surfaces, symptom diagnostics, A/B test designer, client plan, variant copy workbench, and results readout.', stats:'57 heuristics · 6 tools', locked:true},
@@ -846,6 +855,10 @@ function openPractice(p){
   document.querySelectorAll('.practice-card').forEach(function(c){
     c.classList.toggle('active', c.getAttribute('data-key') === p.key);
   });
+  if (!p.locked) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'console_opened', entry_point: 'suite', practice_key: p.key });
+  }
   var frame = document.getElementById('practice-frame');
   frame.src = p.src;
   document.getElementById('viewer-empty').style.display = 'none';

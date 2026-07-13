@@ -42,6 +42,13 @@ if (document.body.id === 'home-page') {
 
 // Theme toggle + back-to-top utility rail (home page only)
 if (document.body.id === 'home-page') {
+  document.querySelectorAll('.site-utility-rail .utility-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'icon_click', icon_name: btn.getAttribute('title') || btn.id });
+    });
+  });
+
   const themeToggleBtn = document.getElementById('themeToggleBtn');
   const themeToggleIcon = document.getElementById('themeToggleIcon');
   if (themeToggleBtn && themeToggleIcon) {
