@@ -325,6 +325,28 @@ a.card:hover {
 }
 a.card:hover::after { opacity: 0.22; }
 a.card:active { transform: translateY(-3px) scale(0.99); }
+.card-hover-hint {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 4px 12px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+}
+.card:hover .card-hover-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
 .card .stat {
   font-family: var(--mono);
   font-size: 2rem;
@@ -640,6 +662,32 @@ section { position: relative; }
   color: var(--ink-soft);
 }
 a.carousel-item { text-decoration: none; color: inherit; display: block; }
+.carousel-item.is-archived { position: relative; }
+.carousel-item .archived-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: color-mix(in srgb, #000 55%, transparent);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 4px 10px;
+  backdrop-filter: blur(2px);
+}
+.carousel-item .cap-note {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
 .carousel-item .cap-link {
   display: block;
   margin-top: 4px;

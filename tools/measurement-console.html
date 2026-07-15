@@ -1942,7 +1942,7 @@ function buildHeadlines(ctx){
     formulas.unshift(`${ctx.proof} — ${ctx.biz}`);
     formulas.unshift(ctx.proof);
   }
-  formulas = dedupe(formulas).filter(f=>f.length<=50);
+  formulas = dedupe(formulas).filter(f=>f.length<=30);
   return formulas.slice(0,15);
 }
 
@@ -2012,14 +2012,14 @@ function render(){
   hlList.innerHTML = headlines.map((h,i)=>`
     <div class="hl-row">
       <input type="text" value="${esc(h)}" data-idx="${i}" class="hl-input" />
-      <span class="cc-badge font-mono">${h.length}/50</span>
+      <span class="cc-badge font-mono">${h.length}/30</span>
     </div>`).join("");
   hlList.querySelectorAll(".hl-input").forEach(inp=>{
     inp.addEventListener("input", ()=>{
       const badge = inp.parentElement.querySelector(".cc-badge");
       const len = inp.value.length;
-      badge.textContent = `${len}/50`;
-      badge.classList.toggle("over", len>50);
+      badge.textContent = `${len}/30`;
+      badge.classList.toggle("over", len>30);
     });
   });
 
